@@ -1,6 +1,6 @@
-package org.jetbrains.plugins.template.services
+package com.github.rafaelldi.tyeplugin.services
 
-import org.jetbrains.plugins.template.MyBundle
+import com.github.rafaelldi.tyeplugin.MyBundle
 
 class MyApplicationService {
 
