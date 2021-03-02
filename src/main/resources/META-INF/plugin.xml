@@ -1,6 +1,6 @@
 <idea-plugin>
     <id>com.github.rafaelldi.tyeplugin</id>
-    <name>tye-plugin</name>
+    <name>Tye</name>
     <vendor>rafaelldi</vendor>
 
     <!-- Product and plugin compatibility requirements -->
@@ -8,12 +8,7 @@
     <depends>com.intellij.modules.platform</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <applicationService serviceImplementation="com.github.rafaelldi.tyeplugin.services.MyApplicationService"/>
-        <projectService serviceImplementation="com.github.rafaelldi.tyeplugin.services.MyProjectService"/>
+        <configurationType implementation="com.github.rafaelldi.tyeplugin.TyeRunConfigurationType"/>
     </extensions>
 
-    <applicationListeners>
-        <listener class="com.github.rafaelldi.tyeplugin.listeners.MyProjectManagerListener"
-                  topic="com.intellij.openapi.project.ProjectManagerListener"/>
-    </applicationListeners>
 </idea-plugin>
