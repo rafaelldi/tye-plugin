@@ -1,4 +1,4 @@
-package com.github.rafaelldi.tyeplugin
+package com.github.rafaelldi.tyeplugin.run
 
 import com.intellij.execution.configurations.ConfigurationFactory
 import com.intellij.execution.configurations.RunConfiguration

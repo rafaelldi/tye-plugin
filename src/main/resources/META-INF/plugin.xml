@@ -8,7 +8,11 @@
     <depends>com.intellij.modules.platform</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <configurationType implementation="com.github.rafaelldi.tyeplugin.TyeRunConfigurationType"/>
+        <!-- Application settings -->
+        <applicationService serviceImplementation="com.github.rafaelldi.tyeplugin.settings.TyeSettings"/>
+
+        <!-- Run configurations -->
+        <configurationType implementation="com.github.rafaelldi.tyeplugin.run.TyeRunConfigurationType"/>
     </extensions>
 
 </idea-plugin>
