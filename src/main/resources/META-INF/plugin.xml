@@ -12,7 +12,7 @@
         <applicationService serviceImplementation="com.github.rafaelldi.tyeplugin.settings.TyeSettings"/>
 
         <!-- Run configurations -->
-        <configurationType implementation="com.github.rafaelldi.tyeplugin.run.TyeRunConfigurationType"/>
+        <configurationType implementation="com.github.rafaelldi.tyeplugin.run.TyeConfigurationType"/>
     </extensions>
 
 </idea-plugin>

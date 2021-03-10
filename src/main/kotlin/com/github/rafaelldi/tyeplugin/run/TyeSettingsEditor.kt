@@ -1,9 +1,8 @@
 package com.github.rafaelldi.tyeplugin.run
 
-import com.intellij.openapi.fileChooser.FileTypeDescriptor
+import com.intellij.openapi.fileChooser.FileChooserDescriptor
 import com.intellij.openapi.options.SettingsEditor
 import com.intellij.openapi.project.Project
-import com.intellij.openapi.roots.ProjectRootManager
 import com.intellij.openapi.ui.LabeledComponent
 import com.intellij.openapi.ui.TextBrowseFolderListener
 import com.intellij.openapi.ui.TextFieldWithBrowseButton
@@ -37,8 +36,9 @@ class TyeSettingsEditor(private val project: Project) : SettingsEditor<TyeRunCon
             val tyeFileField = TextFieldWithBrowseButton().apply {
                 addBrowseFolderListener(
                     TextBrowseFolderListener(
-                        FileTypeDescriptor("Choose the tye.yaml file", ".yaml")
-                            .withRoots(*ProjectRootManager.getInstance(project).contentRootsFromAllModules)
+                        FileChooserDescriptor(true, false, false, false, false, false)
+                            .withFileFilter { vf -> vf.extension?.toLowerCase() == "yaml" }
+                            .withTitle("Select tye.yaml file...")
                     )
                 )
             }
