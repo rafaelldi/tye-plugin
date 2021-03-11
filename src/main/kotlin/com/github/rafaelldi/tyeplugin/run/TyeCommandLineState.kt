@@ -23,6 +23,7 @@ open class TyeCommandLineState(environment: ExecutionEnvironment, private val ru
 
         val commandLine = GeneralCommandLine()
             .withParentEnvironmentType(GeneralCommandLine.ParentEnvironmentType.CONSOLE)
+            .withWorkDirectory(workingDirectory)
             .withExePath(tyeTool)
             .withParameters(arguments)
 

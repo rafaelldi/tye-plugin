@@ -14,7 +14,7 @@ class TyeSettings : PersistentStateComponent<TyeSettings> {
         fun getInstance(): TyeSettings = ServiceManager.getService(TyeSettings::class.java)
     }
 
-    var tyeTool = "~/.dotnet/tools/tye"
+    var tyeTool = "tye"
 
     override fun getState(): TyeSettings = this
 

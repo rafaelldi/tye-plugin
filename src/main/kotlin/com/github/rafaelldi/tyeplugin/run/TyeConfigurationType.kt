@@ -1,5 +1,6 @@
 package com.github.rafaelldi.tyeplugin.run
 
+import com.github.rafaelldi.tyeplugin.TyeIcons
 import com.intellij.execution.configurations.ConfigurationFactory
 import com.intellij.execution.configurations.ConfigurationType
 import com.intellij.icons.AllIcons
@@ -9,7 +10,7 @@ class TyeConfigurationType : ConfigurationType {
 
     override fun getConfigurationTypeDescription() = "Run tye script"
 
-    override fun getIcon() = AllIcons.General.Information
+    override fun getIcon() = TyeIcons.TYE
 
     override fun getId() = "TYE_RUN_CONFIGURATION"
 
