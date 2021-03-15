@@ -2,18 +2,18 @@ package com.github.rafaelldi.tyeplugin.run
 
 import com.intellij.openapi.fileChooser.FileChooserDescriptor
 import com.intellij.openapi.options.SettingsEditor
-import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.LabeledComponent
 import com.intellij.openapi.ui.TextBrowseFolderListener
 import com.intellij.openapi.ui.TextFieldWithBrowseButton
 import com.intellij.openapi.ui.VerticalFlowLayout
 import com.intellij.openapi.vfs.LocalFileSystem
+import java.awt.BorderLayout
 import javax.swing.JComponent
 import javax.swing.JPanel
 
-class TyeSettingsEditor(private val project: Project) : SettingsEditor<TyeRunConfiguration>() {
+class TyeSettingsEditor : SettingsEditor<TyeRunConfiguration>() {
     private lateinit var panel: JPanel
-    private lateinit var tyeFile: LabeledComponent<TextFieldWithBrowseButton>
+    private lateinit var pathField: LabeledComponent<TextFieldWithBrowseButton>
 
     override fun createEditor(): JComponent {
         createUIComponents()
@@ -21,11 +21,11 @@ class TyeSettingsEditor(private val project: Project) : SettingsEditor<TyeRunCon
     }
 
     override fun resetEditorFrom(runConfig: TyeRunConfiguration) {
-        tyeFile.component.text = runConfig.tyeFile?.path ?: ""
+        pathField.component.text = runConfig.pathArgument?.path ?: ""
     }
 
     override fun applyEditorTo(runConfig: TyeRunConfiguration) {
-        runConfig.tyeFile = LocalFileSystem.getInstance().findFileByPath(tyeFile.component.text)
+        runConfig.pathArgument = LocalFileSystem.getInstance().findFileByPath(pathField.component.text)
     }
 
     private fun createUIComponents() {
@@ -33,17 +33,23 @@ class TyeSettingsEditor(private val project: Project) : SettingsEditor<TyeRunCon
             layout = VerticalFlowLayout(VerticalFlowLayout.TOP)
 
             // Tye file
-            val tyeFileField = TextFieldWithBrowseButton().apply {
+            val pathTextField = TextFieldWithBrowseButton().apply {
                 addBrowseFolderListener(
                     TextBrowseFolderListener(
-                        FileChooserDescriptor(true, false, false, false, false, false)
-                            .withFileFilter { vf -> vf.extension?.toLowerCase() == "yaml" }
-                            .withTitle("Select tye.yaml file...")
+                        FileChooserDescriptor(true, true, false, false, false, false)
+                            .withFileFilter { vf ->
+                                vf.name.toLowerCase() == "tye.yaml" ||
+                                    vf.extension?.toLowerCase() == "sln" ||
+                                    vf.extension?.toLowerCase() == "csproj" ||
+                                    vf.extension?.toLowerCase() == "fsproj"
+                            }
+                            .withTitle("Select Path Argument")
                     )
                 )
             }
-            tyeFile = LabeledComponent.create(tyeFileField, "Tye file")
-            add(tyeFile)
+            pathField = LabeledComponent.create(pathTextField, "Path")
+            pathField.labelLocation = BorderLayout.WEST
+            add(pathField)
         }
     }
 }

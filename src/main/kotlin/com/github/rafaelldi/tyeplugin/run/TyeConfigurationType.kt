@@ -7,7 +7,7 @@ import com.intellij.execution.configurations.ConfigurationType
 class TyeConfigurationType : ConfigurationType {
     override fun getDisplayName() = "Tye"
 
-    override fun getConfigurationTypeDescription() = "Run tye script"
+    override fun getConfigurationTypeDescription() = "Tye run command"
 
     override fun getIcon() = TyeIcons.TYE
 

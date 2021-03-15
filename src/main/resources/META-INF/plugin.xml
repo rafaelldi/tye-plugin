@@ -9,7 +9,11 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <!-- Application settings -->
-        <applicationService serviceImplementation="com.github.rafaelldi.tyeplugin.settings.TyeSettings"/>
+        <projectService serviceImplementation="com.github.rafaelldi.tyeplugin.settings.TyeSettingsState"/>
+        <projectConfigurable parentId="tools"
+                                 instance="com.github.rafaelldi.tyeplugin.settings.TyeSettingsConfigurable"
+                                 id="com.github.rafaelldi.tyeplugin.settings.TyeSettingsConfigurable"
+                                 displayName="Tye" nonDefaultProject="false"/>
 
         <!-- Run configurations -->
         <configurationType implementation="com.github.rafaelldi.tyeplugin.run.TyeConfigurationType"/>
