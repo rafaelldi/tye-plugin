@@ -35,13 +35,13 @@
    inkscape:window-height="1015"
    id="namedview51"
    showgrid="false"
-   fit-margin-top="0"
-   fit-margin-left="0"
-   fit-margin-right="0"
-   fit-margin-bottom="0"
-   inkscape:zoom="10.429825"
-   inkscape:cx="-30.940362"
-   inkscape:cy="-5.6037715"
+   fit-margin-top="1"
+   fit-margin-left="1"
+   fit-margin-right="1"
+   fit-margin-bottom="1"
+   inkscape:zoom="29.5"
+   inkscape:cx="11.474576"
+   inkscape:cy="8.7809243"
    inkscape:window-x="0"
    inkscape:window-y="0"
    inkscape:window-maximized="1"
@@ -59,8 +59,8 @@
 	.st7{fill:none;stroke:#F5CF87;stroke-width:4;stroke-miterlimit:10;}
 </style>
 <rect
-   x="-391"
-   y="-1393"
+   x="-390"
+   y="-1394"
    class="st0"
    width="608"
    height="1984"
@@ -71,12 +71,12 @@
    cx="8"
    cy="8"
    id="circle6"
-   style="fill:#4f5d73;stroke-width:0.25"
-   r="8" />
+   style="fill:#4f5d73;stroke-width:0.21875"
+   r="7" />
 <g
    class="st2"
    id="g24"
-   transform="scale(0.25)"
+   transform="matrix(0.21875,0,0,0.21875,1,1)"
    style="opacity:0.2">
 	<g
    id="g10">
@@ -117,7 +117,7 @@
 </g>
 <g
    id="g34"
-   transform="scale(0.25)">
+   transform="matrix(0.21875,0,0,0.21875,1,1)">
 	<line
    class="st4"
    x1="32"
@@ -153,13 +153,13 @@
 </g>
 <path
    class="st5"
-   d="m 8,4.5 c 2.2,0 4,1.8 4,4 0,2.2 -1.8,4 -4,4 -2.2,0 -4,-1.8 -4,-4 0,-2.2 1.8,-4 4,-4 m 0,-1 c -2.75,0 -5,2.25 -5,5 0,2.75 2.25,5 5,5 2.75,0 5,-2.25 5,-5 0,-2.75 -2.25,-5 -5,-5 z"
+   d="m 8,4.9375 c 1.925,0 3.5,1.575 3.5,3.5 0,1.925 -1.575,3.5 -3.5,3.5 -1.925,0 -3.5,-1.575 -3.5,-3.5 0,-1.925 1.575,-3.5 3.5,-3.5 m 0,-0.875 c -2.40625,0 -4.375,1.96875 -4.375,4.375 0,2.40625 1.96875,4.375 4.375,4.375 2.40625,0 4.375,-1.96875 4.375,-4.375 0,-2.40625 -1.96875,-4.375 -4.375,-4.375 z"
    id="path36"
    inkscape:connector-curvature="0"
-   style="opacity:0.2;fill:#231f20;stroke-width:0.25" />
+   style="opacity:0.2;fill:#231f20;stroke-width:0.21875" />
 <g
    id="g40"
-   transform="scale(0.25)">
+   transform="matrix(0.21875,0,0,0.21875,1,1)">
 	<path
    class="st6"
    d="m 32,16 c 8.8,0 16,7.2 16,16 0,8.8 -7.2,16 -16,16 -8.8,0 -16,-7.2 -16,-16 0,-8.8 7.2,-16 16,-16 m 0,-4 C 21,12 12,21 12,32 12,43 21,52 32,52 43,52 52,43 52,32 52,21 43,12 32,12 Z"
@@ -172,12 +172,12 @@
    cx="8"
    cy="8"
    id="circle42"
-   style="fill:#4f5d73;stroke-width:0.25"
-   r="1.5" />
+   style="fill:#4f5d73;stroke-width:0.21875"
+   r="1.3125" />
 <g
    class="st2"
    id="g46"
-   transform="scale(0.25)"
+   transform="matrix(0.21875,0,0,0.21875,1,1)"
    style="opacity:0.2">
 	<path
    class="st3"
@@ -191,6 +191,6 @@
    cx="8"
    cy="8"
    id="circle48"
-   style="fill:none;stroke:#f5cf87;stroke-width:1;stroke-miterlimit:10"
-   r="2" />
+   style="fill:none;stroke:#f5cf87;stroke-width:0.875;stroke-miterlimit:10"
+   r="1.75" />
 </svg>

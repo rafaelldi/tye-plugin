@@ -1,4 +1,4 @@
-<idea-plugin>
+<idea-plugin url="https://github.com/rafaelldi/tye-plugin">
     <id>com.github.rafaelldi.tyeplugin</id>
     <name>Tye</name>
     <vendor>rafaelldi</vendor>

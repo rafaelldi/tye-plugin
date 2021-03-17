@@ -11,9 +11,9 @@ import com.intellij.execution.runners.ExecutionEnvironment
 import com.intellij.openapi.project.Project
 
 open class TyeCommandLineState(
-        environment: ExecutionEnvironment,
-        private val runConfig: TyeRunConfiguration,
-        private val project: Project
+    environment: ExecutionEnvironment,
+    private val runConfig: TyeRunConfiguration,
+    private val project: Project
 ) : CommandLineState(environment) {
 
     override fun startProcess(): ProcessHandler {
