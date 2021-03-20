@@ -21,10 +21,10 @@ class TyeSettingsComponent {
 
     fun getPreferredFocusedComponent(): JComponent = tyeToolPathField.component
 
-    fun getTyeToolPath(): String = tyeToolPathField.component.text
+    fun getTyeToolPath(): String? = if (tyeToolPathField.component.text == "") null else tyeToolPathField.component.text
 
-    fun setTyeToolPath(path: String) {
-        tyeToolPathField.component.text = path
+    fun setTyeToolPath(path: String?) {
+        tyeToolPathField.component.text = path ?: ""
     }
 
     private fun createUIComponents() {

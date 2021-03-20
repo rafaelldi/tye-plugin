@@ -6,6 +6,7 @@
     <!-- Product and plugin compatibility requirements -->
     <!-- https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
     <depends>com.intellij.modules.platform</depends>
+    <idea-version since-build="203"/>
 
     <extensions defaultExtensionNs="com.intellij">
         <!-- Application settings -->
@@ -17,6 +18,22 @@
 
         <!-- Run configurations -->
         <configurationType implementation="com.github.rafaelldi.tyeplugin.run.TyeConfigurationType"/>
+
+        <notificationGroup id="tye.notifications.balloon" displayType="BALLOON" />
+        <notificationGroup id="tye.notifications.toolWindow" displayType="TOOL_WINDOW" />
     </extensions>
 
+    <actions>
+        <group id="com.github.rafaelldi.tyeplugin.actions.TyeGroupedActions" text="Tye" popup="true" icon="TyeIcons.TYE">
+            <add-to-group group-id="ToolsMenu"/>
+            <action id="com.github.rafaelldi.tyeplugin.actions.InstallTyeToolAction"
+                    class="com.github.rafaelldi.tyeplugin.actions.InstallTyeToolAction" text="Install Tye Global Tool"
+                    description="Install Microsoft.Tye tool as a global tool">
+            </action>
+            <action id="com.github.rafaelldi.tyeplugin.actions.ScaffoldTyeFileAction"
+                    class="com.github.rafaelldi.tyeplugin.actions.ScaffoldTyeFileAction" text="Scaffold Tye File"
+                    description="Run tye init command in the solution directory">
+            </action>
+        </group>
+    </actions>
 </idea-plugin>

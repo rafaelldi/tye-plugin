@@ -1,8 +1,8 @@
 package com.github.rafaelldi.tyeplugin.run
 
-import com.github.rafaelldi.tyeplugin.TyeIcons
 import com.intellij.execution.configurations.ConfigurationFactory
 import com.intellij.execution.configurations.ConfigurationType
+import icons.TyeIcons
 
 class TyeConfigurationType : ConfigurationType {
     override fun getDisplayName() = "Tye"

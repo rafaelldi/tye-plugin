@@ -17,7 +17,8 @@ open class TyeCommandLineState(
 ) : CommandLineState(environment) {
 
     override fun startProcess(): ProcessHandler {
-        val tyeToolPath = TyeSettingsState.getInstance(project).tyeToolPath
+        val tyeToolPath =
+            TyeSettingsState.getInstance(project).tyeToolPath ?: throw ExecutionException("Tye tool not found.")
         val pathArgument = runConfig.pathArgument?.path ?: throw ExecutionException("Path argument not specified.")
         val workingDirectory = runConfig.pathArgument?.parent?.path
 

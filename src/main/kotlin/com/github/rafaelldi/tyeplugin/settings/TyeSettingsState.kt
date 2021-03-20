@@ -1,5 +1,6 @@
 package com.github.rafaelldi.tyeplugin.settings
 
+import com.github.rafaelldi.tyeplugin.tool.findTyeToolPath
 import com.intellij.openapi.components.PersistentStateComponent
 import com.intellij.openapi.components.ServiceManager
 import com.intellij.openapi.components.State

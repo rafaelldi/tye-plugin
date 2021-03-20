@@ -1,4 +1,4 @@
-package com.github.rafaelldi.tyeplugin
+package icons
 
 import com.intellij.openapi.util.IconLoader
 
