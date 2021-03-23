@@ -13,17 +13,21 @@ class TyeSettingsConfigurable(private val project: Project) : Configurable {
 
     override fun isModified(): Boolean {
         val settings = TyeSettingsState.getInstance(project)
-        return component.getTyeToolPath() != settings.tyeToolPath
+        var modified = component.getTyeToolPath() != settings.tyeToolPath
+        modified = modified or (component.getOverwriteTyeFile() != settings.overwriteTyeFile)
+        return modified
     }
 
     override fun apply() {
         val settings = TyeSettingsState.getInstance(project)
         settings.tyeToolPath = component.getTyeToolPath()
+        settings.overwriteTyeFile = component.getOverwriteTyeFile()
     }
 
     override fun reset() {
         val settings = TyeSettingsState.getInstance(project)
         component.setTyeToolPath(settings.tyeToolPath)
+        component.setOverwriteTyeFile(settings.overwriteTyeFile)
     }
 
     override fun getDisplayName(): String = "Tye"

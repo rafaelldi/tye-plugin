@@ -15,6 +15,7 @@ import com.intellij.util.xmlb.XmlSerializerUtil
 class TyeSettingsState : PersistentStateComponent<TyeSettingsState> {
 
     var tyeToolPath = findTyeToolPath()
+    var overwriteTyeFile = false
 
     companion object {
         @JvmStatic

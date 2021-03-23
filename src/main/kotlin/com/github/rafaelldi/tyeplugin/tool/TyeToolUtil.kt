@@ -25,12 +25,18 @@ fun findTyeToolPath(): String? {
     return tyePath
 }
 
-fun tyeInit(tyeToolPath: String, solutionFolder: String): Boolean {
+fun tyeInit(tyeToolPath: String, solutionFolder: String, force: Boolean): Boolean {
+    val arguments = mutableListOf<String>()
+    arguments.add("init")
+
+    if (force) arguments.add("--force")
+
     val commandLine = GeneralCommandLine()
         .withParentEnvironmentType(GeneralCommandLine.ParentEnvironmentType.CONSOLE)
         .withWorkDirectory(solutionFolder)
         .withExePath(tyeToolPath)
-        .withParameters("init")
+        .withParameters(arguments)
+
     val output = ExecUtil.execAndGetOutput(commandLine)
     return output.exitCode == 0
 }

@@ -5,13 +5,16 @@ import com.intellij.openapi.ui.LabeledComponent
 import com.intellij.openapi.ui.TextBrowseFolderListener
 import com.intellij.openapi.ui.TextFieldWithBrowseButton
 import com.intellij.openapi.ui.VerticalFlowLayout
+import com.intellij.ui.TitledSeparator
 import java.awt.BorderLayout
+import javax.swing.JCheckBox
 import javax.swing.JComponent
 import javax.swing.JPanel
 
 class TyeSettingsComponent {
     private lateinit var panel: JPanel
     private lateinit var tyeToolPathField: LabeledComponent<TextFieldWithBrowseButton>
+    private lateinit var overwriteTyeFile: JCheckBox
 
     init {
         createUIComponents()
@@ -27,9 +30,16 @@ class TyeSettingsComponent {
         tyeToolPathField.component.text = path ?: ""
     }
 
+    fun getOverwriteTyeFile(): Boolean = overwriteTyeFile.isSelected
+
+    fun setOverwriteTyeFile(select: Boolean) {
+        overwriteTyeFile.isSelected = select
+    }
+
     private fun createUIComponents() {
         panel = JPanel().apply {
             layout = VerticalFlowLayout(VerticalFlowLayout.TOP)
+
             val tyeToolPathTextField = TextFieldWithBrowseButton().apply {
                 addBrowseFolderListener(
                     TextBrowseFolderListener(
@@ -42,6 +52,11 @@ class TyeSettingsComponent {
             tyeToolPathField = LabeledComponent.create(tyeToolPathTextField, "Tye tool path")
             tyeToolPathField.labelLocation = BorderLayout.WEST
             add(tyeToolPathField)
+
+            add(TitledSeparator("Commands"))
+
+            overwriteTyeFile = JCheckBox("Overwrite existing tye.yaml during scaffolding")
+            add(overwriteTyeFile)
         }
     }
 }

@@ -10,6 +10,8 @@ import com.intellij.openapi.progress.ProgressIndicator
 import com.intellij.openapi.progress.ProgressManager
 import com.intellij.openapi.progress.Task
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.util.io.FileUtil
+import java.nio.file.Paths
 
 class ScaffoldTyeFileAction : AnAction() {
     companion object {
@@ -39,28 +41,37 @@ class ScaffoldTyeFileAction : AnAction() {
         indicator.fraction = START_FRACTION
         indicator.text = "Scaffolding tye.yaml file"
 
-        val tyeToolPath = TyeSettingsState.getInstance(project).tyeToolPath
+        val settings = TyeSettingsState.getInstance(project)
+        val tyeToolPath = settings.tyeToolPath
+        val pathToTyeFile = Paths.get(project.basePath!!, "tye.yaml")
+
         if (tyeToolPath == null) {
             indicator.cancel()
-
             Notification(
                 "tye.notifications.balloon",
                 "Could not find tye tool",
                 "Please install tye global tool or specify the path to it.",
                 NotificationType.ERROR
             ).notify(project)
-            return
+        } else if (!settings.overwriteTyeFile && FileUtil.exists(pathToTyeFile.toString())) {
+            indicator.cancel()
+            Notification(
+                "tye.notifications.balloon",
+                "File tye.yaml already exists",
+                "Please remove the file or allow rewriting in the settings.",
+                NotificationType.WARNING
+            ).notify(project)
+        } else {
+            tyeInit(tyeToolPath, project.basePath!!, settings.overwriteTyeFile)
+
+            indicator.fraction = FINISH_FRACTION
+
+            Notification(
+                "tye.notifications.toolWindow",
+                "File tye.yaml is scaffolded",
+                "",
+                NotificationType.INFORMATION
+            ).notify(project)
         }
-
-        tyeInit(tyeToolPath, project.basePath!!)
-
-        indicator.fraction = FINISH_FRACTION
-
-        Notification(
-            "tye.notifications.toolWindow",
-            "File tye.yaml is scaffolded",
-            "",
-            NotificationType.INFORMATION
-        ).notify(project)
     }
 }

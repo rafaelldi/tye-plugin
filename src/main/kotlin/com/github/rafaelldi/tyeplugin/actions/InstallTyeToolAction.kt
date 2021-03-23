@@ -39,7 +39,7 @@ class InstallTyeToolAction : AnAction() {
 
         indicator.isIndeterminate = false
         indicator.fraction = START_FRACTION
-        indicator.text = "Installing tye.yaml file"
+        indicator.text = "Installing tye global tool"
 
         val success = dotnetToolInstallTye()
 
