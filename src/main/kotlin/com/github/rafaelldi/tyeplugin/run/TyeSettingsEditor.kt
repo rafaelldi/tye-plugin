@@ -7,13 +7,26 @@ import com.intellij.openapi.ui.TextBrowseFolderListener
 import com.intellij.openapi.ui.TextFieldWithBrowseButton
 import com.intellij.openapi.ui.VerticalFlowLayout
 import com.intellij.openapi.vfs.LocalFileSystem
+import com.intellij.ui.JBIntSpinner
+import com.intellij.ui.TitledSeparator
+import com.intellij.ui.components.JBCheckBox
 import java.awt.BorderLayout
 import javax.swing.JComponent
 import javax.swing.JPanel
 
 class TyeSettingsEditor : SettingsEditor<TyeRunConfiguration>() {
+    companion object {
+        const val DEFAULT_PORT: Int = 8000
+        const val MIN_PORT: Int = 0
+        const val MAX_PORT: Int = 65353
+    }
+
     private lateinit var panel: JPanel
     private lateinit var pathField: LabeledComponent<TextFieldWithBrowseButton>
+    private lateinit var portField: LabeledComponent<JBIntSpinner>
+    private lateinit var noBuildOption: JBCheckBox
+    private lateinit var dockerOption: JBCheckBox
+    private lateinit var dashboardOption: JBCheckBox
 
     override fun createEditor(): JComponent {
         createUIComponents()
@@ -22,17 +35,24 @@ class TyeSettingsEditor : SettingsEditor<TyeRunConfiguration>() {
 
     override fun resetEditorFrom(runConfig: TyeRunConfiguration) {
         pathField.component.text = runConfig.pathArgument?.path ?: ""
+        portField.component.number = runConfig.portArgument
+        noBuildOption.isSelected = runConfig.noBuildArgument
+        dockerOption.isSelected = runConfig.dockerArgument
+        dashboardOption.isSelected = runConfig.dashboardArgument
     }
 
     override fun applyEditorTo(runConfig: TyeRunConfiguration) {
         runConfig.pathArgument = LocalFileSystem.getInstance().findFileByPath(pathField.component.text)
+        runConfig.portArgument = portField.component.number
+        runConfig.noBuildArgument = noBuildOption.isSelected
+        runConfig.dockerArgument = dockerOption.isSelected
+        runConfig.dashboardArgument = dashboardOption.isSelected
     }
 
     private fun createUIComponents() {
         panel = JPanel().apply {
             layout = VerticalFlowLayout(VerticalFlowLayout.TOP)
 
-            // Tye file
             val pathTextField = TextFieldWithBrowseButton().apply {
                 addBrowseFolderListener(
                     TextBrowseFolderListener(
@@ -50,6 +70,22 @@ class TyeSettingsEditor : SettingsEditor<TyeRunConfiguration>() {
             pathField = LabeledComponent.create(pathTextField, "Path")
             pathField.labelLocation = BorderLayout.WEST
             add(pathField)
+
+            add(TitledSeparator("Options"))
+
+            val portSpinner = JBIntSpinner(DEFAULT_PORT, MIN_PORT, MAX_PORT)
+            portField = LabeledComponent.create(portSpinner, "Dashboard port")
+            portField.labelLocation = BorderLayout.WEST
+            add(portField)
+
+            noBuildOption = JBCheckBox("--no-build, does not build projects before running")
+            add(noBuildOption)
+
+            dockerOption = JBCheckBox("--docker, run projects as docker containers")
+            add(dockerOption)
+
+            dashboardOption = JBCheckBox("--dashboard, launch dashboard on run")
+            add(dashboardOption)
         }
     }
 }

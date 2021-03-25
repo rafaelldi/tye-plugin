@@ -17,13 +17,30 @@ open class TyeCommandLineState(
 ) : CommandLineState(environment) {
 
     override fun startProcess(): ProcessHandler {
-        val tyeToolPath =
-            TyeSettingsState.getInstance(project).tyeToolPath ?: throw ExecutionException("Tye tool not found.")
-        val pathArgument = runConfig.pathArgument?.path ?: throw ExecutionException("Path argument not specified.")
+        val tyeToolPath = TyeSettingsState.getInstance(project).tyeToolPath
+            ?: throw ExecutionException("Tye tool not found.")
+        val pathArgument = runConfig.pathArgument?.path
+            ?: throw ExecutionException("Path argument not specified.")
         val workingDirectory = runConfig.pathArgument?.parent?.path
 
         val arguments = mutableListOf<String>()
         arguments.add("run")
+
+        arguments.add("--port")
+        arguments.add(runConfig.portArgument.toString())
+
+        if (runConfig.noBuildArgument) {
+            arguments.add("--no-build")
+        }
+
+        if (runConfig.dockerArgument) {
+            arguments.add("--docker")
+        }
+
+        if (runConfig.dashboardArgument) {
+            arguments.add("--dashboard")
+        }
+
         arguments.add(pathArgument)
 
         val commandLine = GeneralCommandLine()

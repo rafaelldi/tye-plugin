@@ -14,7 +14,7 @@ import javax.swing.JPanel
 class TyeSettingsComponent {
     private lateinit var panel: JPanel
     private lateinit var tyeToolPathField: LabeledComponent<TextFieldWithBrowseButton>
-    private lateinit var overwriteTyeFile: JCheckBox
+    private lateinit var overwriteTyeFileOption: JCheckBox
 
     init {
         createUIComponents()
@@ -30,10 +30,10 @@ class TyeSettingsComponent {
         tyeToolPathField.component.text = path ?: ""
     }
 
-    fun getOverwriteTyeFile(): Boolean = overwriteTyeFile.isSelected
+    fun getOverwriteTyeFile(): Boolean = overwriteTyeFileOption.isSelected
 
     fun setOverwriteTyeFile(select: Boolean) {
-        overwriteTyeFile.isSelected = select
+        overwriteTyeFileOption.isSelected = select
     }
 
     private fun createUIComponents() {
@@ -55,8 +55,8 @@ class TyeSettingsComponent {
 
             add(TitledSeparator("Commands"))
 
-            overwriteTyeFile = JCheckBox("Overwrite existing tye.yaml during scaffolding")
-            add(overwriteTyeFile)
+            overwriteTyeFileOption = JCheckBox("Overwrite existing tye.yaml during scaffolding")
+            add(overwriteTyeFileOption)
         }
     }
 }

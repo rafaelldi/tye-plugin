@@ -13,8 +13,15 @@ import com.intellij.openapi.vfs.VirtualFile
 
 class TyeRunConfiguration(project: Project, factory: TyeConfigurationFactory, name: String) :
     RunConfigurationBase<TyeCommandLineState>(project, factory, name) {
+    companion object {
+        const val DEFAULT_PORT_ARGUMENT: Int = 8000
+    }
 
     var pathArgument: VirtualFile? = project.basePath?.let { LocalFileSystem.getInstance().findFileByPath(it) }
+    var noBuildArgument = false
+    var portArgument: Int = DEFAULT_PORT_ARGUMENT
+    var dockerArgument = false
+    var dashboardArgument = false
 
     override fun getConfigurationEditor(): SettingsEditor<out RunConfiguration> = TyeSettingsEditor()
 
