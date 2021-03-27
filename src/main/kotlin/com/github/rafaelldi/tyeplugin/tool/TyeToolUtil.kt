@@ -18,7 +18,8 @@ fun dotnetToolInstallTye(): Boolean {
 fun findTyeToolPath(): String? {
     val homeFolder = EnvironmentUtil.getValue("HOME")
     val tyePath =
-        if (SystemInfo.isWindows) "\${USERPROFILE}\\.dotnet\\tools\\tye.exe" else "$homeFolder/.dotnet/tools/tye"
+        if (SystemInfo.isWindows) "\${USERPROFILE}\\.dotnet\\tools\\tye.exe"
+        else "$homeFolder/.dotnet/tools/tye"
 
     if (!FileUtil.exists(tyePath)) return null
 

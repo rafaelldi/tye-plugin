@@ -14,11 +14,6 @@ import com.intellij.openapi.util.io.FileUtil
 import java.nio.file.Paths
 
 class ScaffoldTyeFileAction : AnAction() {
-    companion object {
-        const val START_FRACTION: Double = 0.1
-        const val FINISH_FRACTION: Double = 1.0
-    }
-
     override fun update(e: AnActionEvent) {
         e.presentation.isEnabledAndVisible = e.project != null
     }
@@ -37,8 +32,7 @@ class ScaffoldTyeFileAction : AnAction() {
             return
         }
 
-        indicator.isIndeterminate = false
-        indicator.fraction = START_FRACTION
+        indicator.isIndeterminate = true
         indicator.text = "Scaffolding tye.yaml file"
 
         val settings = TyeSettingsState.getInstance(project)
@@ -52,7 +46,9 @@ class ScaffoldTyeFileAction : AnAction() {
                 "Could not find tye tool",
                 "Please install tye global tool or specify the path to it.",
                 NotificationType.ERROR
-            ).notify(project)
+            )
+                .addAction(InstallTyeToolNotificationAction("Install tye tool"))
+                .notify(project)
         } else if (!settings.overwriteTyeFile && FileUtil.exists(pathToTyeFile.toString())) {
             indicator.cancel()
             Notification(
@@ -63,8 +59,6 @@ class ScaffoldTyeFileAction : AnAction() {
             ).notify(project)
         } else {
             tyeInit(tyeToolPath, project.basePath!!, settings.overwriteTyeFile)
-
-            indicator.fraction = FINISH_FRACTION
 
             Notification(
                 "tye.notifications.toolWindow",
