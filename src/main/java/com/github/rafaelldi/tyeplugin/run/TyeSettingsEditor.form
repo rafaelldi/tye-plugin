@@ -31,32 +31,32 @@
       </component>
       <component id="e1ca2" class="com.intellij.ui.components.JBCheckBox" binding="noBuildCheckBox">
         <constraints>
-          <grid row="3" column="1" row-span="1" col-span="3" vsize-policy="3" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false">
+          <grid row="3" column="0" row-span="1" col-span="4" vsize-policy="3" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false">
             <preferred-size width="398" height="21"/>
           </grid>
         </constraints>
         <properties>
-          <text value="--no-build, does not build projects before running"/>
+          <text value="Does not build projects before running"/>
         </properties>
       </component>
       <component id="bc01" class="com.intellij.ui.components.JBCheckBox" binding="dockerCheckBox">
         <constraints>
-          <grid row="4" column="1" row-span="1" col-span="3" vsize-policy="3" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false">
+          <grid row="4" column="0" row-span="1" col-span="4" vsize-policy="3" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false">
             <preferred-size width="398" height="21"/>
           </grid>
         </constraints>
         <properties>
-          <text value="--docker, run projects as docker containers"/>
+          <text value="Run projects as docker containers"/>
         </properties>
       </component>
       <component id="3460a" class="com.intellij.ui.components.JBCheckBox" binding="dashboardCheckBox">
         <constraints>
-          <grid row="5" column="1" row-span="1" col-span="3" vsize-policy="3" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false">
+          <grid row="5" column="0" row-span="1" col-span="4" vsize-policy="3" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false">
             <preferred-size width="398" height="21"/>
           </grid>
         </constraints>
         <properties>
-          <text value="--dashboard, launch dashboard on run"/>
+          <text value="Launch dashboard on run"/>
         </properties>
       </component>
       <component id="d52da" class="javax.swing.JLabel">
