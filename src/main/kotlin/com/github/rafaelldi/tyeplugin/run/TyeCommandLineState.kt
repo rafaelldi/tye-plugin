@@ -1,5 +1,7 @@
 package com.github.rafaelldi.tyeplugin.run
 
+import com.github.rafaelldi.tyeplugin.run.OptionsConstants.DEFAULT_PORT
+import com.github.rafaelldi.tyeplugin.run.OptionsConstants.INFO_VERBOSITY
 import com.github.rafaelldi.tyeplugin.settings.TyeSettingsState
 import com.intellij.execution.ExecutionException
 import com.intellij.execution.configurations.CommandLineState
@@ -26,8 +28,10 @@ open class TyeCommandLineState(
         val arguments = mutableListOf<String>()
         arguments.add("run")
 
-        arguments.add("--port")
-        arguments.add(runConfig.portArgument.toString())
+        if (runConfig.portArgument != DEFAULT_PORT) {
+            arguments.add("--port")
+            arguments.add(runConfig.portArgument.toString())
+        }
 
         if (runConfig.noBuildArgument) {
             arguments.add("--no-build")
@@ -39,6 +43,11 @@ open class TyeCommandLineState(
 
         if (runConfig.dashboardArgument) {
             arguments.add("--dashboard")
+        }
+
+        if (runConfig.verbosityArgument != INFO_VERBOSITY) {
+            arguments.add("--verbosity")
+            arguments.add(runConfig.verbosityArgument)
         }
 
         arguments.add(pathArgument)
