@@ -1,7 +1,7 @@
 <idea-plugin url="https://github.com/rafaelldi/tye-plugin">
     <id>com.github.rafaelldi.tyeplugin</id>
     <name>Tye</name>
-    <vendor>rafaelldi</vendor>
+    <vendor url="https://github.com/rafaelldi">Rival Abdrakhmanov</vendor>
 
     <!-- Product and plugin compatibility requirements -->
     <!-- https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
@@ -27,8 +27,8 @@
     <actions>
         <group id="com.github.rafaelldi.tyeplugin.actions.TyeGroupedActions" text="Tye" popup="true" icon="TyeIcons.TYE">
             <add-to-group group-id="ToolsMenu"/>
-            <action id="com.github.rafaelldi.tyeplugin.actions.InstallTyeToolAction"
-                    class="com.github.rafaelldi.tyeplugin.actions.InstallTyeToolAction" text="Install Tye Global Tool"
+            <action id="com.github.rafaelldi.tyeplugin.actions.InstallTyeGlobalToolAction"
+                    class="com.github.rafaelldi.tyeplugin.actions.InstallTyeGlobalToolAction" text="Install Tye Global Tool"
                     description="Install Microsoft.Tye tool as a global tool">
             </action>
             <action id="com.github.rafaelldi.tyeplugin.actions.ScaffoldTyeFileAction"

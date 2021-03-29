@@ -5,7 +5,12 @@
 [![Downloads](https://img.shields.io/jetbrains/plugin/d/PLUGIN_ID.svg)](https://plugins.jetbrains.com/plugin/PLUGIN_ID)
 
 <!-- Plugin description -->
-Adds support for [Project Tye](https://github.com/dotnet/tye) tool to develop distributed applications. Unofficial plugin.
+Adds support for [Project Tye](https://github.com/dotnet/tye) tool to develop distributed applications. An unofficial plugin.
+
+Features:
+* Installs a `microsoft.tye` global tool.
+* Scaffolds a `tye.yaml` file into the solution folder.
+* Supports `tye run` command.
 <!-- Plugin description end -->
 
 ## Tye Installation

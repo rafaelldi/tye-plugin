@@ -47,7 +47,7 @@ class ScaffoldTyeFileAction : AnAction() {
                 "Please install tye global tool or specify the path to it.",
                 NotificationType.ERROR
             )
-                .addAction(InstallTyeToolNotificationAction("Install tye tool"))
+                .addAction(InstallTyeGlobalToolNotificationAction("Install tye tool"))
                 .notify(project)
         } else if (!settings.overwriteTyeFile && FileUtil.exists(pathToTyeFile.toString())) {
             indicator.cancel()

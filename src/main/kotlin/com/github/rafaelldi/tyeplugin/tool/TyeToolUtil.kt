@@ -15,10 +15,26 @@ fun dotnetToolInstallTye(): Boolean {
     return output.exitCode == 0
 }
 
+fun isTyeInstalled(): Boolean {
+    val commandLine = GeneralCommandLine()
+        .withParentEnvironmentType(GeneralCommandLine.ParentEnvironmentType.CONSOLE)
+        .withExePath("dotnet")
+        .withParameters("tool", "list", "--global")
+    val output = ExecUtil.execAndGetOutput(commandLine)
+
+    if (output.exitCode != 0) return false
+
+    val regex = Regex("^microsoft\\.tye", RegexOption.MULTILINE)
+    return regex.containsMatchIn(output.stdout)
+}
+
 fun findTyeToolPath(): String? {
-    val homeFolder = EnvironmentUtil.getValue("HOME")
+    val homeFolder =
+        if (SystemInfo.isWindows) EnvironmentUtil.getValue("HOME")
+        else EnvironmentUtil.getValue("USERPROFILE")
+
     val tyePath =
-        if (SystemInfo.isWindows) "\${USERPROFILE}\\.dotnet\\tools\\tye.exe"
+        if (SystemInfo.isWindows) "$homeFolder\\.dotnet\\tools\\tye.exe"
         else "$homeFolder/.dotnet/tools/tye"
 
     if (!FileUtil.exists(tyePath)) return null
