@@ -1,8 +1,8 @@
 # tye-plugin
 
 ![Build](https://github.com/rafaelldi/tye-plugin/workflows/Build/badge.svg)
-[![Version](https://img.shields.io/jetbrains/plugin/v/PLUGIN_ID.svg)](https://plugins.jetbrains.com/plugin/PLUGIN_ID)
-[![Downloads](https://img.shields.io/jetbrains/plugin/d/PLUGIN_ID.svg)](https://plugins.jetbrains.com/plugin/PLUGIN_ID)
+[![Version](https://img.shields.io/jetbrains/plugin/v/16426-tye.svg)](https://plugins.jetbrains.com/plugin/16426-tye)
+[![Downloads](https://img.shields.io/jetbrains/plugin/d/16426-tye.svg)](https://plugins.jetbrains.com/plugin/16426-tye)
 
 <!-- Plugin description -->
 Adds support for [Project Tye](https://github.com/dotnet/tye) tool to develop distributed applications. An unofficial plugin.
