@@ -30,8 +30,8 @@ fun isTyeInstalled(): Boolean {
 
 fun findTyeToolPath(): String? {
     val homeFolder =
-        if (SystemInfo.isWindows) EnvironmentUtil.getValue("HOME")
-        else EnvironmentUtil.getValue("USERPROFILE")
+        if (SystemInfo.isWindows) EnvironmentUtil.getValue("USERPROFILE")
+        else EnvironmentUtil.getValue("HOME")
 
     val tyePath =
         if (SystemInfo.isWindows) "$homeFolder\\.dotnet\\tools\\tye.exe"
