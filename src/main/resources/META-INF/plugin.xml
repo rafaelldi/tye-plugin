@@ -10,12 +10,12 @@
     <idea-version since-build="203"/>
 
     <extensions defaultExtensionNs="com.intellij">
+        <!-- Files -->
+        <fileType implementationClass="com.github.rafaelldi.tyeplugin.lang.TyeFileType" name="Tye file" language="Tye" extensions="yaml" />
+
         <!-- Application settings -->
         <projectService serviceImplementation="com.github.rafaelldi.tyeplugin.settings.TyeSettingsState"/>
-        <projectConfigurable parentId="tools"
-                                 instance="com.github.rafaelldi.tyeplugin.settings.TyeSettingsConfigurable"
-                                 id="com.github.rafaelldi.tyeplugin.settings.TyeSettingsConfigurable"
-                                 displayName="Tye" nonDefaultProject="false"/>
+        <projectConfigurable parentId="tools" instance="com.github.rafaelldi.tyeplugin.settings.TyeSettingsConfigurable" id="com.github.rafaelldi.tyeplugin.settings.TyeSettingsConfigurable" displayName="Tye" nonDefaultProject="false"/>
 
         <!-- Run configurations -->
         <configurationType implementation="com.github.rafaelldi.tyeplugin.run.TyeConfigurationType"/>
