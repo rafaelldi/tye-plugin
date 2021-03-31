@@ -11,7 +11,7 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <!-- Files -->
-        <fileType implementationClass="com.github.rafaelldi.tyeplugin.lang.TyeFileType" name="Tye file" language="Tye" extensions="yaml" />
+        <fileType implementationClass="com.github.rafaelldi.tyeplugin.lang.TyeFileType" name="Tye" language="Tye" fileNames="tye.yaml" />
 
         <!-- Application settings -->
         <projectService serviceImplementation="com.github.rafaelldi.tyeplugin.settings.TyeSettingsState"/>
