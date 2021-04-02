@@ -20,6 +20,7 @@
 
         <!-- Run configurations -->
         <configurationType implementation="com.github.rafaelldi.tyeplugin.run.TyeConfigurationType"/>
+        <runLineMarkerContributor language="yaml" implementationClass="com.github.rafaelldi.tyeplugin.run.TyeRunLineMarkerContributor"/>
 
         <notificationGroup id="tye.notifications.balloon" displayType="BALLOON" />
         <notificationGroup id="tye.notifications.toolWindow" displayType="TOOL_WINDOW" />
