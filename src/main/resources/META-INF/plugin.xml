@@ -7,11 +7,12 @@
     <!-- https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
     <depends>com.intellij.modules.platform</depends>
     <depends>com.intellij.modules.rider</depends>
+    <depends>org.jetbrains.plugins.yaml</depends>
     <idea-version since-build="203"/>
 
     <extensions defaultExtensionNs="com.intellij">
         <!-- Files -->
-        <fileType implementationClass="com.github.rafaelldi.tyeplugin.lang.TyeFileType" name="Tye" language="Tye" fileNames="tye.yaml" />
+        <fileType implementationClass="com.github.rafaelldi.tyeplugin.lang.TyeFileType" name="Tye" language="yaml" fileNames="tye.yaml" />
 
         <!-- Application settings -->
         <projectService serviceImplementation="com.github.rafaelldi.tyeplugin.settings.TyeSettingsState"/>
@@ -22,6 +23,10 @@
 
         <notificationGroup id="tye.notifications.balloon" displayType="BALLOON" />
         <notificationGroup id="tye.notifications.toolWindow" displayType="TOOL_WINDOW" />
+    </extensions>
+
+    <extensions defaultExtensionNs="JavaScript.JsonSchema">
+        <ProviderFactory implementation="com.github.rafaelldi.tyeplugin.lang.TyeJsonSchemaProviderFactory"/>
     </extensions>
 
     <actions>
