@@ -7,21 +7,28 @@
     <!-- https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
     <depends>com.intellij.modules.platform</depends>
     <depends>com.intellij.modules.rider</depends>
+    <depends>org.jetbrains.plugins.yaml</depends>
     <idea-version since-build="203"/>
 
     <extensions defaultExtensionNs="com.intellij">
+        <!-- Files -->
+        <fileType implementationClass="com.github.rafaelldi.tyeplugin.file.TyeFileType" name="Tye" language="yaml" fileNames="tye.yaml" />
+
         <!-- Application settings -->
         <projectService serviceImplementation="com.github.rafaelldi.tyeplugin.settings.TyeSettingsState"/>
-        <projectConfigurable parentId="tools"
-                                 instance="com.github.rafaelldi.tyeplugin.settings.TyeSettingsConfigurable"
-                                 id="com.github.rafaelldi.tyeplugin.settings.TyeSettingsConfigurable"
-                                 displayName="Tye" nonDefaultProject="false"/>
+        <projectConfigurable parentId="tools" instance="com.github.rafaelldi.tyeplugin.settings.TyeSettingsConfigurable" id="com.github.rafaelldi.tyeplugin.settings.TyeSettingsConfigurable" displayName="Tye" nonDefaultProject="false"/>
 
         <!-- Run configurations -->
         <configurationType implementation="com.github.rafaelldi.tyeplugin.run.TyeConfigurationType"/>
+        <runConfigurationProducer implementation="com.github.rafaelldi.tyeplugin.run.TyeRunConfigurationProducer"/>
+        <runLineMarkerContributor language="yaml" implementationClass="com.github.rafaelldi.tyeplugin.run.TyeRunLineMarkerContributor"/>
 
         <notificationGroup id="tye.notifications.balloon" displayType="BALLOON" />
         <notificationGroup id="tye.notifications.toolWindow" displayType="TOOL_WINDOW" />
+    </extensions>
+
+    <extensions defaultExtensionNs="JavaScript.JsonSchema">
+        <ProviderFactory implementation="com.github.rafaelldi.tyeplugin.file.TyeJsonSchemaProviderFactory"/>
     </extensions>
 
     <actions>

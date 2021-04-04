@@ -1,4 +1,4 @@
-package com.github.rafaelldi.tyeplugin.tool
+package com.github.rafaelldi.tyeplugin.utils
 
 import com.intellij.execution.configurations.GeneralCommandLine
 import com.intellij.execution.util.ExecUtil
