@@ -3,6 +3,10 @@
 # tye-plugin Changelog
 
 ## [Unreleased]
+### Added
+- Tye file association
+- Tye schema
+- Run `tye run` command from the `tye.yaml` file
 
 ## [0.0.1]
 ### Added
