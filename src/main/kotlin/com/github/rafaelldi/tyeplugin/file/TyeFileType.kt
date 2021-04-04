@@ -1,4 +1,4 @@
-package com.github.rafaelldi.tyeplugin.lang
+package com.github.rafaelldi.tyeplugin.file
 
 import com.intellij.openapi.fileTypes.LanguageFileType
 import icons.TyeIcons

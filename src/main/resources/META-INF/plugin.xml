@@ -12,7 +12,7 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <!-- Files -->
-        <fileType implementationClass="com.github.rafaelldi.tyeplugin.lang.TyeFileType" name="Tye" language="yaml" fileNames="tye.yaml" />
+        <fileType implementationClass="com.github.rafaelldi.tyeplugin.file.TyeFileType" name="Tye" language="yaml" fileNames="tye.yaml" />
 
         <!-- Application settings -->
         <projectService serviceImplementation="com.github.rafaelldi.tyeplugin.settings.TyeSettingsState"/>
@@ -20,6 +20,7 @@
 
         <!-- Run configurations -->
         <configurationType implementation="com.github.rafaelldi.tyeplugin.run.TyeConfigurationType"/>
+        <runConfigurationProducer implementation="com.github.rafaelldi.tyeplugin.run.TyeRunConfigurationProducer"/>
         <runLineMarkerContributor language="yaml" implementationClass="com.github.rafaelldi.tyeplugin.run.TyeRunLineMarkerContributor"/>
 
         <notificationGroup id="tye.notifications.balloon" displayType="BALLOON" />
@@ -27,7 +28,7 @@
     </extensions>
 
     <extensions defaultExtensionNs="JavaScript.JsonSchema">
-        <ProviderFactory implementation="com.github.rafaelldi.tyeplugin.lang.TyeJsonSchemaProviderFactory"/>
+        <ProviderFactory implementation="com.github.rafaelldi.tyeplugin.file.TyeJsonSchemaProviderFactory"/>
     </extensions>
 
     <actions>
