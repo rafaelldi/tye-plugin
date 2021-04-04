@@ -1,6 +1,6 @@
 package com.github.rafaelldi.tyeplugin.run
 
-import com.github.rafaelldi.tyeplugin.utils.TyeConstants.TYE_FILE_NAME
+import com.github.rafaelldi.tyeplugin.TyeConstants.TYE_FILE_NAME
 import com.intellij.execution.actions.ConfigurationContext
 import com.intellij.execution.actions.LazyRunConfigurationProducer
 import com.intellij.execution.configurations.ConfigurationFactory
@@ -26,13 +26,14 @@ class TyeRunConfigurationProducer : LazyRunConfigurationProducer<TyeRunConfigura
         context: ConfigurationContext,
         sourceElement: Ref<PsiElement>
     ): Boolean {
-        val file = context.psiLocation?.containingFile
-        if (file != null && file.name == TYE_FILE_NAME) {
-            configuration.pathArgument = file.virtualFile
-            configuration.name = configuration.suggestedName()
-            return true
+        val file = context.psiLocation?.containingFile ?: return false
+
+        if (file.name != TYE_FILE_NAME) {
+            return false
         }
 
-        return false
+        configuration.pathArgument = file.virtualFile
+        configuration.name = configuration.suggestedName()
+        return true
     }
 }

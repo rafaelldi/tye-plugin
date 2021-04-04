@@ -1,6 +1,6 @@
 package com.github.rafaelldi.tyeplugin.file
 
-import com.github.rafaelldi.tyeplugin.utils.TyeConstants.TYE_FILE_NAME
+import com.github.rafaelldi.tyeplugin.TyeConstants.TYE_FILE_NAME
 import com.intellij.openapi.vfs.VirtualFile
 import com.jetbrains.jsonSchema.extension.JsonSchemaFileProvider
 import com.jetbrains.jsonSchema.extension.SchemaType

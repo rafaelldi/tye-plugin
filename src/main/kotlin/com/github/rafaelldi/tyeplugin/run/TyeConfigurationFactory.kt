@@ -9,9 +9,8 @@ class TyeConfigurationFactory(type: TyeConfigurationType) : ConfigurationFactory
         private const val FACTORY_NAME = "Tye configuration factory"
     }
 
-    override fun createTemplateConfiguration(project: Project): RunConfiguration {
-        return TyeRunConfiguration(project, this, "Tye")
-    }
+    override fun createTemplateConfiguration(project: Project): RunConfiguration =
+        TyeRunConfiguration(project, this, "Tye")
 
     override fun getName() = FACTORY_NAME
 

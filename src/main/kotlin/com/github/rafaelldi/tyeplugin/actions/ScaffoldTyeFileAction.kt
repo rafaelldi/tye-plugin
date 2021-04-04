@@ -1,7 +1,7 @@
 package com.github.rafaelldi.tyeplugin.actions
 
 import com.github.rafaelldi.tyeplugin.settings.TyeSettingsState
-import com.github.rafaelldi.tyeplugin.utils.TyeConstants.TYE_FILE_NAME
+import com.github.rafaelldi.tyeplugin.TyeConstants.TYE_FILE_NAME
 import com.github.rafaelldi.tyeplugin.utils.tyeInit
 import com.intellij.notification.Notification
 import com.intellij.notification.NotificationType

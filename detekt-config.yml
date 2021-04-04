@@ -4,3 +4,7 @@
 formatting:
   Indentation:
     continuationIndentSize: 8
+
+style:
+  ReturnCount:
+    active: false

@@ -3,6 +3,7 @@ package com.github.rafaelldi.tyeplugin.actions
 import com.github.rafaelldi.tyeplugin.settings.TyeSettingsState
 import com.github.rafaelldi.tyeplugin.utils.dotnetToolInstallTye
 import com.github.rafaelldi.tyeplugin.utils.findTyeToolPath
+import com.github.rafaelldi.tyeplugin.utils.isDotnetInstalled
 import com.github.rafaelldi.tyeplugin.utils.isTyeInstalled
 import com.intellij.notification.Notification
 import com.intellij.notification.NotificationType
@@ -35,6 +36,16 @@ class InstallTyeGlobalToolAction : AnAction() {
         indicator.isIndeterminate = true
         indicator.text = "Installing tye global tool"
 
+        if (!isDotnetInstalled()) {
+            Notification(
+                "tye.notifications.balloon",
+                ".NET Core 3.1 is not installed",
+                "",
+                NotificationType.ERROR
+            ).notify(project)
+            return
+        }
+
         if (isTyeInstalled()) {
             Notification(
                 "tye.notifications.balloon",
@@ -45,9 +56,7 @@ class InstallTyeGlobalToolAction : AnAction() {
             return
         }
 
-        val success = dotnetToolInstallTye()
-
-        if (success) {
+        if (dotnetToolInstallTye()) {
             TyeSettingsState.getInstance(project).tyeToolPath = findTyeToolPath()
             Notification(
                 "tye.notifications.balloon",

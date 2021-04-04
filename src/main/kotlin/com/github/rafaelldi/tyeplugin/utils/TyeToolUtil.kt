@@ -6,6 +6,19 @@ import com.intellij.openapi.util.SystemInfo
 import com.intellij.openapi.util.io.FileUtil
 import com.intellij.util.EnvironmentUtil
 
+fun isDotnetInstalled(): Boolean {
+    val commandLine = GeneralCommandLine()
+        .withParentEnvironmentType(GeneralCommandLine.ParentEnvironmentType.CONSOLE)
+        .withExePath("dotnet")
+        .withParameters("--list-runtimes")
+    val output = ExecUtil.execAndGetOutput(commandLine)
+
+    if (output.exitCode != 0) return false
+
+    val regex = Regex("^Microsoft\\.NETCore\\.App 3\\.1", RegexOption.MULTILINE)
+    return regex.containsMatchIn(output.stdout)
+}
+
 fun dotnetToolInstallTye(): Boolean {
     val commandLine = GeneralCommandLine()
         .withParentEnvironmentType(GeneralCommandLine.ParentEnvironmentType.CONSOLE)
