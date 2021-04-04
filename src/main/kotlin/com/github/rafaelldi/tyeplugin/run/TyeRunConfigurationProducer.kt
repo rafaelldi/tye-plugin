@@ -1,5 +1,6 @@
 package com.github.rafaelldi.tyeplugin.run
 
+import com.github.rafaelldi.tyeplugin.utils.TyeConstants.TYE_FILE_NAME
 import com.intellij.execution.actions.ConfigurationContext
 import com.intellij.execution.actions.LazyRunConfigurationProducer
 import com.intellij.execution.configurations.ConfigurationFactory
@@ -8,10 +9,6 @@ import com.intellij.openapi.util.Ref
 import com.intellij.psi.PsiElement
 
 class TyeRunConfigurationProducer : LazyRunConfigurationProducer<TyeRunConfiguration>() {
-    private companion object {
-        const val TYE_FILE_NAME = "tye.yaml"
-    }
-
     override fun getConfigurationFactory(): ConfigurationFactory =
         TyeConfigurationFactory(ConfigurationTypeUtil.findConfigurationType(TyeConfigurationType::class.java))
 

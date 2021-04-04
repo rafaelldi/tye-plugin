@@ -1,6 +1,7 @@
 package com.github.rafaelldi.tyeplugin.actions
 
 import com.github.rafaelldi.tyeplugin.settings.TyeSettingsState
+import com.github.rafaelldi.tyeplugin.utils.TyeConstants.TYE_FILE_NAME
 import com.github.rafaelldi.tyeplugin.utils.tyeInit
 import com.intellij.notification.Notification
 import com.intellij.notification.NotificationType
@@ -37,7 +38,7 @@ class ScaffoldTyeFileAction : AnAction() {
 
         val settings = TyeSettingsState.getInstance(project)
         val tyeToolPath = settings.tyeToolPath
-        val pathToTyeFile = Paths.get(project.basePath!!, "tye.yaml")
+        val pathToTyeFile = Paths.get(project.basePath!!, TYE_FILE_NAME)
 
         if (tyeToolPath == null) {
             indicator.cancel()

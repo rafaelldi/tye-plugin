@@ -1,5 +1,6 @@
 package com.github.rafaelldi.tyeplugin.file
 
+import com.github.rafaelldi.tyeplugin.utils.TyeConstants.TYE_FILE_NAME
 import com.intellij.openapi.vfs.VirtualFile
 import com.jetbrains.jsonSchema.extension.JsonSchemaFileProvider
 import com.jetbrains.jsonSchema.extension.SchemaType
@@ -7,7 +8,6 @@ import com.jetbrains.jsonSchema.remote.JsonFileResolver
 
 class TyeJsonSchemaProvider : JsonSchemaFileProvider {
     private companion object {
-        const val TYE_FILE_NAME = "tye.yaml"
         const val SCHEMA_URL = "https://raw.githubusercontent.com/dotnet/tye/main/src/schema/tye-schema.json"
     }
 

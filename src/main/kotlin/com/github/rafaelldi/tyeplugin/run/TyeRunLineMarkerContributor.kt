@@ -1,5 +1,6 @@
 package com.github.rafaelldi.tyeplugin.run
 
+import com.github.rafaelldi.tyeplugin.utils.TyeConstants.TYE_FILE_NAME
 import com.intellij.execution.lineMarker.ExecutorAction
 import com.intellij.execution.lineMarker.RunLineMarkerContributor
 import com.intellij.icons.AllIcons
@@ -8,10 +9,6 @@ import com.intellij.psi.util.elementType
 import org.jetbrains.yaml.YAMLTokenTypes.SCALAR_KEY
 
 class TyeRunLineMarkerContributor : RunLineMarkerContributor() {
-    private companion object {
-        const val TYE_FILE_NAME = "tye.yaml"
-    }
-
     override fun getInfo(element: PsiElement): Info? {
         if (element.containingFile.name == TYE_FILE_NAME) {
             if (element.elementType == SCALAR_KEY && element.text == "services") {
