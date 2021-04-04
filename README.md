@@ -11,6 +11,7 @@ Features:
 * Installs a `microsoft.tye` global tool.
 * Scaffolds a `tye.yaml` file into the solution folder.
 * Supports `tye run` command.
+* Configures `tye` JSON Schema for the `tye.yaml` file.
 <!-- Plugin description end -->
 
 ## Tye Installation
