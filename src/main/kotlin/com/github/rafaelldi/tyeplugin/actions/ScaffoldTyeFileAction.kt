@@ -62,7 +62,7 @@ class ScaffoldTyeFileAction : AnAction() {
             tyeInit(tyeToolPath, project.basePath!!, settings.overwriteTyeFile)
 
             Notification(
-                "tye.notifications.toolWindow",
+                "tye.notifications.balloon",
                 "File tye.yaml is scaffolded",
                 "",
                 NotificationType.INFORMATION

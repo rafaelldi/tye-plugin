@@ -34,7 +34,7 @@ class InstallTyeGlobalToolNotificationAction(text: String?) : NotificationAction
         if (success) {
             TyeSettingsState.getInstance(project).tyeToolPath = findTyeToolPath()
             Notification(
-                "tye.notifications.toolWindow",
+                "tye.notifications.balloon",
                 "Tye is successfully installed",
                 "",
                 NotificationType.INFORMATION
