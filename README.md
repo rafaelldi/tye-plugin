@@ -7,11 +7,13 @@
 <!-- Plugin description -->
 Adds support for [Project Tye](https://github.com/dotnet/tye) tool to develop distributed applications. An unofficial plugin.
 
-Features:
-* Installs a `microsoft.tye` global tool.
-* Scaffolds a `tye.yaml` file into the solution folder.
-* Supports `tye run` command.
-* Configures `tye` JSON Schema for the `tye.yaml` file.
+Tye simplifies microservices development with local orchestrating of multiple .NET projects and docker containers. 
+
+**Features:**
+* Installation a `microsoft.tye` global tool - Install the tool quickly from the menu.
+* Scaffolding a tye configuration file - Quick start with the default configuration file for a solution.
+* Executing `tye run` command - Run all your services from the solution.
+* Tye configuration file schema support.
 <!-- Plugin description end -->
 
 ## Tye Installation
