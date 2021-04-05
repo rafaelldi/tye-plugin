@@ -3,6 +3,8 @@
 # tye-plugin Changelog
 
 ## [Unreleased]
+
+## [0.0.2]
 ### Added
 - Tye file association
 - Tye schema
