@@ -50,6 +50,31 @@ open class TyeCommandLineState(
             arguments.add(runConfig.verbosityArgument)
         }
 
+        if (!runConfig.tagsArgument.isNullOrBlank()) {
+            arguments.add("--tags")
+            arguments.add(runConfig.tagsArgument!!)
+        }
+
+        if (runConfig.logsProvider != LogsProvider.NONE) {
+            arguments.add("--logs")
+
+            var logsProviderArg = runConfig.logsProvider.argumentName
+            if (runConfig.logsProvider.isProviderUrlEnabled() && !runConfig.logsProviderUrl.isNullOrBlank())
+                logsProviderArg += "=${runConfig.logsProviderUrl}"
+
+            arguments.add(logsProviderArg)
+        }
+
+        if (runConfig.tracesProvider != TracesProvider.NONE) {
+            arguments.add("--dtrace")
+
+            var tracesProviderArg = runConfig.tracesProvider.argumentName
+            if (runConfig.tracesProvider.isProviderUrlEnabled() && !runConfig.tracesProviderUrl.isNullOrBlank())
+                tracesProviderArg += "=${runConfig.tracesProviderUrl}"
+
+            arguments.add(tracesProviderArg)
+        }
+
         arguments.add(pathArgument)
 
         val commandLine = GeneralCommandLine()

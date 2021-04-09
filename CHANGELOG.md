@@ -3,6 +3,7 @@
 # tye-plugin Changelog
 
 ## [Unreleased]
+### Added
 
 ## [0.0.2]
 ### Added
