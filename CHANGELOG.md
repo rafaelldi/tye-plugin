@@ -4,6 +4,7 @@
 
 ## [Unreleased]
 ### Added
+- New options in the run configuration to send logs, traces or specify tags.
 
 ## [0.0.2]
 ### Added
