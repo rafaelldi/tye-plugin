@@ -22,6 +22,11 @@ class TyeRunConfiguration(project: Project, factory: TyeConfigurationFactory, na
     var dockerArgument = false
     var dashboardArgument = false
     var verbosityArgument = INFO_VERBOSITY
+    var tagsArgument: String? = null
+    var logsProvider: LogsProvider = LogsProvider.NONE
+    var logsProviderUrl: String? = null
+    var tracesProvider: TracesProvider = TracesProvider.NONE
+    var tracesProviderUrl: String? = null
 
     override fun getConfigurationEditor(): SettingsEditor<out RunConfiguration> = TyeSettingsEditor()
 
