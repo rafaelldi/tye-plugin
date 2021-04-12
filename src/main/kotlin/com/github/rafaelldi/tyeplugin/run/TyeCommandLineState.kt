@@ -1,5 +1,6 @@
 package com.github.rafaelldi.tyeplugin.run
 
+import com.github.rafaelldi.tyeplugin.cli.TyeRunCliBuilder
 import com.github.rafaelldi.tyeplugin.run.OptionsConstants.DEFAULT_PORT
 import com.github.rafaelldi.tyeplugin.run.OptionsConstants.INFO_VERBOSITY
 import com.github.rafaelldi.tyeplugin.settings.TyeSettingsState
@@ -33,7 +34,7 @@ open class TyeCommandLineState(
     private fun createHandler(
         workingDirectory: String?,
         tyeToolPath: String,
-        arguments: MutableList<String>
+        arguments: List<String>
     ): OSProcessHandler {
         val commandLine = GeneralCommandLine()
             .withParentEnvironmentType(GeneralCommandLine.ParentEnvironmentType.CONSOLE)
@@ -47,61 +48,44 @@ open class TyeCommandLineState(
         return handler
     }
 
-    private fun buildArguments(pathArgument: String): MutableList<String> {
-        val arguments = mutableListOf<String>()
-        arguments.add("run")
+    private fun buildArguments(pathArgument: String): List<String> {
+        val cliBuilder = TyeRunCliBuilder(pathArgument)
 
         if (runConfig.portArgument != DEFAULT_PORT) {
-            arguments.add("--port")
-            arguments.add(runConfig.portArgument.toString())
+            cliBuilder.setPort(runConfig.portArgument)
         }
 
         if (runConfig.noBuildArgument) {
-            arguments.add("--no-build")
+            cliBuilder.setNoBuild()
         }
 
         if (runConfig.dockerArgument) {
-            arguments.add("--docker")
+            cliBuilder.setDocker()
         }
 
         if (runConfig.dashboardArgument) {
-            arguments.add("--dashboard")
+            cliBuilder.setDashboard()
         }
 
         if (runConfig.verbosityArgument != INFO_VERBOSITY) {
-            arguments.add("--verbosity")
-            arguments.add(runConfig.verbosityArgument)
+            cliBuilder.setVerbosity(runConfig.verbosityArgument)
         }
 
         if (!runConfig.tagsArgument.isNullOrBlank()) {
-            arguments.add("--tags")
-            arguments.add(runConfig.tagsArgument!!)
+            cliBuilder.setTags(runConfig.tagsArgument!!)
         }
 
         if (runConfig.logsProvider != LogsProvider.NONE) {
-            arguments.add("--logs")
-
-            var logsProviderArg = runConfig.logsProvider.argumentName
-            if (runConfig.logsProvider.isProviderUrlEnabled() && !runConfig.logsProviderUrl.isNullOrBlank()) {
-                logsProviderArg += "=${runConfig.logsProviderUrl}"
-            }
-
-            arguments.add(logsProviderArg)
+            val logsProviderUrl = if (runConfig.logsProvider.isProviderUrlEnabled()) runConfig.logsProviderUrl else null
+            cliBuilder.setLogs(runConfig.logsProvider.argumentName, logsProviderUrl)
         }
 
         if (runConfig.tracesProvider != TracesProvider.NONE) {
-            arguments.add("--dtrace")
-
-            var tracesProviderArg = runConfig.tracesProvider.argumentName
-            if (runConfig.tracesProvider.isProviderUrlEnabled() && !runConfig.tracesProviderUrl.isNullOrBlank()) {
-                tracesProviderArg += "=${runConfig.tracesProviderUrl}"
-            }
-
-            arguments.add(tracesProviderArg)
+            val tracesProviderUrl =
+                if (runConfig.tracesProvider.isProviderUrlEnabled()) runConfig.tracesProviderUrl else null
+            cliBuilder.setTraces(runConfig.tracesProvider.argumentName, tracesProviderUrl)
         }
 
-        arguments.add(pathArgument)
-
-        return arguments
+        return cliBuilder.build()
     }
 }
