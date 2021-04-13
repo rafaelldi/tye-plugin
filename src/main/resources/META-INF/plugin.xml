@@ -22,6 +22,7 @@
         <runConfigurationProducer implementation="com.github.rafaelldi.tyeplugin.run.TyeRunConfigurationProducer"/>
         <runLineMarkerContributor language="yaml" implementationClass="com.github.rafaelldi.tyeplugin.run.TyeRunLineMarkerContributor"/>
 
+        <!-- Notifications -->
         <notificationGroup id="tye.notifications.balloon" displayType="BALLOON" />
     </extensions>
 
