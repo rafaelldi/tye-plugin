@@ -37,14 +37,14 @@ class TyeRunCliBuilder(private val path: String) {
     fun setLogs(provider: String, url: String?) {
         arguments.add("--logs")
         var providerArg = provider
-        if (!url.isNullOrBlank()) providerArg += "=${url}"
+        if (!url.isNullOrBlank()) providerArg += "=$url"
         arguments.add(providerArg)
     }
 
     fun setTraces(provider: String, url: String?) {
         arguments.add("--dtrace")
         var providerArg = provider
-        if (!url.isNullOrBlank()) providerArg += "=${url}"
+        if (!url.isNullOrBlank()) providerArg += "=$url"
         arguments.add(providerArg)
     }
 

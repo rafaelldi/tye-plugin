@@ -1,8 +1,8 @@
 package com.github.rafaelldi.tyeplugin.actions
 
 import com.github.rafaelldi.tyeplugin.TyeConstants.TYE_FILE_NAME
-import com.github.rafaelldi.tyeplugin.settings.TyeSettingsState
 import com.github.rafaelldi.tyeplugin.cli.tyeInit
+import com.github.rafaelldi.tyeplugin.settings.TyeSettingsState
 import com.intellij.notification.Notification
 import com.intellij.notification.NotificationType
 import com.intellij.openapi.actionSystem.AnAction

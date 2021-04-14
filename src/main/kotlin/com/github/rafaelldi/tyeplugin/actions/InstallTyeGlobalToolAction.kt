@@ -1,10 +1,10 @@
 package com.github.rafaelldi.tyeplugin.actions
 
-import com.github.rafaelldi.tyeplugin.settings.TyeSettingsState
 import com.github.rafaelldi.tyeplugin.cli.dotnetToolInstallTye
 import com.github.rafaelldi.tyeplugin.cli.findTyeToolPath
 import com.github.rafaelldi.tyeplugin.cli.isDotnetInstalled
 import com.github.rafaelldi.tyeplugin.cli.isTyeInstalled
+import com.github.rafaelldi.tyeplugin.settings.TyeSettingsState
 import com.intellij.notification.Notification
 import com.intellij.notification.NotificationType
 import com.intellij.openapi.actionSystem.AnAction
