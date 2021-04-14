@@ -18,9 +18,9 @@
         <projectConfigurable parentId="tools" instance="com.github.rafaelldi.tyeplugin.settings.TyeSettingsConfigurable" id="com.github.rafaelldi.tyeplugin.settings.TyeSettingsConfigurable" displayName="Tye" nonDefaultProject="false"/>
 
         <!-- Run configurations -->
-        <configurationType implementation="com.github.rafaelldi.tyeplugin.run.TyeConfigurationType"/>
-        <runConfigurationProducer implementation="com.github.rafaelldi.tyeplugin.run.TyeRunConfigurationProducer"/>
-        <runLineMarkerContributor language="yaml" implementationClass="com.github.rafaelldi.tyeplugin.run.TyeRunLineMarkerContributor"/>
+        <configurationType implementation="com.github.rafaelldi.tyeplugin.runConfig.tyeRun.TyeConfigurationType"/>
+        <runConfigurationProducer implementation="com.github.rafaelldi.tyeplugin.runConfig.tyeRun.TyeRunConfigurationProducer"/>
+        <runLineMarkerContributor language="yaml" implementationClass="com.github.rafaelldi.tyeplugin.runConfig.tyeRun.TyeRunLineMarkerContributor"/>
 
         <!-- Notifications -->
         <notificationGroup id="tye.notifications.balloon" displayType="BALLOON" />

@@ -1,4 +1,4 @@
-package com.github.rafaelldi.tyeplugin.run;
+package com.github.rafaelldi.tyeplugin.runConfig.tyeRun;
 
 import com.intellij.openapi.fileChooser.FileChooserDescriptor;
 import com.intellij.openapi.options.SettingsEditor;
@@ -16,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 
-import static com.github.rafaelldi.tyeplugin.run.OptionsConstants.*;
+import static com.github.rafaelldi.tyeplugin.runConfig.tyeRun.OptionsConstants.*;
 
 public class TyeSettingsEditor extends SettingsEditor<TyeRunConfiguration> {
     private JPanel panel;

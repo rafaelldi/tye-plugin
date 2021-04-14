@@ -1,4 +1,4 @@
-package com.github.rafaelldi.tyeplugin.run
+package com.github.rafaelldi.tyeplugin.runConfig.tyeRun
 
 object OptionsConstants {
     const val DEFAULT_PORT = 8000

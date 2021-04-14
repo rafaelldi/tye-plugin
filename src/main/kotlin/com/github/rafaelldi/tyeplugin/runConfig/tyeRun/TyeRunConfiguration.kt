@@ -1,7 +1,8 @@
-package com.github.rafaelldi.tyeplugin.run
+package com.github.rafaelldi.tyeplugin.runConfig.tyeRun
 
-import com.github.rafaelldi.tyeplugin.run.OptionsConstants.DEFAULT_PORT
-import com.github.rafaelldi.tyeplugin.run.OptionsConstants.INFO_VERBOSITY
+import com.github.rafaelldi.tyeplugin.runConfig.TyeConfigurationFactory
+import com.github.rafaelldi.tyeplugin.runConfig.tyeRun.OptionsConstants.DEFAULT_PORT
+import com.github.rafaelldi.tyeplugin.runConfig.tyeRun.OptionsConstants.INFO_VERBOSITY
 import com.intellij.execution.Executor
 import com.intellij.execution.configurations.LocatableConfigurationBase
 import com.intellij.execution.configurations.RunConfiguration

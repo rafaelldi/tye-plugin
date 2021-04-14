@@ -1,6 +1,7 @@
-package com.github.rafaelldi.tyeplugin.run
+package com.github.rafaelldi.tyeplugin.runConfig.tyeRun
 
 import com.github.rafaelldi.tyeplugin.TyeConstants.TYE_FILE_NAME
+import com.github.rafaelldi.tyeplugin.runConfig.TyeConfigurationFactory
 import com.intellij.execution.actions.ConfigurationContext
 import com.intellij.execution.actions.LazyRunConfigurationProducer
 import com.intellij.execution.configurations.ConfigurationFactory

@@ -1,5 +1,6 @@
-package com.github.rafaelldi.tyeplugin.run
+package com.github.rafaelldi.tyeplugin.runConfig.tyeRun
 
+import com.github.rafaelldi.tyeplugin.runConfig.TyeConfigurationFactory
 import com.intellij.execution.configurations.ConfigurationFactory
 import com.intellij.execution.configurations.ConfigurationType
 import icons.TyeIcons

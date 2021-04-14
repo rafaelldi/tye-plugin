@@ -1,4 +1,4 @@
-package com.github.rafaelldi.tyeplugin.run
+package com.github.rafaelldi.tyeplugin.runConfig.tyeRun
 
 enum class TracesProvider(private val displayName: String, val argumentName: String) {
     NONE("None", "none") {

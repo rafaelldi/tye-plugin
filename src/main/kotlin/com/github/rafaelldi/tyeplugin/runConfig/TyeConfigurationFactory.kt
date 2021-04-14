@@ -1,5 +1,7 @@
-package com.github.rafaelldi.tyeplugin.run
+package com.github.rafaelldi.tyeplugin.runConfig
 
+import com.github.rafaelldi.tyeplugin.runConfig.tyeRun.TyeConfigurationType
+import com.github.rafaelldi.tyeplugin.runConfig.tyeRun.TyeRunConfiguration
 import com.intellij.execution.configurations.ConfigurationFactory
 import com.intellij.execution.configurations.RunConfiguration
 import com.intellij.openapi.project.Project
