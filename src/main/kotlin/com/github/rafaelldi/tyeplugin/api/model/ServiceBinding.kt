@@ -1,11 +1,14 @@
 package com.github.rafaelldi.tyeplugin.api.model
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class ServiceBinding(
-    val Name: String?,
-    val ConnectionString: String?,
-    val AutoAssignPort: Boolean,
-    val Port: Int?,
-    val ContainerPort: Int?,
-    val Host: String?,
-    val Protocol: String?
+    val name: String?,
+    val connectionString: String?,
+    val autoAssignPort: Boolean,
+    val port: Int?,
+    val containerPort: Int?,
+    val host: String?,
+    val protocol: String?
 )

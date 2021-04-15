@@ -1,9 +1,12 @@
 package com.github.rafaelldi.tyeplugin.api.model
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class Service(
-    val Description: ServiceDescription?,
-    val ServiceType: ServiceType,
-    val Restarts: Int,
-    val Status: ServiceStatus?,
-    val Replicas: Map<String, ReplicaStatus>?
+    val description: ServiceDescription?,
+    val serviceType: ServiceType,
+    val restarts: Int,
+    val status: ServiceStatus?,
+    val replicas: Map<String, ReplicaStatus>?
 )

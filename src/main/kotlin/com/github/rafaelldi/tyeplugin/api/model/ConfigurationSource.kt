@@ -1,3 +1,6 @@
 package com.github.rafaelldi.tyeplugin.api.model
 
-data class ConfigurationSource(val Name: String?, val Value: String?)
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class ConfigurationSource(val name: String?, val value: String?)

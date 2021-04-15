@@ -1,14 +1,17 @@
 package com.github.rafaelldi.tyeplugin.api.model
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class ReplicaStatus(
-    val DockerCommand: String?,
-    val ContainerId: String?,
-    val DockerNetwork: String?,
-    val DockerNetworkAlias: String?,
-    val Name: String?,
-    val Ports: List<Int>?,
-    val ExitCode: Int?,
-    val Pid: Int?,
-    val Environment: Map<String, String>?,
-    val State: ReplicaState?
+    val dockerCommand: String?,
+    val containerId: String?,
+    val dockerNetwork: String?,
+    val dockerNetworkAlias: String?,
+    val name: String?,
+    val ports: List<Int>?,
+    val exitCode: Int?,
+    val pid: Int?,
+    val environment: Map<String, String>?,
+    val state: ReplicaState?
 )
