@@ -1,6 +1,6 @@
 package com.github.rafaelldi.tyeplugin.runConfig.tyeRun
 
-import com.github.rafaelldi.tyeplugin.TyeConstants.TYE_FILE_NAME
+import com.github.rafaelldi.tyeplugin.isTyeFile
 import com.github.rafaelldi.tyeplugin.runConfig.TyeConfigurationFactory
 import com.intellij.execution.actions.ConfigurationContext
 import com.intellij.execution.actions.LazyRunConfigurationProducer
@@ -17,9 +17,8 @@ class TyeRunConfigurationProducer : LazyRunConfigurationProducer<TyeRunConfigura
         configuration: TyeRunConfiguration,
         context: ConfigurationContext
     ): Boolean {
-        val file = context.psiLocation?.containingFile ?: return false
-        val currentFile = file.virtualFile
-        return currentFile != null && currentFile.path == configuration.pathArgument?.path
+        val file = context.location?.virtualFile ?: return false
+        return file.path == configuration.pathArgument?.path
     }
 
     override fun setupConfigurationFromContext(
@@ -27,14 +26,14 @@ class TyeRunConfigurationProducer : LazyRunConfigurationProducer<TyeRunConfigura
         context: ConfigurationContext,
         sourceElement: Ref<PsiElement>
     ): Boolean {
-        val file = context.psiLocation?.containingFile ?: return false
+        val file = context.location?.virtualFile ?: return false
 
-        if (file.name != TYE_FILE_NAME) {
+        if (!file.isTyeFile()) {
             return false
         }
 
-        configuration.pathArgument = file.virtualFile
-        configuration.name = configuration.suggestedName()
+        configuration.pathArgument = file
+        configuration.setGeneratedName()
         return true
     }
 }
