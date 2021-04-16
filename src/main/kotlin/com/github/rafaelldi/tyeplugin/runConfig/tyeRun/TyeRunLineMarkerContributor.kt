@@ -11,11 +11,11 @@ import org.jetbrains.yaml.psi.YAMLFile
 
 class TyeRunLineMarkerContributor : RunLineMarkerContributor() {
     override fun getInfo(element: PsiElement): Info? {
-        if (element.containingFile is YAMLFile &&
-            element.containingFile.virtualFile.isTyeFile() &&
-            element.elementType == SCALAR_KEY &&
-            element.text == "services"
-        ) {
+        if (element.containingFile !is YAMLFile || !element.containingFile.virtualFile.isTyeFile()) {
+            return null
+        }
+
+        if (element.elementType == SCALAR_KEY && element.text == "services") {
             val actions = ExecutorAction.getActions(0)
             return Info(
                 AllIcons.Actions.Execute,
