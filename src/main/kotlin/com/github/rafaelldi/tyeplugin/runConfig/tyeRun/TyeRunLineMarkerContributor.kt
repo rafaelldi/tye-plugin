@@ -1,6 +1,6 @@
 package com.github.rafaelldi.tyeplugin.runConfig.tyeRun
 
-import com.github.rafaelldi.tyeplugin.isTyeFile
+import com.github.rafaelldi.tyeplugin.util.isTyeFile
 import com.intellij.execution.lineMarker.ExecutorAction
 import com.intellij.execution.lineMarker.RunLineMarkerContributor
 import com.intellij.icons.AllIcons

@@ -1,7 +1,7 @@
 package com.github.rafaelldi.tyeplugin.runConfig.tyeRun
 
-import com.github.rafaelldi.tyeplugin.isTyeFile
 import com.github.rafaelldi.tyeplugin.runConfig.TyeConfigurationFactory
+import com.github.rafaelldi.tyeplugin.util.isTyeFile
 import com.intellij.execution.actions.ConfigurationContext
 import com.intellij.execution.actions.LazyRunConfigurationProducer
 import com.intellij.execution.configurations.ConfigurationFactory
