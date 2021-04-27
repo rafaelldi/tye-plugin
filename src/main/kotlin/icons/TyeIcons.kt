@@ -4,5 +4,6 @@ import com.intellij.openapi.util.IconLoader
 
 object TyeIcons {
     @JvmField
-    val TYE = IconLoader.getIcon("/icons/tye.svg", javaClass)
+    val TYE = IconLoader.getIcon("/icons/tye-16.svg", javaClass)
+    val TYE_TOOL_WINDOW = IconLoader.getIcon("/icons/tye-13.svg", javaClass)
 }

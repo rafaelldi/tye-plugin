@@ -22,6 +22,9 @@
         <runConfigurationProducer implementation="com.github.rafaelldi.tyeplugin.runConfig.tyeRun.TyeRunConfigurationProducer"/>
         <runLineMarkerContributor language="yaml" implementationClass="com.github.rafaelldi.tyeplugin.runConfig.tyeRun.TyeRunLineMarkerContributor"/>
 
+        <!-- Tool window -->
+        <toolWindow id="Tye Dashboard" anchor="bottom" icon="TyeIcons.TYE_TOOL_WINDOW" factoryClass="com.github.rafaelldi.tyeplugin.toolWindow.TyeToolWindowFactory" />
+
         <!-- Notifications -->
         <notificationGroup id="tye.notifications.balloon" displayType="BALLOON" />
     </extensions>
