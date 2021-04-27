@@ -1,12 +1,18 @@
 package com.github.rafaelldi.tyeplugin.actions
 
-import com.github.rafaelldi.tyeplugin.TyeConstants.TYE_FILE_NAME
-import com.github.rafaelldi.tyeplugin.cli.tyeInit
+import com.github.rafaelldi.tyeplugin.cli.TyeInitCliBuilder
+import com.github.rafaelldi.tyeplugin.settings.TyeSettingsConfigurable
 import com.github.rafaelldi.tyeplugin.settings.TyeSettingsState
+import com.github.rafaelldi.tyeplugin.util.TYE_FILE_NAME
+import com.github.rafaelldi.tyeplugin.util.isTyeGlobalToolInstalled
+import com.intellij.execution.configurations.GeneralCommandLine
+import com.intellij.execution.util.ExecUtil
 import com.intellij.notification.Notification
+import com.intellij.notification.NotificationAction
 import com.intellij.notification.NotificationType
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
+import com.intellij.openapi.options.ShowSettingsUtil
 import com.intellij.openapi.progress.ProgressIndicator
 import com.intellij.openapi.progress.ProgressManager
 import com.intellij.openapi.progress.Task
@@ -36,37 +42,81 @@ class ScaffoldTyeFileAction : AnAction() {
         indicator.isIndeterminate = true
         indicator.text = "Scaffolding tye.yaml file"
 
-        val settings = TyeSettingsState.getInstance(project)
-        val tyeToolPath = settings.tyeToolPath
-        val pathToTyeFile = Paths.get(project.basePath!!, TYE_FILE_NAME)
-
-        if (tyeToolPath == null) {
-            indicator.cancel()
+        if (!isTyeGlobalToolInstalled()) {
             Notification(
                 "tye.notifications.balloon",
-                "Could not find tye tool",
-                "Please install tye global tool or specify the path to it.",
+                "Tye is not installed",
+                "",
                 NotificationType.ERROR
             )
                 .addAction(InstallTyeGlobalToolNotificationAction("Install tye tool"))
                 .notify(project)
-        } else if (!settings.overwriteTyeFile && FileUtil.exists(pathToTyeFile.toString())) {
-            indicator.cancel()
+            return
+        }
+
+        val settings = TyeSettingsState.getInstance(project)
+        val tyeToolPath = settings.tyeToolPath
+
+        if (tyeToolPath == null) {
+            Notification(
+                "tye.notifications.balloon",
+                "Could not find tye global tool",
+                "Please specify the path to it.",
+                NotificationType.ERROR
+            )
+                .addAction(object : NotificationAction("Edit settings") {
+                    override fun actionPerformed(e: AnActionEvent, notification: Notification) {
+                        ShowSettingsUtil.getInstance().editConfigurable(project, TyeSettingsConfigurable(project))
+                    }
+                })
+                .notify(project)
+            return
+        }
+
+        val pathToTyeFile = Paths.get(project.basePath!!, TYE_FILE_NAME)
+
+        if (!settings.overwriteTyeFile && FileUtil.exists(pathToTyeFile.toString())) {
             Notification(
                 "tye.notifications.balloon",
                 "File tye.yaml already exists",
                 "Please remove the file or allow rewriting in the settings.",
                 NotificationType.WARNING
             ).notify(project)
-        } else {
-            tyeInit(tyeToolPath, project.basePath!!, settings.overwriteTyeFile)
+            return
+        }
 
+        if (runScaffoldCommand(tyeToolPath, settings.overwriteTyeFile, project.basePath)) {
             Notification(
                 "tye.notifications.balloon",
                 "File tye.yaml is scaffolded",
                 "",
                 NotificationType.INFORMATION
             ).notify(project)
+        } else {
+            Notification(
+                "tye.notifications.balloon",
+                "Tye file scaffolding failed",
+                "",
+                NotificationType.ERROR
+            ).notify(project)
         }
+    }
+
+    private fun runScaffoldCommand(tyeToolPath: String, overwriteTyeFile: Boolean, projectPath: String?): Boolean {
+        val cliBuilder = TyeInitCliBuilder(tyeToolPath)
+        if (overwriteTyeFile) {
+            cliBuilder.setForce()
+        }
+        val arguments = cliBuilder.build()
+
+        val commandLine = GeneralCommandLine()
+            .withParentEnvironmentType(GeneralCommandLine.ParentEnvironmentType.CONSOLE)
+            .withWorkDirectory(projectPath)
+            .withExePath(tyeToolPath)
+            .withParameters(arguments)
+
+        val output = ExecUtil.execAndGetOutput(commandLine)
+
+        return output.exitCode == 0
     }
 }

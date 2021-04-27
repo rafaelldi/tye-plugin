@@ -1,6 +1,6 @@
 package com.github.rafaelldi.tyeplugin.settings
 
-import com.github.rafaelldi.tyeplugin.cli.findTyeToolPath
+import com.github.rafaelldi.tyeplugin.util.findTyeGlobalToolPath
 import com.intellij.openapi.components.PersistentStateComponent
 import com.intellij.openapi.components.ServiceManager
 import com.intellij.openapi.components.State
@@ -14,7 +14,7 @@ import com.intellij.util.xmlb.XmlSerializerUtil
 )
 class TyeSettingsState : PersistentStateComponent<TyeSettingsState> {
 
-    var tyeToolPath = findTyeToolPath()
+    var tyeToolPath = findTyeGlobalToolPath()
     var overwriteTyeFile = false
 
     companion object {

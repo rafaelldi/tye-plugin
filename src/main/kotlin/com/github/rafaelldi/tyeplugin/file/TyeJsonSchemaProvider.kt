@@ -1,6 +1,6 @@
 package com.github.rafaelldi.tyeplugin.file
 
-import com.github.rafaelldi.tyeplugin.TyeConstants.TYE_FILE_NAME
+import com.github.rafaelldi.tyeplugin.util.isTyeFile
 import com.intellij.openapi.vfs.VirtualFile
 import com.jetbrains.jsonSchema.extension.JsonSchemaFileProvider
 import com.jetbrains.jsonSchema.extension.SchemaType
@@ -11,7 +11,7 @@ class TyeJsonSchemaProvider : JsonSchemaFileProvider {
         const val SCHEMA_URL = "https://raw.githubusercontent.com/dotnet/tye/main/src/schema/tye-schema.json"
     }
 
-    override fun isAvailable(file: VirtualFile) = file.name == TYE_FILE_NAME
+    override fun isAvailable(file: VirtualFile) = file.isTyeFile()
 
     override fun getName() = "Tye"
 

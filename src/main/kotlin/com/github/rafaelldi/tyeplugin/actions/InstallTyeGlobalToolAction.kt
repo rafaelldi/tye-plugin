@@ -1,12 +1,6 @@
 package com.github.rafaelldi.tyeplugin.actions
 
-import com.github.rafaelldi.tyeplugin.cli.dotnetToolInstallTye
-import com.github.rafaelldi.tyeplugin.cli.findTyeToolPath
-import com.github.rafaelldi.tyeplugin.cli.isDotnetInstalled
-import com.github.rafaelldi.tyeplugin.cli.isTyeInstalled
-import com.github.rafaelldi.tyeplugin.settings.TyeSettingsState
-import com.intellij.notification.Notification
-import com.intellij.notification.NotificationType
+import com.github.rafaelldi.tyeplugin.util.installGlobalTool
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.progress.ProgressIndicator
@@ -36,41 +30,6 @@ class InstallTyeGlobalToolAction : AnAction() {
         indicator.isIndeterminate = true
         indicator.text = "Installing tye global tool"
 
-        if (!isDotnetInstalled()) {
-            Notification(
-                "tye.notifications.balloon",
-                ".NET Core 3.1 is not installed",
-                "",
-                NotificationType.ERROR
-            ).notify(project)
-            return
-        }
-
-        if (isTyeInstalled()) {
-            Notification(
-                "tye.notifications.balloon",
-                "Tye is already installed",
-                "",
-                NotificationType.WARNING
-            ).notify(project)
-            return
-        }
-
-        if (dotnetToolInstallTye()) {
-            TyeSettingsState.getInstance(project).tyeToolPath = findTyeToolPath()
-            Notification(
-                "tye.notifications.balloon",
-                "Tye is successfully installed",
-                "",
-                NotificationType.INFORMATION
-            ).notify(project)
-        } else {
-            Notification(
-                "tye.notifications.balloon",
-                "Tye installation failed",
-                "",
-                NotificationType.ERROR
-            ).notify(project)
-        }
+        installGlobalTool(project)
     }
 }
