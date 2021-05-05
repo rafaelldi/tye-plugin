@@ -7,7 +7,7 @@ import com.intellij.ui.content.ContentFactory
 
 class TyeToolWindowFactory : ToolWindowFactory {
     override fun createToolWindowContent(project: Project, toolWindow: ToolWindow) {
-        val tyeToolWindow = TyeToolWindow()
+        val tyeToolWindow = TyeToolWindow(project)
         val contentFactory = ContentFactory.SERVICE.getInstance()
         val content = contentFactory.createContent(tyeToolWindow, "", false)
         toolWindow.contentManager.addContent(content)

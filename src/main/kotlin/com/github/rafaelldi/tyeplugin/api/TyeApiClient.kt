@@ -6,12 +6,12 @@ import io.ktor.client.engine.cio.CIO
 import io.ktor.client.features.json.JsonFeature
 import io.ktor.client.request.get
 
-class TyeApiClient {
+class TyeApiClient(private val host: String) {
     private val httpClient: HttpClient = HttpClient(CIO) {
         install(JsonFeature)
     }
 
     suspend fun getServices(): List<Service> {
-        return httpClient.get("http://localhost:8000/api/v1/services")
+        return httpClient.get("$host/api/v1/services")
     }
 }

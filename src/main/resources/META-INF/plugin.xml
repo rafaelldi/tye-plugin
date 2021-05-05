@@ -37,12 +37,23 @@
         <group id="com.github.rafaelldi.tyeplugin.actions.TyeGroupedActions" text="Tye" popup="true" icon="TyeIcons.TYE">
             <add-to-group group-id="ToolsMenu"/>
             <action id="com.github.rafaelldi.tyeplugin.actions.InstallTyeGlobalToolAction"
-                    class="com.github.rafaelldi.tyeplugin.actions.InstallTyeGlobalToolAction" text="Install Tye Global Tool"
+                    class="com.github.rafaelldi.tyeplugin.actions.InstallTyeGlobalToolAction"
+                    text="Install Tye Global Tool"
                     description="Install Microsoft.Tye tool as a global tool">
             </action>
             <action id="com.github.rafaelldi.tyeplugin.actions.ScaffoldTyeFileAction"
-                    class="com.github.rafaelldi.tyeplugin.actions.ScaffoldTyeFileAction" text="Scaffold Tye File"
+                    class="com.github.rafaelldi.tyeplugin.actions.ScaffoldTyeFileAction"
+                    text="Scaffold Tye File"
                     description="Run tye init command in the solution directory">
+            </action>
+        </group>
+
+        <group id="com.github.rafaelldi.tyeplugin.actions.TyeToolWindowGroupedActions">
+            <action id="com.github.rafaelldi.tyeplugin.actions.RefreshDashboardAction"
+                    class="com.github.rafaelldi.tyeplugin.actions.RefreshDashboardAction"
+                    text="Refresh"
+                    description="Refresh dashboard"
+                    icon="AllIcons.Actions.Refresh">
             </action>
         </group>
     </actions>
