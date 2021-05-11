@@ -21,7 +21,7 @@ class RefreshDashboardAction : AnAction() {
     }
 
     private fun updateDashboard(project: Project) {
-        val tyeService = project.service<TyeApiService>()
-        tyeService.updateServices()
+        val tyeApiService = project.service<TyeApiService>()
+        tyeApiService.updateTye()
     }
 }

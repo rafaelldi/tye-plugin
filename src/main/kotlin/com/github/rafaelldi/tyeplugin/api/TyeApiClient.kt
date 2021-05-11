@@ -1,6 +1,6 @@
 package com.github.rafaelldi.tyeplugin.api
 
-import com.github.rafaelldi.tyeplugin.api.model.Service
+import com.github.rafaelldi.tyeplugin.api.model.ServiceDto
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.cio.CIO
 import io.ktor.client.features.json.JsonFeature
@@ -14,7 +14,7 @@ class TyeApiClient(private val host: String) {
         }
     }
 
-    suspend fun getServices(): List<Service> {
+    suspend fun getServices(): List<ServiceDto> {
         return httpClient.get("$host/api/v1/services")
     }
 }

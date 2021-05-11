@@ -1,13 +1,15 @@
 package com.github.rafaelldi.tyeplugin.services
 
 import com.github.rafaelldi.tyeplugin.api.TyeApiClient
-import com.github.rafaelldi.tyeplugin.listeners.TyeServicesNotifier
-import com.github.rafaelldi.tyeplugin.model.TyeService
+import com.github.rafaelldi.tyeplugin.messaging.TyeServicesNotifier
+import com.github.rafaelldi.tyeplugin.model.Tye
+import com.github.rafaelldi.tyeplugin.model.toService
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.project.Project
 import com.intellij.util.messages.MessageBus
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Service
@@ -16,7 +18,7 @@ class TyeApiService(project: Project) {
     private val client: TyeApiClient
     private val messageBus: MessageBus
 
-    private var tyeServices: List<TyeService> = emptyList()
+    private var tye: Tye = Tye()
 
     init {
         val host = "http://localhost:8000"
@@ -24,15 +26,17 @@ class TyeApiService(project: Project) {
         messageBus = project.messageBus
     }
 
-    fun updateServices() {
+    fun updateTye() {
         scope.launch {
-            val services = client.getServices()
-            tyeServices = services.map { TyeService(it.description?.name) }
+            val servicesDto = client.getServices()
+            delay(5000)
+            val services = servicesDto.map { it.toService() }
+            tye.update(services)
         }
 
         val publisher = messageBus.syncPublisher(TyeServicesNotifier.TOPIC)
         publisher.servicesUpdated()
     }
 
-    fun getServices() : List<TyeService> = tyeServices
+    fun getTye() : Tye = tye
 }

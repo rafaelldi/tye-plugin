@@ -1,4 +1,4 @@
-package com.github.rafaelldi.tyeplugin.listeners
+package com.github.rafaelldi.tyeplugin.messaging
 
 import com.intellij.util.messages.Topic
 

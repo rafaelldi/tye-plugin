@@ -1,7 +1,8 @@
 package com.github.rafaelldi.tyeplugin.toolWindow;
 
-import com.github.rafaelldi.tyeplugin.listeners.TyeServicesNotifier;
-import com.github.rafaelldi.tyeplugin.model.TyeService;
+import com.github.rafaelldi.tyeplugin.messaging.TyeServicesNotifier;
+import com.github.rafaelldi.tyeplugin.model.Service;
+import com.github.rafaelldi.tyeplugin.model.Tye;
 import com.github.rafaelldi.tyeplugin.services.TyeApiService;
 import com.intellij.openapi.actionSystem.ActionGroup;
 import com.intellij.openapi.actionSystem.ActionManager;
@@ -19,21 +20,20 @@ import java.util.List;
 public class TyeToolWindow extends SimpleToolWindowPanel {
     private JPanel panel;
     private SimpleTree tree;
-    private MessageBus messageBus;
 
     private final Project project;
-    private final TyeApiService apiService;
+    private final TyeApiService tyeApiService;
 
     public TyeToolWindow(Project project) {
         super(false);
 
         this.project = project;
-        apiService = project.getService(TyeApiService.class);
+        tyeApiService = project.getService(TyeApiService.class);
 
-        messageBus = project.getMessageBus();
+        MessageBus messageBus = project.getMessageBus();
         messageBus.connect().subscribe(TyeServicesNotifier.Companion.getTOPIC(), () -> {
-            List<TyeService> services = apiService.getServices();
-            updateTree(services);
+            Tye tye = tyeApiService.getTye();
+            updateTree(tye.getServices());
         });
 
         initActionToolbar();
@@ -55,9 +55,9 @@ public class TyeToolWindow extends SimpleToolWindowPanel {
         tree.setModel(new DefaultTreeModel(root));
     }
 
-    private void updateTree(List<TyeService> services){
+    private void updateTree(List<Service> services){
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Services");
-        for(TyeService service: services){
+        for(Service service: services){
             DefaultMutableTreeNode node = new DefaultMutableTreeNode(service.getName());
             root.add(node);
         }

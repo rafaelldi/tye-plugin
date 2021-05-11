@@ -3,7 +3,7 @@ package com.github.rafaelldi.tyeplugin.api.model
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ServiceBinding(
+data class ServiceBindingDto(
     val name: String?,
     val connectionString: String?,
     val autoAssignPort: Boolean,
