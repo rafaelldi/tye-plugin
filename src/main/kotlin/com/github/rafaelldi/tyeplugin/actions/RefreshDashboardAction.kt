@@ -8,6 +8,7 @@ import com.intellij.openapi.progress.ProgressIndicator
 import com.intellij.openapi.progress.ProgressManager
 import com.intellij.openapi.progress.Task
 import com.intellij.openapi.project.Project
+import kotlinx.coroutines.runBlocking
 
 class RefreshDashboardAction : AnAction() {
 
@@ -22,6 +23,8 @@ class RefreshDashboardAction : AnAction() {
 
     private fun updateDashboard(project: Project) {
         val tyeApiService = project.service<TyeApiService>()
-        tyeApiService.updateTye()
+        runBlocking {
+            tyeApiService.updateTye()
+        }
     }
 }

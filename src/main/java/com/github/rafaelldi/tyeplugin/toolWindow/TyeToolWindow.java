@@ -15,7 +15,6 @@ import com.intellij.util.messages.MessageBus;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
-import java.util.List;
 
 public class TyeToolWindow extends SimpleToolWindowPanel {
     private JPanel panel;
@@ -33,7 +32,7 @@ public class TyeToolWindow extends SimpleToolWindowPanel {
         MessageBus messageBus = project.getMessageBus();
         messageBus.connect().subscribe(TyeServicesNotifier.Companion.getTOPIC(), () -> {
             Tye tye = tyeApiService.getTye();
-            updateTree(tye.getServices());
+            updateTree(tye);
         });
 
         initActionToolbar();
@@ -55,9 +54,9 @@ public class TyeToolWindow extends SimpleToolWindowPanel {
         tree.setModel(new DefaultTreeModel(root));
     }
 
-    private void updateTree(List<Service> services){
+    private void updateTree(Tye tye) {
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Services");
-        for(Service service: services){
+        for (Service service : tye.getServices()) {
             DefaultMutableTreeNode node = new DefaultMutableTreeNode(service.getName());
             root.add(node);
         }
