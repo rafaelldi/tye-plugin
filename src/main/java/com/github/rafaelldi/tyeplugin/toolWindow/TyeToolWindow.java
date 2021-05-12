@@ -1,6 +1,7 @@
 package com.github.rafaelldi.tyeplugin.toolWindow;
 
 import com.github.rafaelldi.tyeplugin.messaging.TyeServicesNotifier;
+import com.github.rafaelldi.tyeplugin.model.Replica;
 import com.github.rafaelldi.tyeplugin.model.Service;
 import com.github.rafaelldi.tyeplugin.model.Tye;
 import com.github.rafaelldi.tyeplugin.services.TyeApiService;
@@ -57,8 +58,14 @@ public class TyeToolWindow extends SimpleToolWindowPanel {
     private void updateTree(Tye tye) {
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Services");
         for (Service service : tye.getServices()) {
-            DefaultMutableTreeNode node = new DefaultMutableTreeNode(service.getName());
-            root.add(node);
+            DefaultMutableTreeNode serviceNode = new DefaultMutableTreeNode(service.getName());
+
+            for (Replica replica: service.getReplicas()){
+                DefaultMutableTreeNode replicaNode = new DefaultMutableTreeNode(replica.getName());
+                serviceNode.add(replicaNode);
+            }
+
+            root.add(serviceNode);
         }
 
         tree.setModel(new DefaultTreeModel(root));

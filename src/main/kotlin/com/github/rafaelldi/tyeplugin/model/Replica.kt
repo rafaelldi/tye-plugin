@@ -1,4 +1,3 @@
 package com.github.rafaelldi.tyeplugin.model
 
-class Replica {
-}
+class Replica(val name: String?)
