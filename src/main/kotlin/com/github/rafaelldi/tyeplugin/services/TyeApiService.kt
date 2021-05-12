@@ -32,5 +32,5 @@ class TyeApiService(project: Project) {
         publisher.servicesUpdated()
     }
 
-    fun getTye() : Tye = tye
+    fun getTye(): Tye = tye
 }
