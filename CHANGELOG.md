@@ -3,6 +3,9 @@
 # tye-plugin Changelog
 
 ## [Unreleased]
+### Changed
+- Change `tye.yaml` icon
+
 ## [0.0.3]
 ### Added
 - New options in the run configuration to send logs, traces or specify tags.

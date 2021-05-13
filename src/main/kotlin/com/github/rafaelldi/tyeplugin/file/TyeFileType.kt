@@ -11,5 +11,5 @@ class TyeFileType : LanguageFileType(YAMLLanguage.INSTANCE) {
 
     override fun getDefaultExtension() = "yaml"
 
-    override fun getIcon() = TyeIcons.TYE
+    override fun getIcon() = TyeIcons.TYE_FILE
 }
