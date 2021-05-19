@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="16"
+   height="16"
+   viewBox="0 0 16 16"
+   version="1.1"
+   id="svg12"
+   sodipodi:docname="tyeFile.svg"
+   inkscape:version="1.0.2 (394de47547, 2021-03-26)">
+  <metadata
+     id="metadata18">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs16" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1848"
+     inkscape:window-height="1016"
+     id="namedview14"
+     showgrid="true"
+     inkscape:document-rotation="0"
+     inkscape:zoom="70.445513"
+     inkscape:cx="8.1360937"
+     inkscape:cy="9.9845355"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="g10">
+    <inkscape:grid
+       type="xygrid"
+       id="grid838"
+       spacingx="0.5"
+       spacingy="0.5" />
+  </sodipodi:namedview>
+  <g
+     fill="none"
+     fill-rule="evenodd"
+     id="g10">
+    <polygon
+       fill="#40B6E0"
+       fill-opacity=".7"
+       points="1 16 16 16 16 9 1 9"
+       id="polygon2" />
+    <polygon
+       fill="#9AA7B0"
+       fill-opacity=".8"
+       points="7 1 3 5 7 5"
+       id="polygon4" />
+    <polygon
+       fill="#9AA7B0"
+       fill-opacity=".8"
+       points="8 1 8 6 3 6 3 8 13 8 13 1"
+       id="polygon6" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:5.33333px;line-height:1.25;font-family:sans-serif;white-space:pre;inline-size:0;fill:#000000;fill-opacity:1;stroke:none"
+       x="7.6042976"
+       y="11.9891"
+       id="text845"><tspan
+         id="tspan843"
+         x="7.6042976"
+         y="11.9891" /></text>
+    <g
+       aria-label="TYE"
+       transform="scale(0.98755493,1.0126019)"
+       id="text849"
+       style="font-size:6.7984px;line-height:1.25;font-family:sans-serif;fill:#29414c;fill-opacity:0.909804;stroke-width:1.01976">
+      <path
+         d="M 1.5224846,9.8579591 H 6.0901595 V 10.823943 H 4.4469916 v 3.990076 H 3.1689721 V 10.823943 H 1.5224846 Z"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:6.7984px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';fill:#29414c;fill-opacity:0.909804;stroke-width:1.01976"
+         id="path856" />
+      <path
+         d="M 6.0901595,9.8579591 H 7.4876821 L 8.6163227,11.62395 9.7449634,9.8579591 H 11.145805 L 9.2569923,12.726034 v 2.087985 H 7.9789727 v -2.087985 z"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:6.7984px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';fill:#29414c;fill-opacity:0.909804;stroke-width:1.01976"
+         id="path858" />
+      <path
+         d="m 11.67361,9.8579591 h 3.448993 V 10.823943 H 12.95163 v 0.922829 h 2.041512 v 0.965984 H 12.95163 v 1.13528 h 2.244003 v 0.965983 H 11.67361 Z"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:6.7984px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';fill:#29414c;fill-opacity:0.909804;stroke-width:1.01976"
+         id="path860" />
+    </g>
+  </g>
+</svg>
