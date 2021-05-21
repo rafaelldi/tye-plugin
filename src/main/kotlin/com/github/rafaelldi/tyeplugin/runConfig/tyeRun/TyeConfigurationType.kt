@@ -10,7 +10,7 @@ class TyeConfigurationType : ConfigurationType {
 
     override fun getConfigurationTypeDescription() = "Tye run command"
 
-    override fun getIcon() = TyeIcons.TYE
+    override fun getIcon() = TyeIcons.TYE_RUN
 
     override fun getId() = "TYE_RUN_CONFIGURATION"
 

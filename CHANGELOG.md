@@ -4,7 +4,8 @@
 
 ## [Unreleased]
 ### Changed
-- Change `tye.yaml` icon
+- Change `tye.yaml` file icon
+- Change other tye icons
 
 ## [0.0.3]
 ### Added

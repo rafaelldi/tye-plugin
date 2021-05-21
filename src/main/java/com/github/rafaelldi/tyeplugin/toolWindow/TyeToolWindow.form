@@ -15,9 +15,8 @@
         <properties/>
         <border type="none"/>
         <children>
-          <component id="c535a" class="com.intellij.ui.treeStructure.SimpleTree" binding="tree" custom-create="true">
+          <component id="47ad2" class="com.github.rafaelldi.tyeplugin.toolWindow.TyeServicesTree" binding="tree" custom-create="true">
             <constraints/>
-            <properties/>
           </component>
         </children>
       </scrollpane>

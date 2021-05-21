@@ -10,7 +10,6 @@ import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.actionSystem.ActionToolbar;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.SimpleToolWindowPanel;
-import com.intellij.ui.treeStructure.SimpleTree;
 import com.intellij.util.messages.MessageBus;
 
 import javax.swing.*;
@@ -19,7 +18,8 @@ import javax.swing.tree.DefaultTreeModel;
 
 public class TyeToolWindow extends SimpleToolWindowPanel {
     private JPanel panel;
-    private SimpleTree tree;
+    private DefaultTreeModel model;
+    private TyeServicesTree tree;
 
     private final Project project;
     private final TyeApiService tyeApiService;
@@ -48,26 +48,25 @@ public class TyeToolWindow extends SimpleToolWindowPanel {
     }
 
     private void createUIComponents() {
-        tree = new SimpleTree();
-        tree.getEmptyText().setText("No services");
+        model = new DefaultTreeModel(new TyeServiceTreeNode.Root());
+        tree = new TyeServicesTree(model);
+    }
 
-        DefaultMutableTreeNode root = new DefaultMutableTreeNode("Services");
-        tree.setModel(new DefaultTreeModel(root));
+    private DefaultMutableTreeNode root() {
+        return (DefaultMutableTreeNode) model.getRoot();
     }
 
     private void updateTree(Tye tye) {
-        DefaultMutableTreeNode root = new DefaultMutableTreeNode("Services");
-        for (Service service : tye.getServices()) {
-            DefaultMutableTreeNode serviceNode = new DefaultMutableTreeNode(service.getName());
+        DefaultMutableTreeNode root = root();
+        root.removeAllChildren();
 
-            for (Replica replica: service.getReplicas()){
-                DefaultMutableTreeNode replicaNode = new DefaultMutableTreeNode(replica.getName());
-                serviceNode.add(replicaNode);
-            }
+        for (Service service : tye.getServices()) {
+            DefaultMutableTreeNode serviceNode = TyeServiceTreeNode.Factory.create(service);
+            model.insertNodeInto(serviceNode, root, 0);
 
             root.add(serviceNode);
         }
 
-        tree.setModel(new DefaultTreeModel(root));
+        model.nodeStructureChanged(root);
     }
 }

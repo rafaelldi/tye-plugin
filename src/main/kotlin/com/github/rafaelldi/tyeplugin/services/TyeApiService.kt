@@ -29,7 +29,7 @@ class TyeApiService(project: Project) {
         tye.update(services)
 
         val publisher = messageBus.syncPublisher(TyeServicesNotifier.TOPIC)
-        publisher.servicesUpdated()
+        publisher.tyeServicesUpdated()
     }
 
     fun getTye(): Tye = tye
