@@ -6,11 +6,10 @@ import com.intellij.ui.ColoredTreeCellRenderer
 import icons.TyeIcons.TYE_NODE_DOT_NET
 import javax.swing.tree.DefaultMutableTreeNode
 
-
 abstract class TyeServiceTreeNode(val name: String?) : DefaultMutableTreeNode() {
     companion object Factory {
         fun create(service: Service): TyeServiceTreeNode {
-            return when(service) {
+            return when (service) {
                 is Service.External -> External(service.name)
                 is Service.Project -> Project(service.name)
                 is Service.Executable -> Executable(service.name)
@@ -26,6 +25,7 @@ abstract class TyeServiceTreeNode(val name: String?) : DefaultMutableTreeNode() 
 
     class Root : TyeServiceTreeNode("Root") {
         override fun render(renderer: ColoredTreeCellRenderer) {
+            renderer.append("Root")
         }
     }
 

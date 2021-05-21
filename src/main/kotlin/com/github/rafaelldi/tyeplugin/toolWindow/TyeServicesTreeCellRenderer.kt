@@ -13,7 +13,7 @@ class TyeServicesTreeCellRenderer : ColoredTreeCellRenderer() {
         row: Int,
         hasFocus: Boolean
     ) {
-        if (value is TyeServiceTreeNode){
+        if (value is TyeServiceTreeNode) {
             value.render(this)
         }
     }

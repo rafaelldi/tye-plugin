@@ -1,6 +1,6 @@
 package com.github.rafaelldi.tyeplugin.model
 
-abstract class Service(val name: String?){
+open class Service(val name: String?) {
     private val replicas: MutableList<Replica> = mutableListOf()
 
     fun getReplicas(): List<Replica> = replicas
@@ -21,4 +21,3 @@ abstract class Service(val name: String?){
 
     class Ingress(name: String?) : Service(name)
 }
-

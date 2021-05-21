@@ -5,7 +5,7 @@ import com.github.rafaelldi.tyeplugin.api.model.ServiceDto
 import com.github.rafaelldi.tyeplugin.api.model.ServiceType
 
 fun ServiceDto.toService(): Service {
-    val service = when(this.serviceType){
+    val service = when (this.serviceType) {
         ServiceType.External -> Service.External(this.description?.name)
         ServiceType.Project -> Service.Project(this.description?.name)
         ServiceType.Executable -> Service.Executable(this.description?.name)
