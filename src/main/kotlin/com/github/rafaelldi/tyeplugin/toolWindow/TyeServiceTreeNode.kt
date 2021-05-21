@@ -3,6 +3,8 @@ package com.github.rafaelldi.tyeplugin.toolWindow
 import com.github.rafaelldi.tyeplugin.model.Service
 import com.intellij.openapi.externalSystem.service.execution.NotSupportedException
 import com.intellij.ui.ColoredTreeCellRenderer
+import icons.TyeIcons.TYE_NODE
+import icons.TyeIcons.TYE_NODE_DOCKER
 import icons.TyeIcons.TYE_NODE_DOT_NET
 import javax.swing.tree.DefaultMutableTreeNode
 
@@ -32,6 +34,7 @@ abstract class TyeServiceTreeNode(val name: String?) : DefaultMutableTreeNode() 
     class External(name: String?) : TyeServiceTreeNode(name) {
         override fun render(renderer: ColoredTreeCellRenderer) {
             renderer.append("External $name")
+            renderer.icon = TYE_NODE
         }
     }
 
@@ -45,24 +48,28 @@ abstract class TyeServiceTreeNode(val name: String?) : DefaultMutableTreeNode() 
     class Executable(name: String?) : TyeServiceTreeNode(name) {
         override fun render(renderer: ColoredTreeCellRenderer) {
             renderer.append("Executable $name")
+            renderer.icon = TYE_NODE
         }
     }
 
     class Container(name: String?) : TyeServiceTreeNode(name) {
         override fun render(renderer: ColoredTreeCellRenderer) {
             renderer.append("Container $name")
+            renderer.icon = TYE_NODE_DOCKER
         }
     }
 
     class Function(name: String?) : TyeServiceTreeNode(name) {
         override fun render(renderer: ColoredTreeCellRenderer) {
             renderer.append("Function $name")
+            renderer.icon = TYE_NODE
         }
     }
 
     class Ingress(name: String?) : TyeServiceTreeNode(name) {
         override fun render(renderer: ColoredTreeCellRenderer) {
             renderer.append("Ingress $name")
+            renderer.icon = TYE_NODE
         }
     }
 }
