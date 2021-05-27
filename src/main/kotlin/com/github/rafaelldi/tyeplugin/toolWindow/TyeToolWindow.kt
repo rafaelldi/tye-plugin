@@ -57,13 +57,13 @@ class TyeToolWindow(project: Project) : SimpleToolWindowPanel(false) {
                     if (!SwingUtilities.isLeftMouseButton(e)) return
                     val tree = e.source as? TyeServicesTree ?: return
                     val tyeService = tree.selectedService
-                    selectTyeService(tyeService)
+                    updateTable(tyeService)
                 }
             })
 
             val treeScrollPane = JBScrollPane(tree)
 
-            tableModel = DefaultTableModel(arrayOf("Name", "Value"), 0)
+            tableModel = DefaultTableModel(arrayOf("Property", "Value"), 0)
             val table = JBTable(tableModel)
             table.setShowColumns(true)
 
@@ -100,8 +100,19 @@ class TyeToolWindow(project: Project) : SimpleToolWindowPanel(false) {
         treeModel.nodeStructureChanged(root)
     }
 
-    private fun selectTyeService(service: Service?){
+    private fun updateTable(service: Service?){
         if (service == null)
             return
+
+        with(tableModel) {
+            dataVector.removeAllElements()
+
+            addRow(arrayOf("Name", service.properties.name))
+            addRow(arrayOf("Type", service.properties.type))
+            addRow(arrayOf("Replicas", service.properties.replicas))
+            addRow(arrayOf("Restarts", service.properties.restarts))
+
+            fireTableStructureChanged()
+        }
     }
 }

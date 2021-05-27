@@ -1,15 +1,15 @@
 package com.github.rafaelldi.tyeplugin.model
 
-open class Service(val name: String?) {
-    class External(name: String?) : Service(name)
+sealed class Service(val properties: Properties) {
+    class External(properties: Properties) : Service(properties)
 
-    class Project(name: String?) : Service(name)
+    class Project(properties: Properties) : Service(properties)
 
-    class Executable(name: String?) : Service(name)
+    class Executable(properties: Properties) : Service(properties)
 
-    class Container(name: String?) : Service(name)
+    class Container(properties: Properties) : Service(properties)
 
-    class Function(name: String?) : Service(name)
+    class Function(properties: Properties) : Service(properties)
 
-    class Ingress(name: String?) : Service(name)
+    class Ingress(properties: Properties) : Service(properties)
 }

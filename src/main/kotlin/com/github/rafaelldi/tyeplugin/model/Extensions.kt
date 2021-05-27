@@ -1,20 +1,16 @@
 package com.github.rafaelldi.tyeplugin.model
 
-import com.github.rafaelldi.tyeplugin.api.model.ReplicaStatusDto
 import com.github.rafaelldi.tyeplugin.api.model.ServiceDto
 import com.github.rafaelldi.tyeplugin.api.model.ServiceType
 
 fun ServiceDto.toService(): Service {
+    val properties = Properties(description?.name, serviceType.toString(), description?.replicas, restarts)
     return when (serviceType) {
-        ServiceType.External -> Service.External(description?.name)
-        ServiceType.Project -> Service.Project(description?.name)
-        ServiceType.Executable -> Service.Executable(description?.name)
-        ServiceType.Container -> Service.Container(description?.name)
-        ServiceType.Function -> Service.Function(description?.name)
-        ServiceType.Ingress -> Service.Ingress(description?.name)
+        ServiceType.External -> Service.External(properties)
+        ServiceType.Project -> Service.Project(properties)
+        ServiceType.Executable -> Service.Executable(properties)
+        ServiceType.Container -> Service.Container(properties)
+        ServiceType.Function -> Service.Function(properties)
+        ServiceType.Ingress -> Service.Ingress(properties)
     }
 }
-
-fun ReplicaStatusDto.toReplica() = Replica(
-    this.name
-)
