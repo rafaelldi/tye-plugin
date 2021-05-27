@@ -65,7 +65,6 @@ class TyeToolWindow(project: Project) : SimpleToolWindowPanel(false) {
 
             tableModel = DefaultTableModel(arrayOf("Property", "Value"), 0)
             val table = JBTable(tableModel)
-            table.setShowColumns(true)
 
             val tableScrollPane = JBScrollPane(table)
 
