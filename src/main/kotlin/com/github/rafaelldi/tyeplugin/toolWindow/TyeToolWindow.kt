@@ -30,6 +30,7 @@ class TyeToolWindow(project: Project) : SimpleToolWindowPanel(false) {
     private lateinit var tree: TyeServicesTree
     private lateinit var propertiesTableModel: DefaultTableModel
     private lateinit var portBindingsTableModel: DefaultTableModel
+    private lateinit var environmentVariablesTableModel: DefaultTableModel
 
     private var tyeApiService: TyeApiService = project.getService(TyeApiService::class.java)
 
@@ -67,9 +68,11 @@ class TyeToolWindow(project: Project) : SimpleToolWindowPanel(false) {
             propertiesTableModel = DefaultTableModel(arrayOf("Name", "Value"), 0)
             portBindingsTableModel =
                 DefaultTableModel(arrayOf("Name", "Protocol", "Host", "Port", "Container port", "Connection string"), 0)
+            environmentVariablesTableModel = DefaultTableModel(arrayOf("Name", "Value"), 0)
             val tabbedPane = JBTabbedPane().apply {
                 addTab("Properties", JBScrollPane(JBTable(propertiesTableModel)))
                 addTab("Port Bindings", JBScrollPane(JBTable(portBindingsTableModel)))
+                addTab("Environment Variables", JBScrollPane(JBTable(environmentVariablesTableModel)))
             }
 
             val splitter = JBSplitter(false, 0.2F).apply {
@@ -109,22 +112,30 @@ class TyeToolWindow(project: Project) : SimpleToolWindowPanel(false) {
 
         with(propertiesTableModel) {
             dataVector.removeAllElements()
-
             addRow(arrayOf("Id", service.properties.id))
             addRow(arrayOf("Type", service.properties.type))
             addRow(arrayOf("Replicas", service.properties.replicas))
             addRow(arrayOf("Restarts", service.properties.restarts))
-
+            addRow(arrayOf("Project", service.properties.project))
+            addRow(arrayOf("Image", service.properties.image))
+            addRow(arrayOf("Executable", service.properties.executable))
+            addRow(arrayOf("Working directory", service.properties.workingDirectory))
             fireTableStructureChanged()
         }
 
         with(portBindingsTableModel) {
             dataVector.removeAllElements()
-
-            for (bind in service.serviceBindings){
+            for (bind in service.bindings){
                 addRow(arrayOf(bind.name, bind.protocol, bind.host, bind.port, bind.containerPort, bind.connectionString))
             }
+            fireTableStructureChanged()
+        }
 
+        with(environmentVariablesTableModel) {
+            dataVector.removeAllElements()
+            for (variable in service.environmentVariables){
+                addRow(arrayOf(variable.name, variable.value))
+            }
             fireTableStructureChanged()
         }
     }

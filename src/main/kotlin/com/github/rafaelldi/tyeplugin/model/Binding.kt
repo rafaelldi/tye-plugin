@@ -1,6 +1,6 @@
 package com.github.rafaelldi.tyeplugin.model
 
-data class ServiceBinding(
+data class Binding(
     val name: String?,
     val connectionString: String?,
     val protocol: String?,
