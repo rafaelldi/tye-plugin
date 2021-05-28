@@ -11,7 +11,7 @@ import javax.swing.tree.TreeSelectionModel
 class TyeServicesTree(treeModel: TreeModel) : Tree(treeModel) {
     init {
         isRootVisible = false
-        emptyText.text = "No services to display."
+        emptyText.text = "No services to display"
         selectionModel.selectionMode = TreeSelectionModel.SINGLE_TREE_SELECTION
         setCellRenderer(TyeServicesTreeCellRenderer())
     }
