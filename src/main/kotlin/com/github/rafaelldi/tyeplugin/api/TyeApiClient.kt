@@ -7,14 +7,14 @@ import io.ktor.client.features.json.JsonFeature
 import io.ktor.client.features.json.serializer.KotlinxSerializer
 import io.ktor.client.request.get
 
-class TyeApiClient(private val host: String) {
+class TyeApiClient {
     private val httpClient: HttpClient = HttpClient(CIO) {
         install(JsonFeature) {
             serializer = KotlinxSerializer()
         }
     }
 
-    suspend fun getServices(): List<ServiceDto> {
+    suspend fun getServices(host: String): List<ServiceDto> {
         return httpClient.get("$host/api/v1/services")
     }
 }
