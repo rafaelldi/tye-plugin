@@ -2,9 +2,6 @@ package com.github.rafaelldi.tyeplugin.toolWindow
 
 import com.github.rafaelldi.tyeplugin.model.Service
 import com.intellij.ui.treeStructure.Tree
-import java.awt.event.MouseAdapter
-import java.awt.event.MouseEvent
-import javax.swing.SwingUtilities
 import javax.swing.tree.TreeModel
 import javax.swing.tree.TreeSelectionModel
 

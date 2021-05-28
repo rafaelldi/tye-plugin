@@ -1,6 +1,5 @@
 package com.github.rafaelldi.tyeplugin.toolWindow
 
-
 import com.github.rafaelldi.tyeplugin.messaging.TyeServicesNotifier
 import com.github.rafaelldi.tyeplugin.messaging.TyeServicesNotifier.Companion.TOPIC
 import com.github.rafaelldi.tyeplugin.model.Service
@@ -36,12 +35,15 @@ class TyeToolWindow(project: Project) : SimpleToolWindowPanel(false) {
 
     init {
         with(project.messageBus.connect()) {
-            subscribe(TOPIC, object : TyeServicesNotifier {
-                override fun tyeServicesUpdated() {
-                    val tye = tyeApiService.getTye()
-                    updateTree(tye)
+            subscribe(
+                TOPIC,
+                object : TyeServicesNotifier {
+                    override fun tyeServicesUpdated() {
+                        val tye = tyeApiService.getTye()
+                        updateTree(tye)
+                    }
                 }
-            })
+            )
         }
 
         createUIComponents()
@@ -75,7 +77,7 @@ class TyeToolWindow(project: Project) : SimpleToolWindowPanel(false) {
                 addTab("Environment Variables", JBScrollPane(JBTable(environmentVariablesTableModel)))
             }
 
-            val splitter = JBSplitter(false, 0.2F).apply {
+            val splitter = JBSplitter(false, SPLITTER_PROPORTION).apply {
                 firstComponent = treeScrollPane
                 secondComponent = tabbedPane
             }
@@ -83,7 +85,7 @@ class TyeToolWindow(project: Project) : SimpleToolWindowPanel(false) {
         }
     }
 
-    private fun initActionToolbar(){
+    private fun initActionToolbar() {
         val actionManager = ActionManager.getInstance()
         val actionGroup =
             actionManager.getAction("com.github.rafaelldi.tyeplugin.actions.TyeToolWindowGroupedActions") as ActionGroup
@@ -106,9 +108,8 @@ class TyeToolWindow(project: Project) : SimpleToolWindowPanel(false) {
         treeModel.nodeStructureChanged(root)
     }
 
-    private fun updateTable(service: Service?){
-        if (service == null)
-            return
+    private fun updateTable(service: Service?) {
+        if (service == null) return
 
         with(propertiesTableModel) {
             dataVector.removeAllElements()
@@ -125,18 +126,31 @@ class TyeToolWindow(project: Project) : SimpleToolWindowPanel(false) {
 
         with(portBindingsTableModel) {
             dataVector.removeAllElements()
-            for (bind in service.bindings){
-                addRow(arrayOf(bind.name, bind.protocol, bind.host, bind.port, bind.containerPort, bind.connectionString))
+            for (bind in service.bindings) {
+                addRow(
+                    arrayOf(
+                        bind.name,
+                        bind.protocol,
+                        bind.host,
+                        bind.port,
+                        bind.containerPort,
+                        bind.connectionString
+                    )
+                )
             }
             fireTableStructureChanged()
         }
 
         with(environmentVariablesTableModel) {
             dataVector.removeAllElements()
-            for (variable in service.environmentVariables){
+            for (variable in service.environmentVariables) {
                 addRow(arrayOf(variable.name, variable.value))
             }
             fireTableStructureChanged()
         }
+    }
+
+    companion object {
+        const val SPLITTER_PROPORTION = 0.2F
     }
 }
