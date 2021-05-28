@@ -11,12 +11,12 @@ sealed class TyeServiceTreeNode(val name: String?, val service: Service?) : Defa
     companion object Factory {
         fun create(service: Service): TyeServiceTreeNode {
             return when (service) {
-                is Service.External -> External(service.properties.name, service)
-                is Service.Project -> Project(service.properties.name, service)
-                is Service.Executable -> Executable(service.properties.name, service)
-                is Service.Container -> Container(service.properties.name, service)
-                is Service.Function -> Function(service.properties.name, service)
-                is Service.Ingress -> Ingress(service.properties.name, service)
+                is Service.External -> External(service.properties.id, service)
+                is Service.Project -> Project(service.properties.id, service)
+                is Service.Executable -> Executable(service.properties.id, service)
+                is Service.Container -> Container(service.properties.id, service)
+                is Service.Function -> Function(service.properties.id, service)
+                is Service.Ingress -> Ingress(service.properties.id, service)
             }
         }
     }

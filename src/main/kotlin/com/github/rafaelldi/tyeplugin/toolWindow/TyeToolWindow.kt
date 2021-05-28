@@ -13,6 +13,7 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.SimpleToolWindowPanel
 import com.intellij.ui.JBSplitter
 import com.intellij.ui.components.JBScrollPane
+import com.intellij.ui.components.JBTabbedPane
 import com.intellij.ui.table.JBTable
 import java.awt.BorderLayout
 import java.awt.event.MouseAdapter
@@ -27,7 +28,8 @@ class TyeToolWindow(project: Project) : SimpleToolWindowPanel(false) {
     private lateinit var panel: JPanel
     private lateinit var treeModel: DefaultTreeModel
     private lateinit var tree: TyeServicesTree
-    private lateinit var tableModel: DefaultTableModel
+    private lateinit var propertiesTableModel: DefaultTableModel
+    private lateinit var portBindingsTableModel: DefaultTableModel
 
     private var tyeApiService: TyeApiService = project.getService(TyeApiService::class.java)
 
@@ -60,17 +62,19 @@ class TyeToolWindow(project: Project) : SimpleToolWindowPanel(false) {
                     updateTable(tyeService)
                 }
             })
-
             val treeScrollPane = JBScrollPane(tree)
 
-            tableModel = DefaultTableModel(arrayOf("Property", "Value"), 0)
-            val table = JBTable(tableModel)
+            propertiesTableModel = DefaultTableModel(arrayOf("Name", "Value"), 0)
+            portBindingsTableModel =
+                DefaultTableModel(arrayOf("Name", "Protocol", "Host", "Port", "Container port", "Connection string"), 0)
+            val tabbedPane = JBTabbedPane().apply {
+                addTab("Properties", JBScrollPane(JBTable(propertiesTableModel)))
+                addTab("Port Bindings", JBScrollPane(JBTable(portBindingsTableModel)))
+            }
 
-            val tableScrollPane = JBScrollPane(table)
-
-            val splitter = JBSplitter(false, 0.3F).apply {
+            val splitter = JBSplitter(false, 0.2F).apply {
                 firstComponent = treeScrollPane
-                secondComponent = tableScrollPane
+                secondComponent = tabbedPane
             }
             add(splitter)
         }
@@ -103,13 +107,23 @@ class TyeToolWindow(project: Project) : SimpleToolWindowPanel(false) {
         if (service == null)
             return
 
-        with(tableModel) {
+        with(propertiesTableModel) {
             dataVector.removeAllElements()
 
-            addRow(arrayOf("Name", service.properties.name))
+            addRow(arrayOf("Id", service.properties.id))
             addRow(arrayOf("Type", service.properties.type))
             addRow(arrayOf("Replicas", service.properties.replicas))
             addRow(arrayOf("Restarts", service.properties.restarts))
+
+            fireTableStructureChanged()
+        }
+
+        with(portBindingsTableModel) {
+            dataVector.removeAllElements()
+
+            for (bind in service.serviceBindings){
+                addRow(arrayOf(bind.name, bind.protocol, bind.host, bind.port, bind.containerPort, bind.connectionString))
+            }
 
             fireTableStructureChanged()
         }
