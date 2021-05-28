@@ -26,7 +26,7 @@
         <toolWindow id="Tye Dashboard" anchor="bottom" icon="TyeIcons.TYE_TOOL_WINDOW" factoryClass="com.github.rafaelldi.tyeplugin.toolWindow.TyeToolWindowFactory" />
 
         <!-- Notifications -->
-        <notificationGroup id="tye.notifications.balloon" displayType="BALLOON" />
+        <notificationGroup id="Tye" displayType="BALLOON" />
     </extensions>
 
     <extensions defaultExtensionNs="JavaScript.JsonSchema">

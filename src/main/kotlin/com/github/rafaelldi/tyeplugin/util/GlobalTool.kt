@@ -16,7 +16,7 @@ import com.intellij.util.EnvironmentUtil
 fun installGlobalTool(project: Project) {
     if (!isDotnetInstalled()) {
         Notification(
-            "tye.notifications.balloon",
+            "Tye",
             ".NET Core 3.1 is not installed",
             "",
             NotificationType.ERROR
@@ -31,7 +31,7 @@ fun installGlobalTool(project: Project) {
 
     if (isTyeGlobalToolInstalled()) {
         Notification(
-            "tye.notifications.balloon",
+            "Tye",
             "Tye is already installed",
             "",
             NotificationType.WARNING
@@ -42,14 +42,14 @@ fun installGlobalTool(project: Project) {
     if (dotnetToolInstallTye()) {
         TyeSettingsState.getInstance(project).tyeToolPath = findTyeGlobalToolPath()
         Notification(
-            "tye.notifications.balloon",
+            "Tye",
             "Tye is successfully installed",
             "",
             NotificationType.INFORMATION
         ).notify(project)
     } else {
         Notification(
-            "tye.notifications.balloon",
+            "Tye",
             "Tye installation failed",
             "",
             NotificationType.ERROR

@@ -43,12 +43,7 @@ class ScaffoldTyeFileAction : AnAction() {
         indicator.text = "Scaffolding tye.yaml file"
 
         if (!isTyeGlobalToolInstalled()) {
-            Notification(
-                "tye.notifications.balloon",
-                "Tye is not installed",
-                "",
-                NotificationType.ERROR
-            )
+            Notification("Tye", "Tye is not installed", "", NotificationType.ERROR)
                 .addAction(InstallTyeGlobalToolNotificationAction("Install tye tool"))
                 .notify(project)
             return
@@ -59,7 +54,7 @@ class ScaffoldTyeFileAction : AnAction() {
 
         if (tyeToolPath == null) {
             Notification(
-                "tye.notifications.balloon",
+                "Tye",
                 "Could not find tye global tool",
                 "Please specify the path to it.",
                 NotificationType.ERROR
@@ -77,7 +72,7 @@ class ScaffoldTyeFileAction : AnAction() {
 
         if (!settings.overwriteTyeFile && FileUtil.exists(pathToTyeFile.toString())) {
             Notification(
-                "tye.notifications.balloon",
+                "Tye",
                 "File tye.yaml already exists",
                 "Please remove the file or allow rewriting in the settings.",
                 NotificationType.WARNING
@@ -86,19 +81,11 @@ class ScaffoldTyeFileAction : AnAction() {
         }
 
         if (runScaffoldCommand(tyeToolPath, settings.overwriteTyeFile, project.basePath)) {
-            Notification(
-                "tye.notifications.balloon",
-                "File tye.yaml is scaffolded",
-                "",
-                NotificationType.INFORMATION
-            ).notify(project)
+            Notification("Tye", "File tye.yaml is scaffolded", "", NotificationType.INFORMATION)
+                .notify(project)
         } else {
-            Notification(
-                "tye.notifications.balloon",
-                "Tye file scaffolding failed",
-                "",
-                NotificationType.ERROR
-            ).notify(project)
+            Notification("Tye", "Tye file scaffolding failed", "", NotificationType.ERROR)
+                .notify(project)
         }
     }
 
