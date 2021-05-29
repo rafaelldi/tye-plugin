@@ -52,8 +52,20 @@
             <action id="com.github.rafaelldi.tyeplugin.actions.RefreshDashboardAction"
                     class="com.github.rafaelldi.tyeplugin.actions.RefreshDashboardAction"
                     text="Refresh"
-                    description="Refresh dashboard"
+                    description="Refresh service tree"
                     icon="AllIcons.Actions.Refresh">
+            </action>
+            <action id="com.github.rafaelldi.tyeplugin.actions.EditTyeSettingsAction"
+                    class="com.github.rafaelldi.tyeplugin.actions.EditTyeSettingsAction"
+                    text="Edit Configuration"
+                    description="Edit configuration"
+                    icon="AllIcons.General.Settings">
+            </action>
+            <action id="com.github.rafaelldi.tyeplugin.actions.OpenTyeWebDashboardAction"
+                    class="com.github.rafaelldi.tyeplugin.actions.OpenTyeWebDashboardAction"
+                    text="Web Dashboard"
+                    description="Open web dashboard"
+                    icon="AllIcons.General.Web">
             </action>
         </group>
     </actions>
