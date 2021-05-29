@@ -5,6 +5,7 @@
 ## [Unreleased]
 ### Added
 - Tool window with tye dashboard
+- Dialog to overwrite an existing file during scaffolding 
 ### Changed
 - Tye icons
 
