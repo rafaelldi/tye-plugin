@@ -1,18 +1,15 @@
 package com.github.rafaelldi.tyeplugin.actions
 
 import com.github.rafaelldi.tyeplugin.cli.TyeInitCliBuilder
-import com.github.rafaelldi.tyeplugin.settings.TyeSettingsConfigurable
 import com.github.rafaelldi.tyeplugin.settings.TyeSettingsState
 import com.github.rafaelldi.tyeplugin.util.TYE_FILE_NAME
 import com.github.rafaelldi.tyeplugin.util.isTyeGlobalToolInstalled
 import com.intellij.execution.configurations.GeneralCommandLine
 import com.intellij.execution.util.ExecUtil
 import com.intellij.notification.Notification
-import com.intellij.notification.NotificationAction
 import com.intellij.notification.NotificationType
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
-import com.intellij.openapi.options.ShowSettingsUtil
 import com.intellij.openapi.progress.ProgressIndicator
 import com.intellij.openapi.progress.ProgressManager
 import com.intellij.openapi.progress.Task
@@ -43,13 +40,8 @@ class ScaffoldTyeFileAction : AnAction() {
         indicator.text = "Scaffolding tye.yaml file"
 
         if (!isTyeGlobalToolInstalled()) {
-            Notification(
-                "tye.notifications.balloon",
-                "Tye is not installed",
-                "",
-                NotificationType.ERROR
-            )
-                .addAction(InstallTyeGlobalToolNotificationAction("Install tye tool"))
+            Notification("Tye", "Tye is not installed", "", NotificationType.ERROR)
+                .addAction(InstallTyeGlobalToolNotificationAction())
                 .notify(project)
             return
         }
@@ -59,16 +51,12 @@ class ScaffoldTyeFileAction : AnAction() {
 
         if (tyeToolPath == null) {
             Notification(
-                "tye.notifications.balloon",
+                "Tye",
                 "Could not find tye global tool",
                 "Please specify the path to it.",
                 NotificationType.ERROR
             )
-                .addAction(object : NotificationAction("Edit settings") {
-                    override fun actionPerformed(e: AnActionEvent, notification: Notification) {
-                        ShowSettingsUtil.getInstance().editConfigurable(project, TyeSettingsConfigurable(project))
-                    }
-                })
+                .addAction(EditSettingsNotificationAction())
                 .notify(project)
             return
         }
@@ -77,7 +65,7 @@ class ScaffoldTyeFileAction : AnAction() {
 
         if (!settings.overwriteTyeFile && FileUtil.exists(pathToTyeFile.toString())) {
             Notification(
-                "tye.notifications.balloon",
+                "Tye",
                 "File tye.yaml already exists",
                 "Please remove the file or allow rewriting in the settings.",
                 NotificationType.WARNING
@@ -86,19 +74,11 @@ class ScaffoldTyeFileAction : AnAction() {
         }
 
         if (runScaffoldCommand(tyeToolPath, settings.overwriteTyeFile, project.basePath)) {
-            Notification(
-                "tye.notifications.balloon",
-                "File tye.yaml is scaffolded",
-                "",
-                NotificationType.INFORMATION
-            ).notify(project)
+            Notification("Tye", "File tye.yaml is scaffolded", "", NotificationType.INFORMATION)
+                .notify(project)
         } else {
-            Notification(
-                "tye.notifications.balloon",
-                "Tye file scaffolding failed",
-                "",
-                NotificationType.ERROR
-            ).notify(project)
+            Notification("Tye", "Tye file scaffolding failed", "", NotificationType.ERROR)
+                .notify(project)
         }
     }
 

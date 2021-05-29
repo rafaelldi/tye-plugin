@@ -15,6 +15,7 @@ import com.intellij.util.xmlb.XmlSerializerUtil
 class TyeSettingsState : PersistentStateComponent<TyeSettingsState> {
 
     var tyeToolPath = findTyeGlobalToolPath()
+    var tyeHost = "http://localhost:8000"
     var overwriteTyeFile = false
 
     companion object {

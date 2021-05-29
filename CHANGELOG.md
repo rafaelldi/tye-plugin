@@ -3,8 +3,10 @@
 # tye-plugin Changelog
 
 ## [Unreleased]
+### Added
+- Tool window with tye dashboard
 ### Changed
-- Change `tye.yaml` icon
+- Tye icons
 
 ## [0.0.3]
 ### Added

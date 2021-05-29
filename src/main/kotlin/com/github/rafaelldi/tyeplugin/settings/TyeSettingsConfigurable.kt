@@ -21,12 +21,14 @@ class TyeSettingsConfigurable(private val project: Project) : Configurable {
     override fun apply() {
         val settings = TyeSettingsState.getInstance(project)
         settings.tyeToolPath = component.getTyeToolPath()
+        settings.tyeHost = component.getTyeHost()
         settings.overwriteTyeFile = component.getOverwriteTyeFile()
     }
 
     override fun reset() {
         val settings = TyeSettingsState.getInstance(project)
         component.setTyeToolPath(settings.tyeToolPath)
+        component.setTyeHost(settings.tyeHost)
         component.setOverwriteTyeFile(settings.overwriteTyeFile)
     }
 

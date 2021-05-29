@@ -9,7 +9,7 @@ import com.intellij.openapi.progress.ProgressManager
 import com.intellij.openapi.progress.Task
 import com.intellij.openapi.project.Project
 
-class InstallTyeGlobalToolNotificationAction(text: String?) : NotificationAction(text) {
+class InstallTyeGlobalToolNotificationAction : NotificationAction("Install tye tool") {
     override fun actionPerformed(e: AnActionEvent, notification: Notification) {
         val task = object : Task.Backgroundable(e.project, "Install tye global tool") {
             override fun run(indicator: ProgressIndicator) {

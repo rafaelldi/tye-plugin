@@ -13,7 +13,7 @@
    fill="none"
    version="1.1"
    id="svg4"
-   sodipodi:docname="tye.svg"
+   sodipodi:docname="tyeNode.svg"
    inkscape:version="1.0.2 (394de47547, 2021-03-26)">
   <metadata
      id="metadata10">
@@ -23,12 +23,21 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
   <defs
-     id="defs8" />
+     id="defs8">
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath853">
+      <path
+         id="path855"
+         style="fill:#000000;fill-opacity:1;stroke-width:0.738554"
+         d="M 0.5,0.68167757 V 12.318208 H 6.1250001 V 6.1363012 H 12.5 V 0.68167757 Z" />
+    </clipPath>
+  </defs>
   <sodipodi:namedview
      pagecolor="#ffffff"
      bordercolor="#666666"
@@ -42,13 +51,13 @@
      inkscape:window-height="1016"
      id="namedview6"
      showgrid="true"
-     inkscape:zoom="61.307692"
-     inkscape:cx="5.0745892"
-     inkscape:cy="14.347748"
+     inkscape:zoom="43.351085"
+     inkscape:cx="7.7620743"
+     inkscape:cy="8.452941"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
-     inkscape:current-layer="g841"
+     inkscape:current-layer="g842"
      inkscape:document-rotation="0"
      inkscape:object-nodes="false"
      inkscape:object-paths="true"
@@ -66,7 +75,8 @@
     <g
        id="g841">
       <g
-         id="g850">
+         id="g850"
+         clip-path="url(#clipPath853)">
         <path
            id="path837"
            style="fill:#6e6e6e;fill-opacity:1;stroke-width:0.950319"
@@ -103,6 +113,16 @@
              y="3.2271686" />
         </g>
       </g>
+      <rect
+         width="5.625"
+         height="5.4546232"
+         x="6.875"
+         y="6.8635845"
+         fill="#40b6e0"
+         fill-opacity="0.6"
+         fill-rule="evenodd"
+         id="rect2"
+         style="fill:#34a2f2;fill-opacity:1;stroke-width:0.461596" />
     </g>
   </g>
 </svg>

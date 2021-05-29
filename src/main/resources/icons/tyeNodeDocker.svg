@@ -13,7 +13,7 @@
    fill="none"
    version="1.1"
    id="svg4"
-   sodipodi:docname="tye.svg"
+   sodipodi:docname="tyeNodeDocker.svg"
    inkscape:version="1.0.2 (394de47547, 2021-03-26)">
   <metadata
      id="metadata10">
@@ -23,12 +23,21 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
   <defs
-     id="defs8" />
+     id="defs8">
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath869">
+      <path
+         id="path871"
+         style="fill:#000000;stroke-width:0.738554"
+         d="M 0.5,0.68167757 V 12.318208 H 4.6250001 V 5.7726596 H 12.5 V 0.68167757 Z" />
+    </clipPath>
+  </defs>
   <sodipodi:namedview
      pagecolor="#ffffff"
      bordercolor="#666666"
@@ -42,9 +51,9 @@
      inkscape:window-height="1016"
      id="namedview6"
      showgrid="true"
-     inkscape:zoom="61.307692"
-     inkscape:cx="5.0745892"
-     inkscape:cy="14.347748"
+     inkscape:zoom="43.351085"
+     inkscape:cx="12.006384"
+     inkscape:cy="8.5083003"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
@@ -66,7 +75,8 @@
     <g
        id="g841">
       <g
-         id="g850">
+         id="g850"
+         clip-path="url(#clipPath869)">
         <path
            id="path837"
            style="fill:#6e6e6e;fill-opacity:1;stroke-width:0.950319"
@@ -102,6 +112,41 @@
              x="1.25"
              y="3.2271686" />
         </g>
+      </g>
+      <g
+         fill="none"
+         fill-rule="evenodd"
+         id="g12"
+         transform="matrix(0.49933547,0,0,0.48421102,4.7334795,5.078913)">
+        <g
+           transform="translate(0.5,5.6)"
+           id="g8">
+          <path
+             fill="#34a2f2"
+             d="M 14.85003,2.4387013 C 14.811309,2.4079521 14.44985,2.135025 13.687572,2.135025 13.486294,2.1359041 13.285435,2.1531668 13.086953,2.1866533 12.939421,1.1754246 12.103377,0.6823976 12.065894,0.66027972 L 11.861199,0.54223776 11.726573,0.7365035 c -0.122136,0.18905168 -0.220384,0.3921232 -0.292725,0.6045655 -0.02751,0.080804 -0.05128,0.162964 -0.07119,0.2462237 -0.136483,0.5772428 -0.05349,1.1194206 0.239741,1.5829371 C 11.248312,3.3675524 10.6803,3.4161239 10.565355,3.4204196 H 0.5 C 0.516624,4.8010252 0.68744667,5.85944 1.012468,6.595664 1.5,7.7 2.042777,8.40941 2.945414,8.83972 3.848051,9.27003 4.4038961,9.415924 5.6979021,9.415924 6.2824775,9.4177622 6.865954,9.3648551 7.4406793,9.257942 8.2396004,9.1112487 9.0083716,8.8320077 9.7151848,8.431728 10.297582,8.0944653 10.821738,7.6654147 11.267393,7.161079 c 0.745055,-0.8434166 1.188911,-2.3827373 1.519001,-3.2175226 0.04425,0 0.08853,0 0.131548,0 0.815744,0 1.317383,-0.3264335 1.594006,-0.59998 0.183836,-0.1744655 0.327353,-0.386993 0.42048,-0.6227173 l 0.0584,-0.1708891 z"
+             id="path2" />
+          <circle
+             cx="4.75"
+             cy="5.6500001"
+             r="1.25"
+             fill="#ffffff"
+             id="circle4" />
+          <circle
+             cx="4.75"
+             cy="5.6500001"
+             r="1"
+             fill="#34a2f2"
+             fill-rule="nonzero"
+             id="circle6" />
+        </g>
+        <rect
+           width="5"
+           height="5"
+           x="4"
+           y="3"
+           fill="#34a2f2"
+           fill-rule="nonzero"
+           id="rect10" />
       </g>
     </g>
   </g>

@@ -4,6 +4,8 @@
 formatting:
   Indentation:
     continuationIndentSize: 8
+  ParameterListWrapping:
+    indentSize: 4
 
 style:
   ReturnCount:
