@@ -62,7 +62,7 @@ class TyeSettingsComponent {
             add(tyeToolPathField)
 
             val tyeHostTextField = JBTextField()
-            tyeHostField =  LabeledComponent.create(tyeHostTextField, "Tye host")
+            tyeHostField = LabeledComponent.create(tyeHostTextField, "Tye host")
             tyeHostField.labelLocation = BorderLayout.WEST
             add(tyeHostField)
 

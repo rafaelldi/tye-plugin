@@ -1,18 +1,15 @@
 package com.github.rafaelldi.tyeplugin.actions
 
 import com.github.rafaelldi.tyeplugin.cli.TyeInitCliBuilder
-import com.github.rafaelldi.tyeplugin.settings.TyeSettingsConfigurable
 import com.github.rafaelldi.tyeplugin.settings.TyeSettingsState
 import com.github.rafaelldi.tyeplugin.util.TYE_FILE_NAME
 import com.github.rafaelldi.tyeplugin.util.isTyeGlobalToolInstalled
 import com.intellij.execution.configurations.GeneralCommandLine
 import com.intellij.execution.util.ExecUtil
 import com.intellij.notification.Notification
-import com.intellij.notification.NotificationAction
 import com.intellij.notification.NotificationType
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
-import com.intellij.openapi.options.ShowSettingsUtil
 import com.intellij.openapi.progress.ProgressIndicator
 import com.intellij.openapi.progress.ProgressManager
 import com.intellij.openapi.progress.Task
@@ -44,7 +41,7 @@ class ScaffoldTyeFileAction : AnAction() {
 
         if (!isTyeGlobalToolInstalled()) {
             Notification("Tye", "Tye is not installed", "", NotificationType.ERROR)
-                .addAction(InstallTyeGlobalToolNotificationAction("Install tye tool"))
+                .addAction(InstallTyeGlobalToolNotificationAction())
                 .notify(project)
             return
         }
@@ -59,11 +56,7 @@ class ScaffoldTyeFileAction : AnAction() {
                 "Please specify the path to it.",
                 NotificationType.ERROR
             )
-                .addAction(object : NotificationAction("Edit settings") {
-                    override fun actionPerformed(e: AnActionEvent, notification: Notification) {
-                        ShowSettingsUtil.getInstance().editConfigurable(project, TyeSettingsConfigurable(project))
-                    }
-                })
+                .addAction(EditSettingsNotificationAction())
                 .notify(project)
             return
         }
