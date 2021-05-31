@@ -37,7 +37,7 @@ class TyeApiService(private val project: Project) {
             )
                 .addAction(EditSettingsNotificationAction())
                 .notify(project)
-            log.error("Cannot update service tree", e)
+            log.debug("Cannot update service tree", e)
             return
         }
 
