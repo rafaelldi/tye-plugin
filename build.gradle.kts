@@ -18,7 +18,7 @@ plugins {
     // ktlint linter - read more: https://github.com/JLLeitschuh/ktlint-gradle
     id("org.jlleitschuh.gradle.ktlint") version "10.0.0"
     // kotlinx.serialization - read more: https://github.com/Kotlin/kotlinx.serialization
-    id("org.jetbrains.kotlin.plugin.serialization") version "1.4.32"
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.5.10"
 }
 
 group = properties("pluginGroup")
@@ -30,10 +30,10 @@ repositories {
 }
 dependencies {
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.17.1")
-    implementation("io.ktor:ktor-client-core:1.5.3")
-    implementation("io.ktor:ktor-client-cio:1.5.3")
-    implementation("io.ktor:ktor-client-serialization:1.5.3")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0-RC")
+    implementation("io.ktor:ktor-client-core:1.6.0")
+    implementation("io.ktor:ktor-client-cio:1.6.0")
+    implementation("io.ktor:ktor-client-serialization:1.6.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0-native-mt")
 }
 
 // Configure gradle-intellij-plugin plugin.
