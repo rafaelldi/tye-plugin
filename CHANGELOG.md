@@ -3,6 +3,7 @@
 # tye-plugin Changelog
 
 ## [Unreleased]
+## [0.1.0]
 ### Added
 - Tool window with tye dashboard
 - Dialog to overwrite an existing file during scaffolding 
