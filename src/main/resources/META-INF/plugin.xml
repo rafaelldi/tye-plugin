@@ -51,7 +51,7 @@
             <action id="com.github.rafaelldi.tyeplugin.actions.RefreshDashboardAction"
                     class="com.github.rafaelldi.tyeplugin.actions.RefreshDashboardAction"
                     text="Refresh"
-                    description="Refresh service tree"
+                    description="Refresh tye dashboard"
                     icon="AllIcons.Actions.Refresh">
             </action>
             <action id="com.github.rafaelldi.tyeplugin.actions.EditTyeSettingsAction"

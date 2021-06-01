@@ -13,8 +13,15 @@ import kotlinx.coroutines.runBlocking
 class RefreshDashboardAction : AnAction() {
 
     override fun actionPerformed(e: AnActionEvent) {
-        val task = object : Task.Backgroundable(e.project, "Update dashboard") {
+        val task = object : Task.Backgroundable(e.project, "Refresh dashboard") {
             override fun run(indicator: ProgressIndicator) {
+                if (indicator.isCanceled) {
+                    return
+                }
+
+                indicator.isIndeterminate = true
+                indicator.text = "Refreshing tye dashboard"
+
                 updateDashboard(project!!)
             }
         }

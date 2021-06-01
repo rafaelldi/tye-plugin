@@ -10,7 +10,6 @@ import com.intellij.notification.Notification
 import com.intellij.notification.NotificationType
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
-import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.progress.ProgressIndicator
 import com.intellij.openapi.progress.ProgressManager
 import com.intellij.openapi.progress.Task
@@ -21,47 +20,19 @@ import com.intellij.openapi.util.io.FileUtil
 import java.nio.file.Paths
 
 class ScaffoldTyeFileAction : AnAction() {
-    private val log = Logger.getInstance(ScaffoldTyeFileAction::class.java)
-
     override fun update(e: AnActionEvent) {
         e.presentation.isEnabledAndVisible = e.project != null
     }
 
     override fun actionPerformed(e: AnActionEvent) {
-        val settings = TyeSettingsState.getInstance(e.project!!)
-        val pathToTyeFile = Paths.get(e.project!!.basePath!!, TYE_FILE_NAME)
-        if (!settings.overwriteTyeFile && FileUtil.exists(pathToTyeFile.toString())) {
-            val result = showOkCancelDialog(
-                "Override?",
-                "File tye.yaml already exists. Override it?",
-                "Ok"
-            )
-            if (result != Messages.OK) return
-        }
-
-        val task = object : Task.Backgroundable(e.project, "Scaffold tye file") {
-            override fun run(indicator: ProgressIndicator) {
-                scaffoldTyeFile(e.project!!, settings, indicator)
-            }
-        }
-        ProgressManager.getInstance().run(task)
-    }
-
-    private fun scaffoldTyeFile(project: Project, settings: TyeSettingsState, indicator: ProgressIndicator) {
-        if (indicator.isCanceled) {
-            return
-        }
-
-        indicator.isIndeterminate = true
-        indicator.text = "Scaffolding tye.yaml file"
-
         if (!isTyeGlobalToolInstalled()) {
             Notification("Tye", "Tye is not installed", "", NotificationType.ERROR)
                 .addAction(InstallTyeGlobalToolNotificationAction())
-                .notify(project)
+                .notify(e.project)
             return
         }
 
+        val settings = TyeSettingsState.getInstance(e.project!!)
         val tyeToolPath = settings.tyeToolPath
         if (tyeToolPath == null) {
             Notification(
@@ -71,11 +42,40 @@ class ScaffoldTyeFileAction : AnAction() {
                 NotificationType.ERROR
             )
                 .addAction(EditSettingsNotificationAction())
-                .notify(project)
+                .notify(e.project)
             return
         }
 
-        if (runScaffoldCommand(tyeToolPath, settings.overwriteTyeFile, project.basePath!!)) {
+        var overwriteFile = settings.overwriteTyeFile
+        val pathToTyeFile = Paths.get(e.project!!.basePath!!, TYE_FILE_NAME)
+        if (!overwriteFile && FileUtil.exists(pathToTyeFile.toString())) {
+            val result = showOkCancelDialog(
+                "Overwrite?",
+                "File tye.yaml already exists. Overwrite it?",
+                "Ok"
+            )
+
+            if (result == Messages.OK) overwriteFile = true
+            else return
+        }
+
+        val task = object : Task.Backgroundable(e.project, "Scaffold tye file") {
+            override fun run(indicator: ProgressIndicator) {
+                if (indicator.isCanceled) {
+                    return
+                }
+
+                indicator.isIndeterminate = true
+                indicator.text = "Scaffolding tye.yaml file"
+
+                scaffoldTyeFile(e.project!!, tyeToolPath, overwriteFile)
+            }
+        }
+        ProgressManager.getInstance().run(task)
+    }
+
+    private fun scaffoldTyeFile(project: Project, tyeToolPath: String, overwriteFile: Boolean) {
+        if (runScaffoldCommand(tyeToolPath, overwriteFile, project.basePath!!)) {
             Notification("Tye", "File tye.yaml is scaffolded", "", NotificationType.INFORMATION)
                 .notify(project)
         } else {
@@ -98,8 +98,6 @@ class ScaffoldTyeFileAction : AnAction() {
             .withParameters(arguments)
 
         val output = ExecUtil.execAndGetOutput(commandLine)
-
-        if (output.exitCode != 0) log.error("Cannot scaffold tye file", output.stderr)
 
         return output.exitCode == 0
     }
