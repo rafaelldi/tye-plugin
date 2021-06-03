@@ -3,6 +3,9 @@
 # tye-plugin Changelog
 
 ## [Unreleased]
+### Changed
+- Plugin icon
+
 ## [0.1.0]
 ### Added
 - Tool window with tye dashboard
