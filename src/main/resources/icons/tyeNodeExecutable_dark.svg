@@ -6,7 +6,7 @@
    fill="none"
    version="1.1"
    id="svg4"
-   sodipodi:docname="tyeNode.svg"
+   sodipodi:docname="tyeNodeExecutable_dark.svg"
    inkscape:version="1.1 (ce6663b3b7, 2021-05-25)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
@@ -31,11 +31,11 @@
      id="defs8">
     <clipPath
        clipPathUnits="userSpaceOnUse"
-       id="clipPath853">
+       id="clipPath984">
       <path
-         id="path855"
-         style="fill:#000000;fill-opacity:1;stroke-width:0.738554"
-         d="M 0.5,0.68167757 V 12.318208 H 6.1250001 V 6.1363012 H 12.5 V 0.68167757 Z" />
+         id="path986"
+         style="fill:#000000;stroke-width:0.738554"
+         d="M 0.5,0.68167757 V 12.318208 h 12 v -0.01562 H 8.0000002 V 5.7726596 H 12.5 V 0.68167757 Z" />
     </clipPath>
   </defs>
   <sodipodi:namedview
@@ -52,14 +52,14 @@
      id="namedview6"
      showgrid="true"
      inkscape:zoom="43.351085"
-     inkscape:cx="3.1371764"
-     inkscape:cy="8.454229"
+     inkscape:cx="10.4957"
+     inkscape:cy="8.7771736"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
      inkscape:current-layer="g841"
      inkscape:document-rotation="0"
-     inkscape:object-nodes="false"
+     inkscape:object-nodes="true"
      inkscape:object-paths="true"
      inkscape:snap-intersection-paths="true"
      inkscape:snap-smooth-nodes="false"
@@ -77,15 +77,15 @@
        id="g841">
       <g
          id="g850"
-         clip-path="url(#clipPath853)">
+         clip-path="url(#clipPath984)">
         <path
            id="path837"
-           style="fill:#6e6e6e;fill-opacity:1;stroke-width:0.950319"
+           style="fill:#afb1b3;fill-opacity:1;stroke-width:0.950319"
            d="M 6.4375612,2.8636312 A 4.1250001,3.6363636 0 0 0 2.3750001,6.4999948 4.1250001,3.6363636 0 0 0 6.5000002,10.136358 4.1250001,3.6363636 0 0 0 10.625,6.4999948 4.1250001,3.6363636 0 0 0 6.5000002,2.8636312 a 4.1250001,3.6363636 0 0 0 -0.062439,0 z m 0.062439,2.0454545 A 1.8046876,1.5909091 0 0 1 8.3046879,6.4999948 1.8046876,1.5909091 0 0 1 6.5000003,8.0909039 1.8046876,1.5909091 0 0 1 4.6953128,6.4999948 1.8046876,1.5909091 0 0 1 6.5000002,4.9090857 Z" />
         <g
            id="g842">
           <rect
-             style="fill:#6e6e6e;fill-opacity:1;stroke-width:1.13961"
+             style="fill:#afb1b3;fill-opacity:1;stroke-width:1.13961"
              id="rect836"
              width="3.75"
              height="1.8182079"
@@ -99,14 +99,14 @@
              x="8"
              y="7.9545093" />
           <rect
-             style="fill:#6e6e6e;fill-opacity:1;stroke-width:1.13962"
+             style="fill:#afb1b3;fill-opacity:1;stroke-width:1.13962"
              id="rect836-6"
              width="3.75"
              height="1.8182079"
              x="1.25"
              y="7.9545093" />
           <rect
-             style="fill:#6e6e6e;fill-opacity:1;stroke-width:1.13962"
+             style="fill:#afb1b3;fill-opacity:1;stroke-width:1.13962"
              id="rect836-7"
              width="3.75"
              height="1.8182079"
@@ -114,16 +114,12 @@
              y="3.2271686" />
         </g>
       </g>
-      <rect
-         width="5.625"
-         height="5.4546232"
-         x="6.875"
-         y="6.8635845"
-         fill="#40b6e0"
-         fill-opacity="0.6"
-         fill-rule="evenodd"
-         id="rect2"
-         style="fill:#389fd6;fill-opacity:1;stroke-width:0.461596" />
+      <path
+         fill="#afb1b3"
+         d="m 12.449443,9.2833893 0.0043,0.0041 L 9.3430074,12.303973 8.548009,11.533087 10.89748,9.2547793 8.5773958,7.0049673 9.3723694,6.2340732 12.483187,9.2506673 Z"
+         id="path4"
+         style="fill:#3592c4;fill-opacity:1;stroke-width:0.738554"
+         sodipodi:nodetypes="ccccccccc" />
     </g>
   </g>
 </svg>

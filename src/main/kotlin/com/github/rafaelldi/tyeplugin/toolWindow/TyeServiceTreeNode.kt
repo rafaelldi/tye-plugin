@@ -5,6 +5,7 @@ import com.intellij.ui.ColoredTreeCellRenderer
 import icons.TyeIcons.TYE_NODE
 import icons.TyeIcons.TYE_NODE_DOCKER
 import icons.TyeIcons.TYE_NODE_DOT_NET
+import icons.TyeIcons.TYE_NODE_EXECUTABLE
 import javax.swing.tree.DefaultMutableTreeNode
 
 sealed class TyeServiceTreeNode(val name: String?, val service: Service?) : DefaultMutableTreeNode() {
@@ -46,7 +47,7 @@ sealed class TyeServiceTreeNode(val name: String?, val service: Service?) : Defa
     class Executable(name: String?, service: Service) : TyeServiceTreeNode(name, service) {
         override fun render(renderer: ColoredTreeCellRenderer) {
             renderer.append("$name")
-            renderer.icon = TYE_NODE
+            renderer.icon = TYE_NODE_EXECUTABLE
         }
     }
 
