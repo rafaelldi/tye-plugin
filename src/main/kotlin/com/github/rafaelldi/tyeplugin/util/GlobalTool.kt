@@ -1,10 +1,13 @@
 package com.github.rafaelldi.tyeplugin.util
 
 import com.intellij.execution.configurations.GeneralCommandLine
+import com.intellij.execution.process.ProcessOutput
 import com.intellij.execution.util.ExecUtil
 import com.intellij.openapi.util.SystemInfo
 import com.intellij.openapi.util.io.FileUtil
 import com.intellij.util.EnvironmentUtil
+
+const val TYE_ACTUAL_VERSION = "0.6.0-alpha.21070.5"
 
 fun isDotNetInstalled(): Boolean {
     val commandLine = GeneralCommandLine()
@@ -20,11 +23,7 @@ fun isDotNetInstalled(): Boolean {
 }
 
 fun isTyeGlobalToolInstalled(): Boolean {
-    val commandLine = GeneralCommandLine()
-        .withParentEnvironmentType(GeneralCommandLine.ParentEnvironmentType.CONSOLE)
-        .withExePath("dotnet")
-        .withParameters("tool", "list", "--global")
-    val output = ExecUtil.execAndGetOutput(commandLine)
+    val output = getListOfGlobalTools()
 
     if (output.exitCode != 0) return false
 
@@ -32,11 +31,39 @@ fun isTyeGlobalToolInstalled(): Boolean {
     return regex.containsMatchIn(output.stdout)
 }
 
+fun getTyeGlobalToolVersion(): ToolVersion? {
+    val output = getListOfGlobalTools()
+
+    if (output.exitCode != 0) return null
+
+    val regex = Regex("^microsoft\\.tye\\s+([\\d.]+)", RegexOption.MULTILINE)
+    val versionString = regex.find(output.stdout)?.groups?.get(1)?.value ?: return null
+
+    return ToolVersion(versionString)
+}
+
+private fun getListOfGlobalTools(): ProcessOutput {
+    val commandLine = GeneralCommandLine()
+        .withParentEnvironmentType(GeneralCommandLine.ParentEnvironmentType.CONSOLE)
+        .withExePath("dotnet")
+        .withParameters("tool", "list", "--global")
+    return ExecUtil.execAndGetOutput(commandLine)
+}
+
 fun installTyeGlobalTool(): Boolean {
     val commandLine = GeneralCommandLine()
         .withParentEnvironmentType(GeneralCommandLine.ParentEnvironmentType.CONSOLE)
         .withExePath("dotnet")
-        .withParameters("tool", "install", "Microsoft.Tye", "--global", "--version", "0.6.0-alpha.21070.5")
+        .withParameters("tool", "install", "Microsoft.Tye", "--global", "--version", TYE_ACTUAL_VERSION)
+    val output = ExecUtil.execAndGetOutput(commandLine)
+    return output.exitCode == 0
+}
+
+fun updateTyeGlobalTool(): Boolean {
+    val commandLine = GeneralCommandLine()
+        .withParentEnvironmentType(GeneralCommandLine.ParentEnvironmentType.CONSOLE)
+        .withExePath("dotnet")
+        .withParameters("tool", "update", "Microsoft.Tye", "--global", "--version", TYE_ACTUAL_VERSION)
     val output = ExecUtil.execAndGetOutput(commandLine)
     return output.exitCode == 0
 }

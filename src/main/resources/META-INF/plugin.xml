@@ -9,6 +9,9 @@
     <depends>org.jetbrains.plugins.yaml</depends>
 
     <extensions defaultExtensionNs="com.intellij">
+        <!-- Startup -->
+        <backgroundPostStartupActivity implementation="com.github.rafaelldi.tyeplugin.startup.TyeUpdateGlobalToolStartupActivity"/>
+
         <!-- Files -->
         <fileType implementationClass="com.github.rafaelldi.tyeplugin.file.TyeFileType" name="Tye" language="yaml" fileNames="tye.yaml" />
 

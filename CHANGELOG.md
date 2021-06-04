@@ -3,6 +3,9 @@
 # tye-plugin Changelog
 
 ## [Unreleased]
+### Added
+- Check tye version at startup
+- Action to update tye
 ### Changed
 - Plugin icon
 
