@@ -8,6 +8,7 @@
 - Action to update tye
 ### Changed
 - Plugin icon
+- Update tye version to 0.7.0-alpha.21279.2
 
 ## [0.1.0]
 ### Added
