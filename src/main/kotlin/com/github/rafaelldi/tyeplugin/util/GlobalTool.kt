@@ -7,7 +7,7 @@ import com.intellij.openapi.util.SystemInfo
 import com.intellij.openapi.util.io.FileUtil
 import com.intellij.util.EnvironmentUtil
 
-const val TYE_ACTUAL_VERSION = "0.6.0-alpha.21070.5"
+const val TYE_ACTUAL_VERSION = "0.7.0-alpha.21279.2"
 
 fun isDotNetInstalled(): Boolean {
     val commandLine = GeneralCommandLine()
