@@ -15,14 +15,14 @@ import com.intellij.util.messages.MessageBus
 import java.net.ConnectException
 
 @Service
-class TyeApiService(private val project: Project) {
+class TyeApplicationService(private val project: Project) {
 
     private val client: TyeApiClient = TyeApiClient()
     private val messageBus: MessageBus = project.messageBus
     private val tye: Tye = Tye()
-    private val log = Logger.getInstance(TyeApiService::class.java)
+    private val log = Logger.getInstance(TyeApplicationService::class.java)
 
-    suspend fun updateTye() {
+    suspend fun update() {
         try {
             val settings = TyeSettingsState.getInstance(project)
             val servicesDto = client.getServices(settings.tyeHost)
@@ -45,5 +45,23 @@ class TyeApiService(private val project: Project) {
         publisher.tyeServicesUpdated()
     }
 
-    fun getTye(): Tye = tye
+    suspend fun shutdown() {
+        try {
+            val settings = TyeSettingsState.getInstance(project)
+            client.controlPlaneShutdown(settings.tyeHost)
+        } catch (e: ConnectException) {
+            Notification(
+                "Tye",
+                "Cannot connect to tye host",
+                "Please check if the address is correct",
+                NotificationType.ERROR
+            )
+                .addAction(EditSettingsNotificationAction())
+                .notify(project)
+            log.debug("Cannot shutdown tye host", e)
+            return
+        }
+    }
+
+    fun getServices(): List<com.github.rafaelldi.tyeplugin.model.Service> = tye.getServices()
 }

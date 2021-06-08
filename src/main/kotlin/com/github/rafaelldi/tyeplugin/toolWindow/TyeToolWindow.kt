@@ -3,8 +3,7 @@ package com.github.rafaelldi.tyeplugin.toolWindow
 import com.github.rafaelldi.tyeplugin.messaging.TyeServicesNotifier
 import com.github.rafaelldi.tyeplugin.messaging.TyeServicesNotifier.Companion.TOPIC
 import com.github.rafaelldi.tyeplugin.model.Service
-import com.github.rafaelldi.tyeplugin.model.Tye
-import com.github.rafaelldi.tyeplugin.services.TyeApiService
+import com.github.rafaelldi.tyeplugin.services.TyeApplicationService
 import com.github.rafaelldi.tyeplugin.toolWindow.TyeServiceTreeNode.Factory.create
 import com.intellij.openapi.actionSystem.ActionGroup
 import com.intellij.openapi.actionSystem.ActionManager
@@ -31,7 +30,7 @@ class TyeToolWindow(project: Project) : SimpleToolWindowPanel(false) {
     private lateinit var portBindingsTableModel: DefaultTableModel
     private lateinit var environmentVariablesTableModel: DefaultTableModel
 
-    private var tyeApiService: TyeApiService = project.getService(TyeApiService::class.java)
+    private var tyeApplicationService: TyeApplicationService = project.getService(TyeApplicationService::class.java)
 
     init {
         with(project.messageBus.connect()) {
@@ -39,8 +38,8 @@ class TyeToolWindow(project: Project) : SimpleToolWindowPanel(false) {
                 TOPIC,
                 object : TyeServicesNotifier {
                     override fun tyeServicesUpdated() {
-                        val tye = tyeApiService.getTye()
-                        updateTree(tye)
+                        val services = tyeApplicationService.getServices()
+                        updateTree(services)
                     }
                 }
             )
@@ -95,11 +94,11 @@ class TyeToolWindow(project: Project) : SimpleToolWindowPanel(false) {
 
     private fun root(): DefaultMutableTreeNode = treeModel.root as DefaultMutableTreeNode
 
-    private fun updateTree(tye: Tye) {
+    private fun updateTree(services: List<Service>) {
         val root = root()
         root.removeAllChildren()
 
-        for (service in tye.getServices()) {
+        for (service in services) {
             val serviceNode: DefaultMutableTreeNode = create(service)
             treeModel.insertNodeInto(serviceNode, root, 0)
             root.add(serviceNode)

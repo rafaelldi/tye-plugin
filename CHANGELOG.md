@@ -5,7 +5,8 @@
 ## [Unreleased]
 ### Added
 - Check tye version at startup
-- Action to update tye
+- Action to update tye global tool
+- Action to perform shutdown tye host
 ### Changed
 - Plugin icon
 - Update tye version to 0.7.0-alpha.21279.2

@@ -57,6 +57,12 @@
                     description="Refresh tye dashboard"
                     icon="AllIcons.Actions.Refresh">
             </action>
+            <action id="com.github.rafaelldi.tyeplugin.actions.TyeHostShutdownAction"
+                    class="com.github.rafaelldi.tyeplugin.actions.TyeHostShutdownAction"
+                    text="Shutdown"
+                    description="Tye host shutdown"
+                    icon="AllIcons.Actions.Suspend">
+            </action>
             <action id="com.github.rafaelldi.tyeplugin.actions.EditTyeSettingsAction"
                     class="com.github.rafaelldi.tyeplugin.actions.EditTyeSettingsAction"
                     text="Edit Configuration"
