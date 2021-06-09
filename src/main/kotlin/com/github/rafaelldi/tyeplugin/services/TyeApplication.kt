@@ -58,7 +58,7 @@ class TyeApplication(private val project: Project) {
     }
 
     suspend fun update() {
-        if (!isConnected){
+        if (!isConnected) {
             Notification("Tye", "Please connect to tye", "", NotificationType.ERROR)
                 .notify(project)
             return

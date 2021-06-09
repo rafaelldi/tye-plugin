@@ -17,6 +17,7 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.Messages
 import com.intellij.openapi.ui.showOkCancelDialog
 import com.intellij.openapi.util.io.FileUtil
+import com.intellij.openapi.vfs.VfsUtil
 import java.nio.file.Paths
 
 class ScaffoldTyeFileAction : AnAction() {
@@ -25,13 +26,6 @@ class ScaffoldTyeFileAction : AnAction() {
     }
 
     override fun actionPerformed(e: AnActionEvent) {
-        if (!isTyeGlobalToolInstalled()) {
-            Notification("Tye", "Tye is not installed", "", NotificationType.ERROR)
-                .addAction(InstallTyeGlobalToolNotificationAction())
-                .notify(e.project)
-            return
-        }
-
         val settings = TyeSettingsState.getInstance(e.project!!)
         val tyeToolPath = settings.tyeToolPath
         if (tyeToolPath == null) {
@@ -65,6 +59,13 @@ class ScaffoldTyeFileAction : AnAction() {
                     return
                 }
 
+                if (!isTyeGlobalToolInstalled()) {
+                    Notification("Tye", "Tye is not installed", "", NotificationType.ERROR)
+                        .addAction(InstallTyeGlobalToolNotificationAction())
+                        .notify(e.project)
+                    return
+                }
+
                 indicator.isIndeterminate = true
                 indicator.text = "Scaffolding tye.yaml file"
 
@@ -78,6 +79,8 @@ class ScaffoldTyeFileAction : AnAction() {
         if (runScaffoldCommand(tyeToolPath, overwriteFile, project.basePath!!)) {
             Notification("Tye", "File tye.yaml is scaffolded", "", NotificationType.INFORMATION)
                 .notify(project)
+
+            VfsUtil.findFile(Paths.get(project.basePath!!, TYE_FILE_NAME), true)
         } else {
             Notification("Tye", "Tye file scaffolding failed", "", NotificationType.ERROR)
                 .notify(project)

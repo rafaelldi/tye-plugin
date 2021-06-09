@@ -96,7 +96,8 @@ class TyeToolWindow(project: Project) : SimpleToolWindowPanel(false) {
 
     private fun initActionToolbar() {
         val actionManager = ActionManager.getInstance()
-        val actionGroup = actionManager.getAction("com.github.rafaelldi.tyeplugin.actions.TyeToolWindowGroupedActions") as ActionGroup
+        val actionGroup =
+            actionManager.getAction("com.github.rafaelldi.tyeplugin.actions.TyeToolWindowGroupedActions") as ActionGroup
         val actionToolbar = actionManager.createActionToolbar("TyeActionToolbar", actionGroup, true)
         toolbar = actionToolbar.component
     }

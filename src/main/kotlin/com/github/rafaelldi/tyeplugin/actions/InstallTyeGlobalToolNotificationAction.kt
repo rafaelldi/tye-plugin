@@ -10,14 +10,14 @@ import com.intellij.openapi.project.Project
 
 class InstallTyeGlobalToolNotificationAction : NotificationAction("Install tye tool") {
     override fun actionPerformed(e: AnActionEvent, notification: Notification) {
-        if (!checkDotNetInstalled(e.project!!)) return
-        if (!checkTyeNotInstalled(e.project!!)) return
-
         val task = object : Task.Backgroundable(e.project, "Install tye global tool") {
             override fun run(indicator: ProgressIndicator) {
                 if (indicator.isCanceled) {
                     return
                 }
+
+                if (!checkDotNetInstalled(e.project!!)) return
+                if (!checkTyeNotInstalled(e.project!!)) return
 
                 indicator.isIndeterminate = true
                 indicator.text = "Installing tye global tool"
