@@ -10,7 +10,7 @@ import com.intellij.openapi.progress.Task
 import com.intellij.openapi.project.Project
 import kotlinx.coroutines.runBlocking
 
-class RefreshDashboardAction : AnAction() {
+class TyeApplicationShutdownAction : AnAction() {
     override fun update(e: AnActionEvent) {
         if (e.project != null) {
             val tyeApplication = e.project!!.service<TyeApplication>()
@@ -21,25 +21,25 @@ class RefreshDashboardAction : AnAction() {
     }
 
     override fun actionPerformed(e: AnActionEvent) {
-        val task = object : Task.Backgroundable(e.project, "Refresh dashboard") {
+        val task = object : Task.Backgroundable(e.project, "Tye shutdown") {
             override fun run(indicator: ProgressIndicator) {
                 if (indicator.isCanceled) {
                     return
                 }
 
                 indicator.isIndeterminate = true
-                indicator.text = "Refreshing tye dashboard"
+                indicator.text = "Tye application is stopping"
 
-                updateDashboard(project!!)
+                shutdown(project!!)
             }
         }
         ProgressManager.getInstance().run(task)
     }
 
-    private fun updateDashboard(project: Project) {
+    private fun shutdown(project: Project) {
         val tyeApplication = project.service<TyeApplication>()
         runBlocking {
-            tyeApplication.update()
+            tyeApplication.shutdown()
         }
     }
 }

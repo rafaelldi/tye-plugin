@@ -1,9 +1,9 @@
 package com.github.rafaelldi.tyeplugin.toolWindow
 
-import com.github.rafaelldi.tyeplugin.messaging.TyeServicesNotifier
-import com.github.rafaelldi.tyeplugin.messaging.TyeServicesNotifier.Companion.TOPIC
+import com.github.rafaelldi.tyeplugin.messaging.TyeApplicationNotifier
+import com.github.rafaelldi.tyeplugin.messaging.TyeApplicationNotifier.Companion.TOPIC
 import com.github.rafaelldi.tyeplugin.model.Service
-import com.github.rafaelldi.tyeplugin.services.TyeApplicationService
+import com.github.rafaelldi.tyeplugin.services.TyeApplication
 import com.github.rafaelldi.tyeplugin.toolWindow.TyeServiceTreeNode.Factory.create
 import com.intellij.openapi.actionSystem.ActionGroup
 import com.intellij.openapi.actionSystem.ActionManager
@@ -30,16 +30,26 @@ class TyeToolWindow(project: Project) : SimpleToolWindowPanel(false) {
     private lateinit var portBindingsTableModel: DefaultTableModel
     private lateinit var environmentVariablesTableModel: DefaultTableModel
 
-    private var tyeApplicationService: TyeApplicationService = project.getService(TyeApplicationService::class.java)
+    private var tyeApplication: TyeApplication = project.getService(TyeApplication::class.java)
 
     init {
         with(project.messageBus.connect()) {
             subscribe(
                 TOPIC,
-                object : TyeServicesNotifier {
-                    override fun tyeServicesUpdated() {
-                        val services = tyeApplicationService.getServices()
+                object : TyeApplicationNotifier {
+                    override fun connectedToTyeHost() {
+                        val services = tyeApplication.getServices()
                         updateTree(services)
+                    }
+
+                    override fun tyeApplicationUpdated() {
+                        val services = tyeApplication.getServices()
+                        updateTree(services)
+                    }
+
+                    override fun tyeApplicationStopped() {
+                        clearTable()
+                        clearTree()
                     }
                 }
             )
@@ -86,8 +96,7 @@ class TyeToolWindow(project: Project) : SimpleToolWindowPanel(false) {
 
     private fun initActionToolbar() {
         val actionManager = ActionManager.getInstance()
-        val actionGroup =
-            actionManager.getAction("com.github.rafaelldi.tyeplugin.actions.TyeToolWindowGroupedActions") as ActionGroup
+        val actionGroup = actionManager.getAction("com.github.rafaelldi.tyeplugin.actions.TyeToolWindowGroupedActions") as ActionGroup
         val actionToolbar = actionManager.createActionToolbar("TyeActionToolbar", actionGroup, true)
         toolbar = actionToolbar.component
     }
@@ -104,6 +113,12 @@ class TyeToolWindow(project: Project) : SimpleToolWindowPanel(false) {
             root.add(serviceNode)
         }
 
+        treeModel.nodeStructureChanged(root)
+    }
+
+    private fun clearTree() {
+        val root = root()
+        root.removeAllChildren()
         treeModel.nodeStructureChanged(root)
     }
 
@@ -145,6 +160,23 @@ class TyeToolWindow(project: Project) : SimpleToolWindowPanel(false) {
             for (variable in service.environmentVariables) {
                 addRow(arrayOf(variable.name, variable.value))
             }
+            fireTableStructureChanged()
+        }
+    }
+
+    private fun clearTable() {
+        with(propertiesTableModel) {
+            dataVector.removeAllElements()
+            fireTableStructureChanged()
+        }
+
+        with(portBindingsTableModel) {
+            dataVector.removeAllElements()
+            fireTableStructureChanged()
+        }
+
+        with(environmentVariablesTableModel) {
+            dataVector.removeAllElements()
             fireTableStructureChanged()
         }
     }

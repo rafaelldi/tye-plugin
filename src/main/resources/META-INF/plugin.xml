@@ -51,16 +51,22 @@
         </group>
 
         <group id="com.github.rafaelldi.tyeplugin.actions.TyeToolWindowGroupedActions">
+            <action id="com.github.rafaelldi.tyeplugin.actions.ConnectToTyeHostAction"
+                    class="com.github.rafaelldi.tyeplugin.actions.ConnectToTyeHostAction"
+                    text="Connect"
+                    description="Connect to tye host"
+                    icon="AllIcons.General.Add">
+            </action>
             <action id="com.github.rafaelldi.tyeplugin.actions.RefreshDashboardAction"
                     class="com.github.rafaelldi.tyeplugin.actions.RefreshDashboardAction"
                     text="Refresh"
                     description="Refresh tye dashboard"
                     icon="AllIcons.Actions.Refresh">
             </action>
-            <action id="com.github.rafaelldi.tyeplugin.actions.TyeHostShutdownAction"
-                    class="com.github.rafaelldi.tyeplugin.actions.TyeHostShutdownAction"
+            <action id="com.github.rafaelldi.tyeplugin.actions.TyeApplicationShutdownAction"
+                    class="com.github.rafaelldi.tyeplugin.actions.TyeApplicationShutdownAction"
                     text="Shutdown"
-                    description="Tye host shutdown"
+                    description="Tye application shutdown"
                     icon="AllIcons.Actions.Suspend">
             </action>
             <action id="com.github.rafaelldi.tyeplugin.actions.EditTyeSettingsAction"
