@@ -17,7 +17,7 @@ class TyeUpdateGlobalToolStartupActivity : StartupActivity, DumbAware {
 
         if (installedVersion >= actualVersion) return
 
-        Notification("Tye", "New version of tye is available", "", NotificationType.INFORMATION)
+        Notification("Tye", "New version of tye global tool is available", "", NotificationType.INFORMATION)
             .addAction(UpdateTyeGlobalToolNotificationAction())
             .notify(project)
     }
