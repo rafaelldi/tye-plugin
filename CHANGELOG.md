@@ -3,6 +3,7 @@
 # tye-plugin Changelog
 
 ## [Unreleased]
+## [0.1.1]
 ### Added
 - Check tye version at startup
 - Action to update tye global tool
