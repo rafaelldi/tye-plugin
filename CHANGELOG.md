@@ -3,6 +3,10 @@
 # tye-plugin Changelog
 
 ## [Unreleased]
+### Changed
+- Compatibility with 2021.2 version of the platform
+- Tye global tool version is updated to 0.8.0-alpha.21352.1
+
 ## [0.1.1]
 ### Added
 - Check tye version at startup
