@@ -3,7 +3,7 @@ package com.github.rafaelldi.tyeplugin.services
 import com.github.rafaelldi.tyeplugin.actions.EditSettingsNotificationAction
 import com.github.rafaelldi.tyeplugin.api.TyeApiClient
 import com.github.rafaelldi.tyeplugin.messaging.TyeApplicationNotifier
-import com.github.rafaelldi.tyeplugin.model.Tye
+import com.github.rafaelldi.tyeplugin.model.TyeApplication
 import com.github.rafaelldi.tyeplugin.model.toService
 import com.github.rafaelldi.tyeplugin.settings.TyeSettingsState
 import com.intellij.notification.Notification
@@ -21,7 +21,7 @@ class TyeApplicationManager(private val project: Project) {
 
     private val client: TyeApiClient = TyeApiClient()
     private val messageBus: MessageBus = project.messageBus
-    private val application: Tye = Tye()
+    private val application: TyeApplication = TyeApplication()
     private val log = Logger.getInstance(TyeApplicationManager::class.java)
 
     private lateinit var host: String
