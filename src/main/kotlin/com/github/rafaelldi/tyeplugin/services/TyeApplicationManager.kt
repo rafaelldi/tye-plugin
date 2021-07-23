@@ -15,14 +15,14 @@ import com.intellij.util.messages.MessageBus
 import java.net.ConnectException
 
 @Service
-class TyeApplication(private val project: Project) {
+class TyeApplicationManager(private val project: Project) {
 
     var isConnected: Boolean = false
 
     private val client: TyeApiClient = TyeApiClient()
     private val messageBus: MessageBus = project.messageBus
     private val application: Tye = Tye()
-    private val log = Logger.getInstance(TyeApplication::class.java)
+    private val log = Logger.getInstance(TyeApplicationManager::class.java)
 
     private lateinit var host: String
 

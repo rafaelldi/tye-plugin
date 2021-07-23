@@ -3,10 +3,11 @@ package com.github.rafaelldi.tyeplugin.toolWindow
 import com.github.rafaelldi.tyeplugin.messaging.TyeApplicationNotifier
 import com.github.rafaelldi.tyeplugin.messaging.TyeApplicationNotifier.Companion.TOPIC
 import com.github.rafaelldi.tyeplugin.model.Service
-import com.github.rafaelldi.tyeplugin.services.TyeApplication
+import com.github.rafaelldi.tyeplugin.services.TyeApplicationManager
 import com.github.rafaelldi.tyeplugin.toolWindow.TyeServiceTreeNode.Factory.create
 import com.intellij.openapi.actionSystem.ActionGroup
 import com.intellij.openapi.actionSystem.ActionManager
+import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.SimpleToolWindowPanel
 import com.intellij.ui.JBSplitter
@@ -30,7 +31,7 @@ class TyeToolWindow(project: Project) : SimpleToolWindowPanel(false) {
     private lateinit var portBindingsTableModel: DefaultTableModel
     private lateinit var environmentVariablesTableModel: DefaultTableModel
 
-    private var tyeApplication: TyeApplication = project.getService(TyeApplication::class.java)
+    private var tyeApplicationManager: TyeApplicationManager = project.service()
 
     init {
         with(project.messageBus.connect()) {
@@ -38,12 +39,12 @@ class TyeToolWindow(project: Project) : SimpleToolWindowPanel(false) {
                 TOPIC,
                 object : TyeApplicationNotifier {
                     override fun connectedToTyeHost() {
-                        val services = tyeApplication.getServices()
+                        val services = tyeApplicationManager.getServices()
                         updateTree(services)
                     }
 
                     override fun tyeApplicationUpdated() {
-                        val services = tyeApplication.getServices()
+                        val services = tyeApplicationManager.getServices()
                         updateTree(services)
                     }
 
