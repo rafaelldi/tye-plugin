@@ -1,10 +1,9 @@
 package com.github.rafaelldi.tyeplugin.actions
 
-import com.github.rafaelldi.tyeplugin.cli.TyeInitCliBuilder
+import com.github.rafaelldi.tyeplugin.cli.TyeCliClient
 import com.github.rafaelldi.tyeplugin.settings.TyeSettingsState
 import com.github.rafaelldi.tyeplugin.util.TYE_FILE_NAME
 import com.github.rafaelldi.tyeplugin.util.isTyeGlobalToolInstalled
-import com.intellij.execution.configurations.GeneralCommandLine
 import com.intellij.execution.util.ExecUtil
 import com.intellij.notification.Notification
 import com.intellij.notification.NotificationType
@@ -88,18 +87,9 @@ class ScaffoldTyeFileAction : AnAction() {
     }
 
     private fun runScaffoldCommand(tyeToolPath: String, overwriteTyeFile: Boolean, projectPath: String): Boolean {
-        val cliBuilder = TyeInitCliBuilder(projectPath)
-        if (overwriteTyeFile) {
-            cliBuilder.setForce()
-        }
-        val arguments = cliBuilder.build()
-
-        val commandLine = GeneralCommandLine()
-            .withParentEnvironmentType(GeneralCommandLine.ParentEnvironmentType.CONSOLE)
-            .withWorkDirectory(projectPath)
-            .withExePath(tyeToolPath)
-            .withParameters(arguments)
-
+        val tyeCliClient = TyeCliClient(tyeToolPath, projectPath)
+        val options = TyeCliClient.InitOptions(overwriteTyeFile)
+        val commandLine = tyeCliClient.init(projectPath, options)
         val output = ExecUtil.execAndGetOutput(commandLine)
 
         return output.exitCode == 0

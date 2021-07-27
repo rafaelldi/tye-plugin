@@ -1,12 +1,9 @@
 package com.github.rafaelldi.tyeplugin.runConfig.tyeRun
 
-import com.github.rafaelldi.tyeplugin.cli.TyeRunCliBuilder
-import com.github.rafaelldi.tyeplugin.runConfig.tyeRun.OptionsConstants.DEFAULT_PORT
-import com.github.rafaelldi.tyeplugin.runConfig.tyeRun.OptionsConstants.INFO_VERBOSITY
+import com.github.rafaelldi.tyeplugin.cli.TyeCliClient
 import com.github.rafaelldi.tyeplugin.settings.TyeSettingsState
 import com.intellij.execution.ExecutionException
 import com.intellij.execution.configurations.CommandLineState
-import com.intellij.execution.configurations.GeneralCommandLine
 import com.intellij.execution.process.OSProcessHandler
 import com.intellij.execution.process.ProcessHandler
 import com.intellij.execution.process.ProcessTerminatedListener
@@ -26,66 +23,27 @@ open class TyeCommandLineState(
             ?: throw ExecutionException("Path argument not specified.")
         val workingDirectory = runConfig.pathArgument?.parent?.path
 
-        val arguments = buildArguments(pathArgument)
-
-        return createHandler(workingDirectory, tyeToolPath, arguments)
-    }
-
-    private fun createHandler(
-        workingDirectory: String?,
-        tyeToolPath: String,
-        arguments: List<String>
-    ): OSProcessHandler {
-        val commandLine = GeneralCommandLine()
-            .withParentEnvironmentType(GeneralCommandLine.ParentEnvironmentType.CONSOLE)
-            .withWorkDirectory(workingDirectory)
-            .withExePath(tyeToolPath)
-            .withParameters(arguments)
+        val tyeCliClient = TyeCliClient(tyeToolPath, workingDirectory)
+        val options = buildOptions()
+        val commandLine = tyeCliClient.run(pathArgument, options)
 
         val handler = OSProcessHandler(commandLine)
         handler.startNotify()
         ProcessTerminatedListener.attach(handler, environment.project)
+
         return handler
     }
 
-    private fun buildArguments(pathArgument: String): List<String> {
-        val cliBuilder = TyeRunCliBuilder(pathArgument)
-
-        if (runConfig.portArgument != DEFAULT_PORT) {
-            cliBuilder.setPort(runConfig.portArgument)
-        }
-
-        if (runConfig.noBuildArgument) {
-            cliBuilder.setNoBuild()
-        }
-
-        if (runConfig.dockerArgument) {
-            cliBuilder.setDocker()
-        }
-
-        if (runConfig.dashboardArgument) {
-            cliBuilder.setDashboard()
-        }
-
-        if (runConfig.verbosityArgument != INFO_VERBOSITY) {
-            cliBuilder.setVerbosity(runConfig.verbosityArgument)
-        }
-
-        if (!runConfig.tagsArgument.isNullOrBlank()) {
-            cliBuilder.setTags(runConfig.tagsArgument!!)
-        }
-
-        if (runConfig.logsProvider != LogsProvider.NONE) {
-            val logsProviderUrl = if (runConfig.logsProvider.isProviderUrlEnabled()) runConfig.logsProviderUrl else null
-            cliBuilder.setLogs(runConfig.logsProvider.argumentName, logsProviderUrl)
-        }
-
-        if (runConfig.tracesProvider != TracesProvider.NONE) {
-            val tracesProviderUrl =
-                if (runConfig.tracesProvider.isProviderUrlEnabled()) runConfig.tracesProviderUrl else null
-            cliBuilder.setTraces(runConfig.tracesProvider.argumentName, tracesProviderUrl)
-        }
-
-        return cliBuilder.build()
-    }
+    private fun buildOptions(): TyeCliClient.RunOptions = TyeCliClient.RunOptions(
+        runConfig.portArgument,
+        runConfig.noBuildArgument,
+        runConfig.dockerArgument,
+        runConfig.dashboardArgument,
+        runConfig.verbosityArgument,
+        runConfig.tagsArgument,
+        runConfig.logsProvider.argumentName,
+        if (runConfig.logsProvider.isProviderUrlEnabled()) runConfig.logsProviderUrl else null,
+        runConfig.tracesProvider.argumentName,
+        if (runConfig.tracesProvider.isProviderUrlEnabled()) runConfig.tracesProviderUrl else null
+    )
 }
