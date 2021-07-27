@@ -1,8 +1,15 @@
 package com.github.rafaelldi.tyeplugin.cli
 
+import com.github.rafaelldi.tyeplugin.services.TyeToolPathProvider
+import com.intellij.execution.ExecutionException
 import com.intellij.execution.configurations.GeneralCommandLine
+import com.intellij.openapi.components.Service
+import com.intellij.openapi.components.service
+import com.intellij.openapi.diagnostic.Logger
+import com.intellij.openapi.project.Project
 
-class TyeCliClient(private val tyePath: String, private val projectPath: String?) {
+@Service
+class TyeCliClient(private val project: Project) {
     companion object {
         const val DEFAULT_PORT = 8000
         const val DEFAULT_VERBOSITY = "info"
@@ -25,21 +32,30 @@ class TyeCliClient(private val tyePath: String, private val projectPath: String?
         val tracesProviderUrl: String?
     )
 
+    private val tyeToolPathProvider = project.service<TyeToolPathProvider>()
+    private val log = Logger.getInstance(TyeCliClient::class.java)
+
     fun init(path: String, options: InitOptions): GeneralCommandLine {
+        val tyePath = tyeToolPathProvider.getPath() ?: throw ExecutionException("Tye tool not found.")
+
         val cliBuilder = TyeInitCliBuilder(path)
 
         if (options.overwriteExistingFile) cliBuilder.setForce()
 
         val arguments = cliBuilder.build()
 
+        log.info("Call init command with arguments $arguments")
+
         return GeneralCommandLine()
             .withParentEnvironmentType(GeneralCommandLine.ParentEnvironmentType.CONSOLE)
-            .withWorkDirectory(projectPath)
+            .withWorkDirectory(project.basePath)
             .withExePath(tyePath)
             .withParameters(arguments)
     }
 
     fun run(path: String, options: RunOptions): GeneralCommandLine {
+        val tyePath = tyeToolPathProvider.getPath() ?: throw ExecutionException("Tye tool not found.")
+
         val cliBuilder = TyeRunCliBuilder(path)
 
         if (options.port != DEFAULT_PORT) cliBuilder.setPort(options.port)
@@ -66,9 +82,11 @@ class TyeCliClient(private val tyePath: String, private val projectPath: String?
 
         val arguments = cliBuilder.build()
 
+        log.info("Call run command with arguments $arguments")
+
         return GeneralCommandLine()
             .withParentEnvironmentType(GeneralCommandLine.ParentEnvironmentType.CONSOLE)
-            .withWorkDirectory(projectPath)
+            .withWorkDirectory(project.basePath)
             .withExePath(tyePath)
             .withParameters(arguments)
     }

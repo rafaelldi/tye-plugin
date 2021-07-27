@@ -8,6 +8,7 @@ import com.intellij.execution.process.OSProcessHandler
 import com.intellij.execution.process.ProcessHandler
 import com.intellij.execution.process.ProcessTerminatedListener
 import com.intellij.execution.runners.ExecutionEnvironment
+import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
 
 open class TyeCommandLineState(
@@ -17,13 +18,10 @@ open class TyeCommandLineState(
 ) : CommandLineState(environment) {
 
     override fun startProcess(): ProcessHandler {
-        val tyeToolPath = TyeSettingsState.getInstance(project).tyeToolPath
-            ?: throw ExecutionException("Tye tool not found.")
         val pathArgument = runConfig.pathArgument?.path
             ?: throw ExecutionException("Path argument not specified.")
-        val workingDirectory = runConfig.pathArgument?.parent?.path
 
-        val tyeCliClient = TyeCliClient(tyeToolPath, workingDirectory)
+        val tyeCliClient = project.service<TyeCliClient>()
         val options = buildOptions()
         val commandLine = tyeCliClient.run(pathArgument, options)
 
