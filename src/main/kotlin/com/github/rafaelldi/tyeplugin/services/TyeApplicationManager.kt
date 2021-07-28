@@ -1,6 +1,6 @@
 package com.github.rafaelldi.tyeplugin.services
 
-import com.github.rafaelldi.tyeplugin.actions.EditSettingsNotificationAction
+import com.github.rafaelldi.tyeplugin.actions.EditTyeSettingsNotificationAction
 import com.github.rafaelldi.tyeplugin.api.TyeApiClient
 import com.github.rafaelldi.tyeplugin.messaging.TyeApplicationNotifier
 import com.github.rafaelldi.tyeplugin.model.TyeApplication
@@ -30,7 +30,7 @@ class TyeApplicationManager(private val project: Project) {
         val settings = TyeSettingsState.getInstance(project)
         if (settings.tyeHost.isEmpty()) {
             Notification("Tye", "Tye host is empty", "Please specify it", NotificationType.ERROR)
-                .addAction(EditSettingsNotificationAction())
+                .addAction(EditTyeSettingsNotificationAction())
                 .notify(project)
             return
         }
@@ -46,7 +46,7 @@ class TyeApplicationManager(private val project: Project) {
                 "Please check if the address is correct and tye is running",
                 NotificationType.ERROR
             )
-                .addAction(EditSettingsNotificationAction())
+                .addAction(EditTyeSettingsNotificationAction())
                 .notify(project)
             log.debug("Cannot update tye application", e)
             return

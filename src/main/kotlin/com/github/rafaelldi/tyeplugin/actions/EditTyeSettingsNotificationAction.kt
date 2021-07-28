@@ -6,7 +6,7 @@ import com.intellij.notification.NotificationAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.options.ShowSettingsUtil
 
-class EditSettingsNotificationAction : NotificationAction("Edit settings") {
+class EditTyeSettingsNotificationAction : NotificationAction("Edit settings") {
     override fun actionPerformed(e: AnActionEvent, notification: Notification) {
         if (e.project == null) return
         ShowSettingsUtil.getInstance().editConfigurable(e.project, TyeSettingsConfigurable(e.project!!))

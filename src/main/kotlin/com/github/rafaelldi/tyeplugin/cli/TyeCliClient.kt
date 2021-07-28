@@ -1,6 +1,8 @@
 package com.github.rafaelldi.tyeplugin.cli
 
-import com.github.rafaelldi.tyeplugin.services.TyeToolPathProvider
+import com.github.rafaelldi.tyeplugin.cli.builders.TyeInitCliBuilder
+import com.github.rafaelldi.tyeplugin.cli.builders.TyeRunCliBuilder
+import com.github.rafaelldi.tyeplugin.services.TyeGlobalToolPathProvider
 import com.intellij.execution.ExecutionException
 import com.intellij.execution.configurations.GeneralCommandLine
 import com.intellij.openapi.components.Service
@@ -17,9 +19,10 @@ class TyeCliClient(private val project: Project) {
         const val DEFAULT_TRACES_PROVIDER = "none"
     }
 
-    data class InitOptions(val overwriteExistingFile: Boolean)
+    data class InitOptions(val path: String, val overwriteExistingFile: Boolean)
 
     data class RunOptions(
+        val path: String,
         val port: Int,
         val noBuild: Boolean,
         val docker: Boolean,
@@ -32,13 +35,13 @@ class TyeCliClient(private val project: Project) {
         val tracesProviderUrl: String?
     )
 
-    private val tyeToolPathProvider = project.service<TyeToolPathProvider>()
+    private val tyeToolPathProvider = project.service<TyeGlobalToolPathProvider>()
     private val log = Logger.getInstance(TyeCliClient::class.java)
 
-    fun init(path: String, options: InitOptions): GeneralCommandLine {
-        val tyePath = tyeToolPathProvider.getPath() ?: throw ExecutionException("Tye tool not found.")
+    fun init(options: InitOptions): GeneralCommandLine {
+        val tyePath = tyeToolPathProvider.getPath() ?: throw ExecutionException("Tye tool path not found.")
 
-        val cliBuilder = TyeInitCliBuilder(path)
+        val cliBuilder = TyeInitCliBuilder(options.path)
 
         if (options.overwriteExistingFile) cliBuilder.setForce()
 
@@ -53,10 +56,10 @@ class TyeCliClient(private val project: Project) {
             .withParameters(arguments)
     }
 
-    fun run(path: String, options: RunOptions): GeneralCommandLine {
-        val tyePath = tyeToolPathProvider.getPath() ?: throw ExecutionException("Tye tool not found.")
+    fun run(options: RunOptions): GeneralCommandLine {
+        val tyePath = tyeToolPathProvider.getPath() ?: throw ExecutionException("Tye tool path not found.")
 
-        val cliBuilder = TyeRunCliBuilder(path)
+        val cliBuilder = TyeRunCliBuilder(options.path)
 
         if (options.port != DEFAULT_PORT) cliBuilder.setPort(options.port)
 

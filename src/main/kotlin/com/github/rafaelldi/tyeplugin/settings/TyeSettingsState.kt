@@ -1,6 +1,6 @@
 package com.github.rafaelldi.tyeplugin.settings
 
-import com.github.rafaelldi.tyeplugin.util.findTyeGlobalToolPath
+import com.github.rafaelldi.tyeplugin.services.TyeGlobalToolPathProvider
 import com.intellij.openapi.components.PersistentStateComponent
 import com.intellij.openapi.components.ServiceManager
 import com.intellij.openapi.components.State
@@ -13,16 +13,15 @@ import com.intellij.util.xmlb.XmlSerializerUtil
     storages = [(Storage("TyePluginSettings.xml"))]
 )
 class TyeSettingsState : PersistentStateComponent<TyeSettingsState> {
-
-    var tyeToolPath = findTyeGlobalToolPath()
-    var tyeHost = "http://localhost:8000"
-    var overwriteTyeFile = false
-
     companion object {
         @JvmStatic
         fun getInstance(project: Project): TyeSettingsState =
             ServiceManager.getService(project, TyeSettingsState::class.java)
     }
+
+    var tyeToolPath = TyeGlobalToolPathProvider.findDefaultTyeGlobalToolPath()
+    var tyeHost = "http://localhost:8000"
+    var overwriteTyeFile = false
 
     override fun getState(): TyeSettingsState = this
 

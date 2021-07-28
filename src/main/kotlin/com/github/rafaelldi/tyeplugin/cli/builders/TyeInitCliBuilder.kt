@@ -1,4 +1,4 @@
-package com.github.rafaelldi.tyeplugin.cli
+package com.github.rafaelldi.tyeplugin.cli.builders
 
 class TyeInitCliBuilder(private val path: String) {
     private val arguments: MutableList<String> = mutableListOf()
