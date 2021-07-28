@@ -1,7 +1,6 @@
 package com.github.rafaelldi.tyeplugin.runConfig.tyeRun
 
 import com.github.rafaelldi.tyeplugin.cli.TyeCliClient
-import com.github.rafaelldi.tyeplugin.settings.TyeSettingsState
 import com.intellij.execution.ExecutionException
 import com.intellij.execution.configurations.CommandLineState
 import com.intellij.execution.process.OSProcessHandler
@@ -18,12 +17,9 @@ open class TyeCommandLineState(
 ) : CommandLineState(environment) {
 
     override fun startProcess(): ProcessHandler {
-        val pathArgument = runConfig.pathArgument?.path
-            ?: throw ExecutionException("Path argument not specified.")
-
         val tyeCliClient = project.service<TyeCliClient>()
         val options = buildOptions()
-        val commandLine = tyeCliClient.run(pathArgument, options)
+        val commandLine = tyeCliClient.run(options)
 
         val handler = OSProcessHandler(commandLine)
         handler.startNotify()
@@ -33,6 +29,7 @@ open class TyeCommandLineState(
     }
 
     private fun buildOptions(): TyeCliClient.RunOptions = TyeCliClient.RunOptions(
+        runConfig.pathArgument?.path ?: throw ExecutionException("Path argument not specified."),
         runConfig.portArgument,
         runConfig.noBuildArgument,
         runConfig.dockerArgument,

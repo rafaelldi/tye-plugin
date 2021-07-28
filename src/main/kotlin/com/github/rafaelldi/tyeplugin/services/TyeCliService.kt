@@ -40,7 +40,9 @@ class TyeCliService(private val project: Project) {
             Notification("Tye", "File tye.yaml is scaffolded", "", NotificationType.INFORMATION)
                 .notify(project)
         } else {
-            Notification("Tye", "Tye file scaffolding failed", "", NotificationType.ERROR)
+            log.error(output.stderr)
+
+            Notification("Tye", "Tye file scaffolding failed", output.stderr, NotificationType.ERROR)
                 .notify(project)
         }
     }

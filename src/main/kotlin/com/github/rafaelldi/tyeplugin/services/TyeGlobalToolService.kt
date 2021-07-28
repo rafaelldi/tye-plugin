@@ -18,7 +18,7 @@ import com.intellij.openapi.project.Project
 @Service
 class TyeGlobalToolService(private val project: Project) {
     companion object {
-        const val TYE_ACTUAL_VERSION = "0.8.0-alpha.21352.1"
+        const val TYE_ACTUAL_VERSION = "0.8.1-alpha.21352.1"
     }
 
     private val tyeGlobalToolPathProvider: TyeGlobalToolPathProvider = project.service()
@@ -59,7 +59,14 @@ class TyeGlobalToolService(private val project: Project) {
             Notification("Tye", "Tye is successfully installed", "", NotificationType.INFORMATION)
                 .notify(project)
         } else {
-            Notification("Tye", "Tye installation failed", "", NotificationType.ERROR)
+            log.error(output.stderr)
+
+            Notification("Tye", "Tye installation failed", output.stderr, NotificationType.ERROR)
+                .addAction(object : NotificationAction("Go to troubleshooting page") {
+                    override fun actionPerformed(e: AnActionEvent, notification: Notification) {
+                        BrowserUtil.browse("https://aka.ms/failure-installing-tool")
+                    }
+                })
                 .notify(project)
         }
     }
@@ -86,7 +93,14 @@ class TyeGlobalToolService(private val project: Project) {
             Notification("Tye", "Tye is successfully updated", "", NotificationType.INFORMATION)
                 .notify(project)
         } else {
-            Notification("Tye", "Tye update failed", "", NotificationType.ERROR)
+            log.error(output.stderr)
+
+            Notification("Tye", "Tye update failed", output.stderr, NotificationType.ERROR)
+                .addAction(object : NotificationAction("Go to troubleshooting page") {
+                    override fun actionPerformed(e: AnActionEvent, notification: Notification) {
+                        BrowserUtil.browse("https://aka.ms/failure-installing-tool")
+                    }
+                })
                 .notify(project)
         }
     }
@@ -103,7 +117,10 @@ class TyeGlobalToolService(private val project: Project) {
     fun isTyeGlobalToolInstalled(): Boolean {
         val output = getListOfGlobalTools()
 
-        if (output.exitCode != 0) return false
+        if (output.exitCode != 0) {
+            log.error(output.stderr)
+            return false
+        }
 
         val regex = Regex("^microsoft\\.tye", RegexOption.MULTILINE)
         return regex.containsMatchIn(output.stdout)
@@ -116,7 +133,10 @@ class TyeGlobalToolService(private val project: Project) {
             .withParameters("--list-runtimes")
         val output = ExecUtil.execAndGetOutput(commandLine)
 
-        if (output.exitCode != 0) return false
+        if (output.exitCode != 0) {
+            log.error(output.stderr)
+            return false
+        }
 
         val regex = Regex("^Microsoft\\.AspNetCore\\.App 3\\.1", RegexOption.MULTILINE)
         return regex.containsMatchIn(output.stdout)
@@ -125,7 +145,10 @@ class TyeGlobalToolService(private val project: Project) {
     private fun getTyeGlobalToolVersion(): ToolVersion? {
         val output = getListOfGlobalTools()
 
-        if (output.exitCode != 0) return null
+        if (output.exitCode != 0) {
+            log.error(output.stderr)
+            return null
+        }
 
         val regex = Regex("^microsoft\\.tye\\s+([\\d.]+)", RegexOption.MULTILINE)
         val versionString = regex.find(output.stdout)?.groups?.get(1)?.value ?: return null
