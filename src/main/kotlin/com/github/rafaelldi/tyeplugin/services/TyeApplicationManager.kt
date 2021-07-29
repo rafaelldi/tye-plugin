@@ -9,6 +9,7 @@ import com.github.rafaelldi.tyeplugin.settings.TyeSettingsState
 import com.intellij.notification.Notification
 import com.intellij.notification.NotificationType
 import com.intellij.openapi.components.Service
+import com.intellij.openapi.components.service
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.project.Project
 import com.intellij.util.messages.MessageBus
@@ -19,7 +20,7 @@ class TyeApplicationManager(private val project: Project) {
 
     var isConnected: Boolean = false
 
-    private val client: TyeApiClient = TyeApiClient()
+    private val client: TyeApiClient = service()
     private val messageBus: MessageBus = project.messageBus
     private val application: TyeApplication = TyeApplication()
     private val log = Logger.getInstance(TyeApplicationManager::class.java)
