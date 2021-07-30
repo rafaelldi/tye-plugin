@@ -7,7 +7,6 @@ import com.github.rafaelldi.tyeplugin.services.TyeApplicationManager
 import com.github.rafaelldi.tyeplugin.toolWindow.TyeServiceTreeNode.Factory.create
 import com.intellij.openapi.actionSystem.ActionGroup
 import com.intellij.openapi.actionSystem.ActionManager
-import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.SimpleToolWindowPanel
 import com.intellij.ui.JBSplitter
@@ -31,7 +30,7 @@ class TyeToolWindow(project: Project) : SimpleToolWindowPanel(false) {
     private lateinit var portBindingsTableModel: DefaultTableModel
     private lateinit var environmentVariablesTableModel: DefaultTableModel
 
-    private var tyeApplicationManager: TyeApplicationManager = project.service()
+    private var tyeApplicationManager: TyeApplicationManager = project.getService(TyeApplicationManager::class.java)
 
     init {
         with(project.messageBus.connect()) {

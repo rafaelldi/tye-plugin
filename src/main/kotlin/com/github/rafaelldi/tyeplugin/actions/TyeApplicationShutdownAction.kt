@@ -23,10 +23,6 @@ class TyeApplicationShutdownAction : AnAction() {
     override fun actionPerformed(e: AnActionEvent) {
         val task = object : Task.Backgroundable(e.project, "Tye shutdown") {
             override fun run(indicator: ProgressIndicator) {
-                if (indicator.isCanceled) {
-                    return
-                }
-
                 indicator.isIndeterminate = true
                 indicator.text = "Tye application is stopping"
 

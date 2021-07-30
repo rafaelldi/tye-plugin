@@ -1,14 +1,15 @@
 package com.github.rafaelldi.tyeplugin.services
 
-import com.github.rafaelldi.tyeplugin.actions.EditSettingsNotificationAction
+import com.github.rafaelldi.tyeplugin.actions.EditTyeSettingsNotificationAction
 import com.github.rafaelldi.tyeplugin.api.TyeApiClient
 import com.github.rafaelldi.tyeplugin.messaging.TyeApplicationNotifier
-import com.github.rafaelldi.tyeplugin.model.Tye
+import com.github.rafaelldi.tyeplugin.model.TyeApplication
 import com.github.rafaelldi.tyeplugin.model.toService
 import com.github.rafaelldi.tyeplugin.settings.TyeSettingsState
 import com.intellij.notification.Notification
 import com.intellij.notification.NotificationType
 import com.intellij.openapi.components.Service
+import com.intellij.openapi.components.service
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.project.Project
 import com.intellij.util.messages.MessageBus
@@ -19,9 +20,9 @@ class TyeApplicationManager(private val project: Project) {
 
     var isConnected: Boolean = false
 
-    private val client: TyeApiClient = TyeApiClient()
+    private val client: TyeApiClient = service()
     private val messageBus: MessageBus = project.messageBus
-    private val application: Tye = Tye()
+    private val application: TyeApplication = TyeApplication()
     private val log = Logger.getInstance(TyeApplicationManager::class.java)
 
     private lateinit var host: String
@@ -30,7 +31,7 @@ class TyeApplicationManager(private val project: Project) {
         val settings = TyeSettingsState.getInstance(project)
         if (settings.tyeHost.isEmpty()) {
             Notification("Tye", "Tye host is empty", "Please specify it", NotificationType.ERROR)
-                .addAction(EditSettingsNotificationAction())
+                .addAction(EditTyeSettingsNotificationAction())
                 .notify(project)
             return
         }
@@ -46,7 +47,7 @@ class TyeApplicationManager(private val project: Project) {
                 "Please check if the address is correct and tye is running",
                 NotificationType.ERROR
             )
-                .addAction(EditSettingsNotificationAction())
+                .addAction(EditTyeSettingsNotificationAction())
                 .notify(project)
             log.debug("Cannot update tye application", e)
             return

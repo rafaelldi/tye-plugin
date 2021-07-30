@@ -23,10 +23,6 @@ class ConnectToTyeHostAction : AnAction() {
     override fun actionPerformed(e: AnActionEvent) {
         val task = object : Task.Backgroundable(e.project, "Connecting to tye host") {
             override fun run(indicator: ProgressIndicator) {
-                if (indicator.isCanceled) {
-                    return
-                }
-
                 indicator.isIndeterminate = true
                 indicator.text = "Connecting to tye host"
 
