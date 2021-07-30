@@ -1,6 +1,6 @@
 package com.github.rafaelldi.tyeplugin.actions
 
-import com.github.rafaelldi.tyeplugin.services.TyeApplication
+import com.github.rafaelldi.tyeplugin.services.TyeApplicationManager
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.components.service
@@ -13,7 +13,7 @@ import kotlinx.coroutines.runBlocking
 class ConnectToTyeHostAction : AnAction() {
     override fun update(e: AnActionEvent) {
         if (e.project != null) {
-            val tyeApplication = e.project!!.service<TyeApplication>()
+            val tyeApplication = e.project!!.service<TyeApplicationManager>()
             e.presentation.isEnabledAndVisible = !tyeApplication.isConnected
         } else {
             e.presentation.isEnabledAndVisible = false
@@ -23,10 +23,6 @@ class ConnectToTyeHostAction : AnAction() {
     override fun actionPerformed(e: AnActionEvent) {
         val task = object : Task.Backgroundable(e.project, "Connecting to tye host") {
             override fun run(indicator: ProgressIndicator) {
-                if (indicator.isCanceled) {
-                    return
-                }
-
                 indicator.isIndeterminate = true
                 indicator.text = "Connecting to tye host"
 
@@ -37,7 +33,7 @@ class ConnectToTyeHostAction : AnAction() {
     }
 
     private fun connect(project: Project) {
-        val tyeApplication = project.service<TyeApplication>()
+        val tyeApplication = project.service<TyeApplicationManager>()
         runBlocking {
             tyeApplication.connect()
         }

@@ -1,6 +1,6 @@
 package com.github.rafaelldi.tyeplugin.model
 
-class Tye {
+class TyeApplication {
     private val services: MutableList<Service> = mutableListOf()
 
     fun update(services: List<Service>) {
