@@ -43,6 +43,7 @@
 
         <!-- Remote server -->
         <remoteServer.type implementation="com.github.rafaelldi.tyeplugin.remoteServer.TyeHostType"/>
+        <serviceViewContributor implementation="com.github.rafaelldi.tyeplugin.remoteServer.TyeServiceViewContributor"/>
     </extensions>
 
     <extensions defaultExtensionNs="JavaScript.JsonSchema">
@@ -97,5 +98,15 @@
                     icon="AllIcons.General.Web">
             </action>
         </group>
+
+        <group id="Tye.RemoteServersViewToolbar.Main">
+            <reference ref="RemoteServers.ConnectServer"/>
+            <reference ref="RemoteServers.DisconnectServer"/>
+            <reference ref="RemoteServers.EditServerConfig"/>
+            <reference ref="RemoteServers.ChooseServerDeployment"/>
+            <reference ref="Servers.Deploy"/>
+        </group>
+        <group id="Tye.RemoteServersViewToolbar.Secondary"/>
+        <group id="Tye.RemoteServersViewToolbar.Toolbar"/>
     </actions>
 </idea-plugin>

@@ -7,10 +7,7 @@ import com.intellij.remoteServer.runtime.ServerTaskExecutor
 import com.intellij.remoteServer.runtime.deployment.DeploymentLogManager
 import com.intellij.remoteServer.runtime.deployment.DeploymentTask
 import com.intellij.remoteServer.runtime.deployment.ServerRuntimeInstance
-import com.intellij.remoteServer.util.CallbackWrapper
-import com.intellij.remoteServer.util.CloudApplicationRuntime
 import kotlinx.coroutines.runBlocking
-import org.jetbrains.annotations.Nls
 import java.net.ConnectException
 
 class TyeServerRuntimeInstance(
@@ -25,15 +22,28 @@ class TyeServerRuntimeInstance(
         logManager: DeploymentLogManager,
         callback: DeploymentOperationCallback
     ) {
-
+        throw UnsupportedOperationException()
     }
 
     override fun computeDeployments(callback: ComputeDeploymentsCallback) {
+        taskExecutor.submit({
+            //val applications = mutableListOf<CloudApplicationRuntime>()
+            //applications.add(app1)
+            //applications.add(app2)
 
+            val app1 = ServiceApplicationRuntime("temp1")
+            val dep1 = callback.addDeployment(app1.applicationName, app1, app1.status, app1.statusText)
+            app1.setDeploymentModel(dep1)
+
+            val app2 = ServiceApplicationRuntime("temp2")
+            val dep2 = callback.addDeployment(app2.applicationName, app2, app2.status, app2.statusText)
+            app2.setDeploymentModel(dep2)
+
+            callback.succeeded()
+        }, callback)
     }
 
     override fun disconnect() {
-        TODO("Not yet implemented")
     }
 
     fun connect(callback: ServerConnector.ConnectionCallback<TyeDeploymentConfiguration>) {
