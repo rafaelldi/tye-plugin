@@ -7,6 +7,7 @@ import com.intellij.remoteServer.ServerType
 import com.intellij.remoteServer.configuration.deployment.DeploymentConfigurator
 import com.intellij.remoteServer.runtime.ServerConnector
 import com.intellij.remoteServer.runtime.ServerTaskExecutor
+import icons.TyeIcons
 import javax.swing.Icon
 
 class TyeHostType : ServerType<TyeHostConfiguration>("tye") {
@@ -18,7 +19,7 @@ class TyeHostType : ServerType<TyeHostConfiguration>("tye") {
 
     override fun getPresentableName(): String = "Tye"
 
-    override fun getIcon(): Icon = AllIcons.General.Balloon
+    override fun getIcon(): Icon = TyeIcons.TYE
 
     override fun createDefaultConfiguration(): TyeHostConfiguration = TyeHostConfiguration.createDefault()
 

@@ -1,13 +1,15 @@
-package com.github.rafaelldi.tyeplugin.remoteServer
+package com.github.rafaelldi.tyeplugin.runtimes
 
-import com.intellij.icons.AllIcons
+import com.github.rafaelldi.tyeplugin.model.TyeService
+import com.github.rafaelldi.tyeplugin.remoteServer.TyeHostType
 import com.intellij.remoteServer.ServerType
 import com.intellij.remoteServer.runtime.ServerTaskExecutor
-import com.intellij.remoteServer.runtime.deployment.DeploymentStatus
 import com.intellij.remoteServer.util.AgentTaskExecutor
 import com.intellij.remoteServer.util.CloudApplicationRuntime
 
-class ServiceApplicationRuntime(applicationName: String?) : CloudApplicationRuntime(applicationName) {
+abstract class TyeServiceRuntime<T>(service: T) :
+    CloudApplicationRuntime(service.getServiceName()) where T : TyeService {
+    override fun getCloudType(): ServerType<*> = TyeHostType.getInstance()
 
     override fun undeploy(callback: UndeploymentTaskCallback) {
         throw UnsupportedOperationException()
@@ -20,8 +22,4 @@ class ServiceApplicationRuntime(applicationName: String?) : CloudApplicationRunt
     override fun getAgentTaskExecutor(): AgentTaskExecutor {
         throw UnsupportedOperationException()
     }
-
-    override fun getCloudType(): ServerType<*> = TyeHostType.getInstance()
-
-    override fun getStatus(): DeploymentStatus = DeploymentStatus(AllIcons.General.Layout, "Text", false)
 }

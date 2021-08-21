@@ -10,10 +10,11 @@ import com.intellij.remoteServer.impl.runtime.ui.RemoteServersServiceViewContrib
 import com.intellij.remoteServer.impl.runtime.ui.tree.ServersTreeStructure
 import com.intellij.remoteServer.runtime.Deployment
 import com.intellij.remoteServer.runtime.ServerConnection
+import icons.TyeIcons
 
 class TyeServiceViewContributor : RemoteServersServiceViewContributor() {
     override fun getViewDescriptor(project: Project): ServiceViewDescriptor {
-        return SimpleServiceViewDescriptor("Tye", AllIcons.General.Balloon)
+        return SimpleServiceViewDescriptor("Tye", TyeIcons.TYE)
     }
 
     override fun createDeploymentNode(

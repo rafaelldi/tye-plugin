@@ -1,6 +1,8 @@
 package com.github.rafaelldi.tyeplugin.remoteServer
 
-import com.intellij.icons.AllIcons
+import com.github.rafaelldi.tyeplugin.runtimes.TyeServiceDockerRuntime
+import com.github.rafaelldi.tyeplugin.runtimes.TyeServiceExecutableRuntime
+import com.github.rafaelldi.tyeplugin.runtimes.TyeServiceProjectRuntime
 import com.intellij.ide.projectView.PresentationData
 import com.intellij.ide.util.treeView.AbstractTreeNode
 import com.intellij.openapi.project.Project
@@ -8,7 +10,7 @@ import com.intellij.remoteServer.impl.runtime.ui.tree.ServersTreeStructure
 import com.intellij.remoteServer.impl.runtime.ui.tree.ServersTreeStructure.DeploymentNodeImpl
 import com.intellij.remoteServer.runtime.Deployment
 import com.intellij.remoteServer.runtime.ServerConnection
-import com.intellij.remoteServer.runtime.deployment.DeploymentStatus
+import icons.TyeIcons
 
 class TyeDeploymentNode(
     project: Project?,
@@ -26,8 +28,11 @@ class TyeDeploymentNode(
     override fun update(presentation: PresentationData) {
         super.update(presentation)
         val deployment = this.deployment
-        val runtime = deployment.runtime
-        presentation.setIcon(AllIcons.General.Information)
-
+        when (deployment.runtime) {
+            is TyeServiceProjectRuntime -> presentation.setIcon(TyeIcons.TYE_NODE_DOT_NET)
+            is TyeServiceDockerRuntime -> presentation.setIcon(TyeIcons.TYE_NODE_DOCKER)
+            is TyeServiceExecutableRuntime -> presentation.setIcon(TyeIcons.TYE_NODE_EXECUTABLE)
+            else -> presentation.setIcon(TyeIcons.TYE_NODE)
+        }
     }
 }
