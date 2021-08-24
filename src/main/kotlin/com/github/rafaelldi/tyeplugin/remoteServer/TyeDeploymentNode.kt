@@ -11,6 +11,7 @@ import com.intellij.remoteServer.impl.runtime.ui.tree.ServersTreeStructure.Deplo
 import com.intellij.remoteServer.runtime.Deployment
 import com.intellij.remoteServer.runtime.ServerConnection
 import icons.TyeIcons
+import javax.swing.JComponent
 
 class TyeDeploymentNode(
     project: Project?,
@@ -35,4 +36,6 @@ class TyeDeploymentNode(
             else -> presentation.setIcon(TyeIcons.TYE_NODE)
         }
     }
+
+    override fun getComponent(): JComponent = TyeDeploymentNodeComponent(value).getComponent()
 }
