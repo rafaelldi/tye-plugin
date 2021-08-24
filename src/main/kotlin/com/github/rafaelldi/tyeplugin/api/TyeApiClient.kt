@@ -14,7 +14,10 @@ import io.ktor.client.request.get
 class TyeApiClient : Disposable {
     private val httpClient: HttpClient = HttpClient(CIO) {
         install(JsonFeature) {
-            serializer = KotlinxSerializer()
+            serializer = KotlinxSerializer(Json {
+               isLenient = true
+               ignoreUnknownKeys = true
+            })     
         }
     }
 
