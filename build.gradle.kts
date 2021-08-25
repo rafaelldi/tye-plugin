@@ -13,7 +13,7 @@ plugins {
     // gradle-changelog-plugin - read more: https://github.com/JetBrains/gradle-changelog-plugin
     id("org.jetbrains.changelog") version "1.2.1"
     // kotlinx.serialization - read more: https://github.com/Kotlin/kotlinx.serialization
-    id("org.jetbrains.kotlin.plugin.serialization") version "1.5.21"
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.5.30"
 }
 
 group = properties("pluginGroup")
