@@ -3,6 +3,8 @@
 # tye-plugin Changelog
 
 ## [Unreleased]
+### Added
+- Action for updating tye global tool
 ### Changed
 - Tye global tool version is updated to 0.9.0-alpha.21380.1
 

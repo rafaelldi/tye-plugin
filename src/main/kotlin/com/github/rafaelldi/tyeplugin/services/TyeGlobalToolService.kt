@@ -40,7 +40,7 @@ class TyeGlobalToolService(private val project: Project) {
 
         val isTyeGlobalToolInstalled = isTyeGlobalToolInstalled()
         if (isTyeGlobalToolInstalled) {
-            Notification("Tye", "Tye is already installed", "", NotificationType.WARNING)
+            Notification("Tye", "Tye is already installed", "", NotificationType.INFORMATION)
                 .notify(project)
             return
         }
@@ -80,6 +80,13 @@ class TyeGlobalToolService(private val project: Project) {
             return
         }
 
+        val isActualVersionInstalled = isActualTyeGlobalToolVersionInstalled()
+        if (isActualVersionInstalled) {
+            Notification("Tye", "The actual version is already installed ", "", NotificationType.INFORMATION)
+                .notify(project)
+            return
+        }
+
         val commandLine = GeneralCommandLine()
             .withParentEnvironmentType(GeneralCommandLine.ParentEnvironmentType.CONSOLE)
             .withExePath("dotnet")
@@ -114,7 +121,7 @@ class TyeGlobalToolService(private val project: Project) {
         return currentVersion >= tyeActualVersion
     }
 
-    fun isTyeGlobalToolInstalled(): Boolean {
+    private fun isTyeGlobalToolInstalled(): Boolean {
         val output = getListOfGlobalTools()
 
         if (output.exitCode != 0) {
