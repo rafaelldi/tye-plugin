@@ -17,6 +17,7 @@ class TyeSettingsComponent {
     private lateinit var tyeToolPathField: LabeledComponent<TextFieldWithBrowseButton>
     private lateinit var tyeHostField: LabeledComponent<JBTextField>
     private lateinit var overwriteTyeFileOption: JCheckBox
+    private lateinit var checkTyeNewVersions: JCheckBox
 
     init {
         createUIComponents()
@@ -44,6 +45,12 @@ class TyeSettingsComponent {
         overwriteTyeFileOption.isSelected = select
     }
 
+    fun getCheckTyeNewVersions(): Boolean = checkTyeNewVersions.isSelected
+
+    fun setCheckTyeNewVersions(select: Boolean) {
+        checkTyeNewVersions.isSelected = select
+    }
+
     private fun createUIComponents() {
         panel = JPanel().apply {
             layout = VerticalFlowLayout(VerticalFlowLayout.TOP)
@@ -52,7 +59,7 @@ class TyeSettingsComponent {
                 addBrowseFolderListener(
                     TextBrowseFolderListener(
                         FileChooserDescriptor(true, false, false, false, false, false)
-                            .withFileFilter { vf -> vf.nameWithoutExtension.toLowerCase() == "tye" }
+                            .withFileFilter { vf -> vf.nameWithoutExtension.lowercase() == "tye" }
                             .withTitle("Select Path")
                     )
                 )
@@ -66,10 +73,13 @@ class TyeSettingsComponent {
             tyeHostField.labelLocation = BorderLayout.WEST
             add(tyeHostField)
 
-            add(TitledSeparator("Commands"))
+            add(TitledSeparator("Options"))
 
             overwriteTyeFileOption = JCheckBox("Overwrite existing tye.yaml during scaffolding")
             add(overwriteTyeFileOption)
+
+            checkTyeNewVersions = JCheckBox("Check new versions of the tye global tool during startup")
+            add(checkTyeNewVersions)
         }
     }
 }

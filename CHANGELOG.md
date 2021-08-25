@@ -5,6 +5,7 @@
 ## [Unreleased]
 ### Added
 - Action for updating tye global tool
+- Option to disable tye global tool new version check
 ### Changed
 - Tye global tool version is updated to 0.9.0-alpha.21380.1
 
