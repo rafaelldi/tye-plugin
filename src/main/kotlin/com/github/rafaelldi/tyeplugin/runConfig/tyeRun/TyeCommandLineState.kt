@@ -3,7 +3,7 @@ package com.github.rafaelldi.tyeplugin.runConfig.tyeRun
 import com.github.rafaelldi.tyeplugin.cli.TyeCliClient
 import com.intellij.execution.ExecutionException
 import com.intellij.execution.configurations.CommandLineState
-import com.intellij.execution.process.OSProcessHandler
+import com.intellij.execution.process.KillableProcessHandler
 import com.intellij.execution.process.ProcessHandler
 import com.intellij.execution.process.ProcessTerminatedListener
 import com.intellij.execution.runners.ExecutionEnvironment
@@ -21,8 +21,7 @@ open class TyeCommandLineState(
         val options = buildOptions()
         val commandLine = tyeCliClient.run(options)
 
-        val handler = OSProcessHandler(commandLine)
-        handler.startNotify()
+        val handler = KillableProcessHandler(commandLine)
         ProcessTerminatedListener.attach(handler, environment.project)
 
         return handler
