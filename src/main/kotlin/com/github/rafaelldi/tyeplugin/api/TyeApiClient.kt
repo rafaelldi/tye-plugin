@@ -9,12 +9,15 @@ import io.ktor.client.features.json.JsonFeature
 import io.ktor.client.features.json.serializer.KotlinxSerializer
 import io.ktor.client.request.delete
 import io.ktor.client.request.get
+import kotlinx.serialization.json.Json
 
 @Service
 class TyeApiClient : Disposable {
     private val httpClient: HttpClient = HttpClient(CIO) {
         install(JsonFeature) {
-            serializer = KotlinxSerializer()
+            serializer = KotlinxSerializer(Json {
+               ignoreUnknownKeys = true
+            })     
         }
     }
 
