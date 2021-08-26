@@ -27,6 +27,7 @@ dependencies {
     implementation("io.ktor:ktor-client-core:1.6.1")
     implementation("io.ktor:ktor-client-cio:1.6.1")
     implementation("io.ktor:ktor-client-serialization:1.6.1")
+    implementation("io.ktor:ktor-client-serialization-jvm:1.6.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1-native-mt")
 }
 
