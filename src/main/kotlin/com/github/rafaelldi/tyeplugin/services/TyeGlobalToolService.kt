@@ -121,7 +121,7 @@ class TyeGlobalToolService(private val project: Project) {
         return currentVersion >= tyeActualVersion
     }
 
-    private fun isTyeGlobalToolInstalled(): Boolean {
+    fun isTyeGlobalToolInstalled(): Boolean {
         val output = getListOfGlobalTools()
 
         if (output.exitCode != 0) {
