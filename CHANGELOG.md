@@ -8,6 +8,8 @@
 - Option to disable tye global tool new version check
 ### Changed
 - Tye global tool version is updated to 0.9.0-alpha.21380.1
+### Fixed
+- Fixed ability to connect to Tye Dashboard by [@rohan-buchner](https://github.com/rohan-buchner) ([#51](https://github.com/rafaelldi/tye-plugin/issues/51))
 
 ## [0.1.2]
 ### Changed
