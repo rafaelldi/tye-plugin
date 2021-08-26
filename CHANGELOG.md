@@ -3,11 +3,15 @@
 # tye-plugin Changelog
 
 ## [Unreleased]
+
+## [0.1.3]
 ### Added
 - Action for updating tye global tool
 - Option to disable tye global tool new version check
+
 ### Changed
 - Tye global tool version is updated to 0.9.0-alpha.21380.1
+
 ### Fixed
 - Fixed ability to connect to Tye Dashboard by [@rohan-buchner](https://github.com/rohan-buchner) ([#51](https://github.com/rafaelldi/tye-plugin/issues/51))
 - Fixed stopping process ([#57](https://github.com/rafaelldi/tye-plugin/issues/57))
@@ -23,6 +27,7 @@
 - Action to update tye global tool
 - Action to perform shutdown tye application
 - Action to connect to tye host
+
 ### Changed
 - Plugin icon
 - Update tye version to 0.7.0-alpha.21279.2
@@ -31,6 +36,7 @@
 ### Added
 - Tool window with tye dashboard
 - Dialog to overwrite an existing file during scaffolding 
+
 ### Changed
 - Tye icons
 
