@@ -24,7 +24,7 @@ repositories {
     mavenCentral()
 }
 dependencies {
-    implementation("io.ktor:ktor-client-core:1.6.2")
+    implementation("io.ktor:ktor-client-core:1.6.3")
     implementation("io.ktor:ktor-client-cio:1.6.2")
     implementation("io.ktor:ktor-client-serialization:1.6.2")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1-native-mt")
