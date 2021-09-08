@@ -1,7 +1,7 @@
 package com.github.rafaelldi.tyeplugin.runConfig.tyeRun
 
 import com.github.rafaelldi.tyeplugin.cli.TyeCliClient
-import com.github.rafaelldi.tyeplugin.services.TyeGlobalToolPathProvider
+import com.github.rafaelldi.tyeplugin.services.TyePathProvider
 import com.intellij.execution.ExecutionException
 import com.intellij.execution.configurations.CommandLineState
 import com.intellij.execution.process.KillableProcessHandler
@@ -16,8 +16,8 @@ open class TyeCommandLineState(
     private val runConfig: TyeRunConfiguration,
     private val project: Project
 ) : CommandLineState(environment) {
-    private val tyeCliClient = service<TyeCliClient>()
-    private val tyePathProvider: TyeGlobalToolPathProvider = project.service()
+    private val tyeCliClient: TyeCliClient = service()
+    private val tyePathProvider: TyePathProvider = project.service()
 
     override fun startProcess(): ProcessHandler {
         val tyePath = tyePathProvider.getPath() ?: throw ExecutionException("Tye path not specified.")

@@ -15,7 +15,7 @@ import java.nio.file.Paths
 @Service
 class TyeCliService(private val project: Project) {
     private val tyeCliClient: TyeCliClient = service()
-    private val tyePathProvider: TyeGlobalToolPathProvider = project.service()
+    private val tyePathProvider: TyePathProvider = project.service()
     private val log = Logger.getInstance(TyeCliService::class.java)
 
     fun getVersion(): String? {
@@ -25,7 +25,12 @@ class TyeCliService(private val project: Project) {
         val output = ExecUtil.execAndGetOutput(commandLine)
         val success = output.exitCode == 0
 
-        return if (success) output.stdout else null
+        if (!success) {
+            log.error(output.stderr)
+            return null
+        }
+
+        return output.stdout
     }
 
     fun scaffoldTyeFile(overwriteFile: Boolean) {
