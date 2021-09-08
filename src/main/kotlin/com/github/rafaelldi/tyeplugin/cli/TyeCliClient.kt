@@ -79,7 +79,7 @@ class TyeCliClient {
             options.logsProviderUrl
         )
 
-        if (options.tracesProvider != DEFAULT_TRACES_PROVIDER) cliBuilder.setLogs(
+        if (options.tracesProvider != DEFAULT_TRACES_PROVIDER) cliBuilder.setTraces(
             options.tracesProvider,
             options.tracesProviderUrl
         )
