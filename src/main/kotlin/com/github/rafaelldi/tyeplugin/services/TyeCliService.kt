@@ -1,6 +1,5 @@
 package com.github.rafaelldi.tyeplugin.services
 
-import com.github.rafaelldi.tyeplugin.actions.InstallTyeGlobalToolNotificationAction
 import com.github.rafaelldi.tyeplugin.cli.TyeCliClient
 import com.github.rafaelldi.tyeplugin.util.TYE_FILE_NAME
 import com.intellij.execution.util.ExecUtil
@@ -15,21 +14,30 @@ import java.nio.file.Paths
 
 @Service
 class TyeCliService(private val project: Project) {
-    private val tyeCliClient: TyeCliClient = project.service()
-    private val tyeGlobalToolService: TyeGlobalToolService = project.service()
+    private val tyeCliClient: TyeCliClient = service()
+    private val tyePathProvider: TyePathProvider = project.service()
     private val log = Logger.getInstance(TyeCliService::class.java)
 
-    fun scaffoldTyeFile(overwriteFile: Boolean) {
-        val isTyeGlobalToolInstalled = tyeGlobalToolService.isTyeGlobalToolInstalled()
-        if (!isTyeGlobalToolInstalled) {
-            Notification("Tye", "Tye is not installed", "", NotificationType.ERROR)
-                .addAction(InstallTyeGlobalToolNotificationAction())
-                .notify(project)
-            return
+    fun getVersion(): String? {
+        val tyePath = tyePathProvider.getPath() ?: return null
+
+        val commandLine = tyeCliClient.version(tyePath)
+        val output = ExecUtil.execAndGetOutput(commandLine)
+        val success = output.exitCode == 0
+
+        if (!success) {
+            log.error(output.stderr)
+            return null
         }
 
-        val options = TyeCliClient.InitOptions(project.basePath!!, overwriteFile)
-        val commandLine = tyeCliClient.init(options)
+        return output.stdout
+    }
+
+    fun scaffoldTyeFile(overwriteFile: Boolean) {
+        val tyePath = tyePathProvider.getPath() ?: return
+
+        val options = TyeCliClient.InitOptions(project.basePath!!, project.basePath, overwriteFile)
+        val commandLine = tyeCliClient.init(tyePath, options)
         val output = ExecUtil.execAndGetOutput(commandLine)
         val success = output.exitCode == 0
 

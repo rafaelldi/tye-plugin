@@ -1,6 +1,7 @@
 package com.github.rafaelldi.tyeplugin.services
 
 import com.github.rafaelldi.tyeplugin.actions.InstallTyeGlobalToolNotificationAction
+import com.github.rafaelldi.tyeplugin.settings.TyeSettingsState
 import com.github.rafaelldi.tyeplugin.util.ToolVersion
 import com.intellij.execution.configurations.GeneralCommandLine
 import com.intellij.execution.process.ProcessOutput
@@ -11,17 +12,15 @@ import com.intellij.notification.NotificationAction
 import com.intellij.notification.NotificationType
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.components.Service
-import com.intellij.openapi.components.service
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.project.Project
 
 @Service
 class TyeGlobalToolService(private val project: Project) {
     companion object {
-        const val TYE_ACTUAL_VERSION = "0.9.0-alpha.21380.1"
+        private const val TYE_ACTUAL_VERSION = "0.9.0-alpha.21380.1"
     }
 
-    private val tyeGlobalToolPathProvider: TyeGlobalToolPathProvider = project.service()
     private val log = Logger.getInstance(TyeGlobalToolService::class.java)
     private val tyeActualVersion = ToolVersion(TYE_ACTUAL_VERSION)
 
@@ -54,7 +53,7 @@ class TyeGlobalToolService(private val project: Project) {
 
         if (success) {
             log.info("Tye is successfully installed with version $TYE_ACTUAL_VERSION")
-            tyeGlobalToolPathProvider.refreshPath()
+            TyeSettingsState.getInstance(project).tyeToolPath = TyePathProvider.getDefaultGlobalPath()
 
             Notification("Tye", "Tye is successfully installed", "", NotificationType.INFORMATION)
                 .notify(project)
@@ -121,7 +120,7 @@ class TyeGlobalToolService(private val project: Project) {
         return currentVersion >= tyeActualVersion
     }
 
-    fun isTyeGlobalToolInstalled(): Boolean {
+    private fun isTyeGlobalToolInstalled(): Boolean {
         val output = getListOfGlobalTools()
 
         if (output.exitCode != 0) {
@@ -168,6 +167,7 @@ class TyeGlobalToolService(private val project: Project) {
             .withParentEnvironmentType(GeneralCommandLine.ParentEnvironmentType.CONSOLE)
             .withExePath("dotnet")
             .withParameters("tool", "list", "--global")
+
         return ExecUtil.execAndGetOutput(commandLine)
     }
 }

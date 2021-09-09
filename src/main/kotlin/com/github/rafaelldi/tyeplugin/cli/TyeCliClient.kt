@@ -2,27 +2,24 @@ package com.github.rafaelldi.tyeplugin.cli
 
 import com.github.rafaelldi.tyeplugin.cli.builders.TyeInitCliBuilder
 import com.github.rafaelldi.tyeplugin.cli.builders.TyeRunCliBuilder
-import com.github.rafaelldi.tyeplugin.services.TyeGlobalToolPathProvider
-import com.intellij.execution.ExecutionException
 import com.intellij.execution.configurations.GeneralCommandLine
 import com.intellij.openapi.components.Service
-import com.intellij.openapi.components.service
 import com.intellij.openapi.diagnostic.Logger
-import com.intellij.openapi.project.Project
 
 @Service
-class TyeCliClient(private val project: Project) {
+class TyeCliClient {
     companion object {
-        const val DEFAULT_PORT = 8000
-        const val DEFAULT_VERBOSITY = "info"
-        const val DEFAULT_LOGS_PROVIDER = "none"
-        const val DEFAULT_TRACES_PROVIDER = "none"
+        private const val DEFAULT_PORT = 8000
+        private const val DEFAULT_VERBOSITY = "info"
+        private const val DEFAULT_LOGS_PROVIDER = "none"
+        private const val DEFAULT_TRACES_PROVIDER = "none"
     }
 
-    data class InitOptions(val path: String, val overwriteExistingFile: Boolean)
+    data class InitOptions(val path: String, val workDirectory: String?, val overwriteExistingFile: Boolean)
 
     data class RunOptions(
         val path: String,
+        val workDirectory: String?,
         val port: Int,
         val noBuild: Boolean,
         val docker: Boolean,
@@ -35,12 +32,18 @@ class TyeCliClient(private val project: Project) {
         val tracesProviderUrl: String?
     )
 
-    private val tyeToolPathProvider = project.service<TyeGlobalToolPathProvider>()
     private val log = Logger.getInstance(TyeCliClient::class.java)
 
-    fun init(options: InitOptions): GeneralCommandLine {
-        val tyePath = tyeToolPathProvider.getPath() ?: throw ExecutionException("Tye tool path not found.")
+    fun version(tyePath: String): GeneralCommandLine {
+        log.info("Call version command")
 
+        return GeneralCommandLine()
+            .withParentEnvironmentType(GeneralCommandLine.ParentEnvironmentType.CONSOLE)
+            .withExePath(tyePath)
+            .withParameters("--version")
+    }
+
+    fun init(tyePath: String, options: InitOptions): GeneralCommandLine {
         val cliBuilder = TyeInitCliBuilder(options.path)
 
         if (options.overwriteExistingFile) cliBuilder.setForce()
@@ -51,14 +54,12 @@ class TyeCliClient(private val project: Project) {
 
         return GeneralCommandLine()
             .withParentEnvironmentType(GeneralCommandLine.ParentEnvironmentType.CONSOLE)
-            .withWorkDirectory(project.basePath)
+            .withWorkDirectory(options.workDirectory)
             .withExePath(tyePath)
             .withParameters(arguments)
     }
 
-    fun run(options: RunOptions): GeneralCommandLine {
-        val tyePath = tyeToolPathProvider.getPath() ?: throw ExecutionException("Tye tool path not found.")
-
+    fun run(tyePath: String, options: RunOptions): GeneralCommandLine {
         val cliBuilder = TyeRunCliBuilder(options.path)
 
         if (options.port != DEFAULT_PORT) cliBuilder.setPort(options.port)
@@ -78,7 +79,7 @@ class TyeCliClient(private val project: Project) {
             options.logsProviderUrl
         )
 
-        if (options.tracesProvider != DEFAULT_TRACES_PROVIDER) cliBuilder.setLogs(
+        if (options.tracesProvider != DEFAULT_TRACES_PROVIDER) cliBuilder.setTraces(
             options.tracesProvider,
             options.tracesProviderUrl
         )
@@ -89,7 +90,7 @@ class TyeCliClient(private val project: Project) {
 
         return GeneralCommandLine()
             .withParentEnvironmentType(GeneralCommandLine.ParentEnvironmentType.CONSOLE)
-            .withWorkDirectory(project.basePath)
+            .withWorkDirectory(options.workDirectory)
             .withExePath(tyePath)
             .withParameters(arguments)
     }
