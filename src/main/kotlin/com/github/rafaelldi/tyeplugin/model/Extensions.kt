@@ -23,6 +23,7 @@ fun ServiceDto.toService(): TyeService {
 fun ServiceDto.toProperties(): TyeServiceProperties = TyeServiceProperties(
     description?.name,
     serviceType.toString(),
+    serviceSource.toString(),
     description?.replicas,
     restarts,
     description?.runInfo?.project,

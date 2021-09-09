@@ -130,6 +130,7 @@ class TyeToolWindow(project: Project) : SimpleToolWindowPanel(false) {
             dataVector.removeAllElements()
             addRow(arrayOf("Id", service.properties.id))
             addRow(arrayOf("Type", service.properties.type))
+            addRow(arrayOf("Source", service.properties.source))
             addRow(arrayOf("Replicas", service.properties.replicas))
             addRow(arrayOf("Restarts", service.properties.restarts))
             addRow(arrayOf("Project", service.properties.project))
