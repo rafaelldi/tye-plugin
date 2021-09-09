@@ -1,9 +1,10 @@
 package com.github.rafaelldi.tyeplugin.runConfig.tyeRun
 
 import com.github.rafaelldi.tyeplugin.cli.TyeCliClient
+import com.github.rafaelldi.tyeplugin.services.TyePathProvider
 import com.intellij.execution.ExecutionException
 import com.intellij.execution.configurations.CommandLineState
-import com.intellij.execution.process.OSProcessHandler
+import com.intellij.execution.process.KillableProcessHandler
 import com.intellij.execution.process.ProcessHandler
 import com.intellij.execution.process.ProcessTerminatedListener
 import com.intellij.execution.runners.ExecutionEnvironment
@@ -15,14 +16,16 @@ open class TyeCommandLineState(
     private val runConfig: TyeRunConfiguration,
     private val project: Project
 ) : CommandLineState(environment) {
+    private val tyeCliClient: TyeCliClient = service()
+    private val tyePathProvider: TyePathProvider = project.service()
 
     override fun startProcess(): ProcessHandler {
-        val tyeCliClient = project.service<TyeCliClient>()
-        val options = buildOptions()
-        val commandLine = tyeCliClient.run(options)
+        val tyePath = tyePathProvider.getPath() ?: throw ExecutionException("Tye path not specified.")
 
-        val handler = OSProcessHandler(commandLine)
-        handler.startNotify()
+        val options = buildOptions()
+        val commandLine = tyeCliClient.run(tyePath, options)
+
+        val handler = KillableProcessHandler(commandLine)
         ProcessTerminatedListener.attach(handler, environment.project)
 
         return handler
@@ -30,6 +33,7 @@ open class TyeCommandLineState(
 
     private fun buildOptions(): TyeCliClient.RunOptions = TyeCliClient.RunOptions(
         runConfig.pathArgument?.path ?: throw ExecutionException("Path argument not specified."),
+        project.basePath,
         runConfig.portArgument,
         runConfig.noBuildArgument,
         runConfig.dockerArgument,

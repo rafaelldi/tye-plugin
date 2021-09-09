@@ -1,5 +1,6 @@
 package com.github.rafaelldi.tyeplugin.runConfig.tyeRun
 
+@Suppress("unused")
 enum class LogsProvider(private val displayName: String, val argumentName: String) {
     NONE("None", "none") {
         override fun isProviderUrlEnabled(): Boolean = false

@@ -1,36 +1,37 @@
 package com.github.rafaelldi.tyeplugin.settings
 
-import com.intellij.openapi.options.Configurable
+import com.github.rafaelldi.tyeplugin.services.TyePathProvider.Companion.TYE_TOOL
+import com.intellij.openapi.fileChooser.FileChooserDescriptor
+import com.intellij.openapi.options.BoundConfigurable
 import com.intellij.openapi.project.Project
-import javax.swing.JComponent
+import com.intellij.openapi.ui.DialogPanel
+import com.intellij.ui.layout.panel
 
-class TyeSettingsConfigurable(private val project: Project) : Configurable {
-    private val component = TyeSettingsComponent()
+class TyeSettingsConfigurable(private val project: Project) : BoundConfigurable("Tye") {
+    private val settings: TyeSettingsState = TyeSettingsState.getInstance(project)
 
-    override fun createComponent(): JComponent = component.getPanel()
-
-    override fun getPreferredFocusedComponent(): JComponent = component.getPreferredFocusedComponent()
-
-    override fun isModified(): Boolean {
-        val settings = TyeSettingsState.getInstance(project)
-        var modified = component.getTyeToolPath() != settings.tyeToolPath
-        modified = modified or (component.getOverwriteTyeFile() != settings.overwriteTyeFile)
-        return modified
+    override fun createPanel(): DialogPanel = panel {
+        row("Tye tool path") {
+            textFieldWithBrowseButton(
+                settings::tyeToolPath,
+                "Select Path",
+                project,
+                FileChooserDescriptor(true, false, false, false, false, false)
+                    .withFileFilter { vf -> vf.nameWithoutExtension.lowercase() == TYE_TOOL }
+                    .withTitle("Select Path"),
+                null
+            )
+        }
+        row("Tye host") {
+            textField(settings::tyeHost)
+        }
+        titledRow("Options") {
+            row {
+                checkBox("Overwrite existing tye.yaml during scaffolding", settings::overwriteTyeFile)
+            }
+            row {
+                checkBox("Check new versions of the tye global tool during startup", settings::checkTyeNewVersions)
+            }
+        }
     }
-
-    override fun apply() {
-        val settings = TyeSettingsState.getInstance(project)
-        settings.tyeToolPath = component.getTyeToolPath()
-        settings.tyeHost = component.getTyeHost()
-        settings.overwriteTyeFile = component.getOverwriteTyeFile()
-    }
-
-    override fun reset() {
-        val settings = TyeSettingsState.getInstance(project)
-        component.setTyeToolPath(settings.tyeToolPath)
-        component.setTyeHost(settings.tyeHost)
-        component.setOverwriteTyeFile(settings.overwriteTyeFile)
-    }
-
-    override fun getDisplayName(): String = "Tye"
 }

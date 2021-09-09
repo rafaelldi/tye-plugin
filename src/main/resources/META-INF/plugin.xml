@@ -59,6 +59,11 @@
                     text="Install Tye Global Tool"
                     description="Install Microsoft.Tye tool as a global tool">
             </action>
+            <action id="com.github.rafaelldi.tyeplugin.actions.UpdateTyeGlobalToolAction"
+                    class="com.github.rafaelldi.tyeplugin.actions.UpdateTyeGlobalToolAction"
+                    text="Update Tye Global Tool"
+                    description="Update Microsoft.Tye global tool">
+            </action>
             <action id="com.github.rafaelldi.tyeplugin.actions.ScaffoldTyeFileAction"
                     class="com.github.rafaelldi.tyeplugin.actions.ScaffoldTyeFileAction"
                     text="Scaffold Tye File"
