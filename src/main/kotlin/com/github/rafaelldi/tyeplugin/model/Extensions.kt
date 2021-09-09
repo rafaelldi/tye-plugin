@@ -23,6 +23,7 @@ fun ServiceDto.toService(): Service {
 fun ServiceDto.toProperties(): Properties = Properties(
     description?.name,
     serviceType.toString(),
+    serviceSource.toString(),
     description?.replicas,
     restarts,
     description?.runInfo?.project,
