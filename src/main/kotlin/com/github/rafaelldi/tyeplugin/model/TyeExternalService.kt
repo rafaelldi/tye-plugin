@@ -5,7 +5,5 @@ class TyeExternalService(
     bindings: List<TyeServiceBinding>,
     environmentVariables: List<TyeServiceEnvironmentVariable>
 ) : TyeService(properties, bindings, environmentVariables) {
-    override fun getServiceName(): String {
-        TODO("Not yet implemented")
-    }
+    override fun getServiceName(): String = properties.id ?: "unknown"
 }
