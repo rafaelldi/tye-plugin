@@ -108,8 +108,6 @@
             <reference ref="RemoteServers.ConnectServer"/>
             <reference ref="RemoteServers.DisconnectServer"/>
             <reference ref="RemoteServers.EditServerConfig"/>
-            <reference ref="RemoteServers.ChooseServerDeployment"/>
-            <reference ref="Servers.Deploy"/>
         </group>
         <group id="Tye.RemoteServersViewToolbar.Secondary"/>
         <group id="Tye.RemoteServersViewToolbar.Toolbar"/>

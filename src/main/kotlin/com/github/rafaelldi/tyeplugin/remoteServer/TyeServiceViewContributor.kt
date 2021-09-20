@@ -1,8 +1,8 @@
 package com.github.rafaelldi.tyeplugin.remoteServer
 
 import com.intellij.execution.services.ServiceViewDescriptor
+import com.intellij.execution.services.ServiceViewLazyContributor
 import com.intellij.execution.services.SimpleServiceViewDescriptor
-import com.intellij.icons.AllIcons
 import com.intellij.ide.util.treeView.AbstractTreeNode
 import com.intellij.openapi.project.Project
 import com.intellij.remoteServer.configuration.RemoteServer
@@ -12,22 +12,28 @@ import com.intellij.remoteServer.runtime.Deployment
 import com.intellij.remoteServer.runtime.ServerConnection
 import icons.TyeIcons
 
-class TyeServiceViewContributor : RemoteServersServiceViewContributor() {
-    override fun getViewDescriptor(project: Project): ServiceViewDescriptor {
-        return SimpleServiceViewDescriptor("Tye", TyeIcons.TYE)
+class TyeServiceViewContributor : RemoteServersServiceViewContributor(), ServiceViewLazyContributor {
+    companion object {
+        private val serviceViewDescriptor = SimpleServiceViewDescriptor("Tye", TyeIcons.TYE)
+        private val nodeComponentProvider: TyeDeploymentNodeComponentProvider = TyeDeploymentNodeComponentProvider()
     }
+
+    override fun getViewDescriptor(project: Project): ServiceViewDescriptor = serviceViewDescriptor
 
     override fun createDeploymentNode(
         connection: ServerConnection<*>?,
         serverNode: ServersTreeStructure.RemoteServerNode?,
         deployment: Deployment?
-    ): AbstractTreeNode<*> {
-        return TyeDeploymentNode(serverNode!!.project, connection!!, serverNode, deployment!!, this)
-    }
+    ): AbstractTreeNode<*> = TyeDeploymentNode(
+        serverNode!!.project,
+        connection!!,
+        serverNode,
+        deployment!!,
+        this,
+        nodeComponentProvider
+    )
 
-    override fun accept(server: RemoteServer<*>): Boolean {
-        return server.type == TyeHostType.getInstance()
-    }
+    override fun accept(server: RemoteServer<*>): Boolean = server.type == TyeHostType.getInstance()
 
     override fun selectLog(deploymentNode: AbstractTreeNode<*>, logName: String) {
         TODO("Not yet implemented")
