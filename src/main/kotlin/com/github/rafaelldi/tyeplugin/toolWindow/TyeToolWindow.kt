@@ -2,8 +2,8 @@ package com.github.rafaelldi.tyeplugin.toolWindow
 
 import com.github.rafaelldi.tyeplugin.messaging.TyeApplicationNotifier
 import com.github.rafaelldi.tyeplugin.messaging.TyeApplicationNotifier.Companion.TOPIC
-import com.github.rafaelldi.tyeplugin.model.Service
-import com.github.rafaelldi.tyeplugin.services.TyeApplicationManager
+import com.github.rafaelldi.tyeplugin.model.TyeService
+import com.github.rafaelldi.tyeplugin.services.TyeApplicationManagerOld
 import com.github.rafaelldi.tyeplugin.toolWindow.TyeServiceTreeNode.Factory.create
 import com.intellij.openapi.actionSystem.ActionGroup
 import com.intellij.openapi.actionSystem.ActionManager
@@ -30,7 +30,7 @@ class TyeToolWindow(project: Project) : SimpleToolWindowPanel(false) {
     private lateinit var portBindingsTableModel: DefaultTableModel
     private lateinit var environmentVariablesTableModel: DefaultTableModel
 
-    private var tyeApplicationManager: TyeApplicationManager = project.getService(TyeApplicationManager::class.java)
+    private var tyeApplicationManager: TyeApplicationManagerOld = project.getService(TyeApplicationManagerOld::class.java)
 
     init {
         with(project.messageBus.connect()) {
@@ -104,7 +104,7 @@ class TyeToolWindow(project: Project) : SimpleToolWindowPanel(false) {
 
     private fun root(): DefaultMutableTreeNode = treeModel.root as DefaultMutableTreeNode
 
-    private fun updateTree(services: List<Service>) {
+    private fun updateTree(services: List<TyeService>) {
         val root = root()
         root.removeAllChildren()
 
@@ -123,7 +123,7 @@ class TyeToolWindow(project: Project) : SimpleToolWindowPanel(false) {
         treeModel.nodeStructureChanged(root)
     }
 
-    private fun updateTable(service: Service?) {
+    private fun updateTable(service: TyeService?) {
         if (service == null) return
 
         with(propertiesTableModel) {

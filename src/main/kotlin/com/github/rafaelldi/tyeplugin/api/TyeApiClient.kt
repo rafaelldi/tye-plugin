@@ -1,5 +1,6 @@
 package com.github.rafaelldi.tyeplugin.api
 
+import com.github.rafaelldi.tyeplugin.api.model.ApplicationDto
 import com.github.rafaelldi.tyeplugin.api.model.ServiceDto
 import com.intellij.openapi.Disposable
 import com.intellij.openapi.components.Service
@@ -20,6 +21,8 @@ class TyeApiClient : Disposable {
             })     
         }
     }
+
+    suspend fun getApplication(host: String): ApplicationDto = httpClient.get("$host/api/v1/application")
 
     suspend fun getServices(host: String): List<ServiceDto> = httpClient.get("$host/api/v1/services")
 

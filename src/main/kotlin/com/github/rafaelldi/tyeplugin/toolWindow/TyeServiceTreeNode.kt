@@ -1,6 +1,6 @@
 package com.github.rafaelldi.tyeplugin.toolWindow
 
-import com.github.rafaelldi.tyeplugin.model.Service
+import com.github.rafaelldi.tyeplugin.model.*
 import com.intellij.ui.ColoredTreeCellRenderer
 import icons.TyeIcons.TYE_NODE
 import icons.TyeIcons.TYE_NODE_DOCKER
@@ -8,16 +8,16 @@ import icons.TyeIcons.TYE_NODE_DOT_NET
 import icons.TyeIcons.TYE_NODE_EXECUTABLE
 import javax.swing.tree.DefaultMutableTreeNode
 
-sealed class TyeServiceTreeNode(val name: String?, val service: Service?) : DefaultMutableTreeNode() {
+sealed class TyeServiceTreeNode(val name: String?, val service: TyeService?) : DefaultMutableTreeNode() {
     companion object Factory {
-        fun create(service: Service): TyeServiceTreeNode {
+        fun create(service: TyeService): TyeServiceTreeNode {
             return when (service) {
-                is Service.External -> External(service.properties.id, service)
-                is Service.Project -> Project(service.properties.id, service)
-                is Service.Executable -> Executable(service.properties.id, service)
-                is Service.Container -> Container(service.properties.id, service)
-                is Service.Function -> Function(service.properties.id, service)
-                is Service.Ingress -> Ingress(service.properties.id, service)
+                is TyeExternalService -> External(service.properties.id, service)
+                is TyeProjectService -> Project(service.properties.id, service)
+                is TyeExecutableService -> Executable(service.properties.id, service)
+                is TyeContainerService -> Container(service.properties.id, service)
+                is TyeFunctionService -> Function(service.properties.id, service)
+                is TyeIngressService -> Ingress(service.properties.id, service)
             }
         }
     }
@@ -30,42 +30,42 @@ sealed class TyeServiceTreeNode(val name: String?, val service: Service?) : Defa
         }
     }
 
-    class External(name: String?, service: Service) : TyeServiceTreeNode(name, service) {
+    class External(name: String?, service: TyeService) : TyeServiceTreeNode(name, service) {
         override fun render(renderer: ColoredTreeCellRenderer) {
             renderer.append("$name")
             renderer.icon = TYE_NODE
         }
     }
 
-    class Project(name: String?, service: Service) : TyeServiceTreeNode(name, service) {
+    class Project(name: String?, service: TyeService) : TyeServiceTreeNode(name, service) {
         override fun render(renderer: ColoredTreeCellRenderer) {
             renderer.append("$name")
             renderer.icon = TYE_NODE_DOT_NET
         }
     }
 
-    class Executable(name: String?, service: Service) : TyeServiceTreeNode(name, service) {
+    class Executable(name: String?, service: TyeService) : TyeServiceTreeNode(name, service) {
         override fun render(renderer: ColoredTreeCellRenderer) {
             renderer.append("$name")
             renderer.icon = TYE_NODE_EXECUTABLE
         }
     }
 
-    class Container(name: String?, service: Service) : TyeServiceTreeNode(name, service) {
+    class Container(name: String?, service: TyeService) : TyeServiceTreeNode(name, service) {
         override fun render(renderer: ColoredTreeCellRenderer) {
             renderer.append("$name")
             renderer.icon = TYE_NODE_DOCKER
         }
     }
 
-    class Function(name: String?, service: Service) : TyeServiceTreeNode(name, service) {
+    class Function(name: String?, service: TyeService) : TyeServiceTreeNode(name, service) {
         override fun render(renderer: ColoredTreeCellRenderer) {
             renderer.append("$name")
             renderer.icon = TYE_NODE
         }
     }
 
-    class Ingress(name: String?, service: Service) : TyeServiceTreeNode(name, service) {
+    class Ingress(name: String?, service: TyeService) : TyeServiceTreeNode(name, service) {
         override fun render(renderer: ColoredTreeCellRenderer) {
             renderer.append("$name")
             renderer.icon = TYE_NODE

@@ -1,6 +1,6 @@
 package com.github.rafaelldi.tyeplugin.actions
 
-import com.github.rafaelldi.tyeplugin.services.TyeApplicationManager
+import com.github.rafaelldi.tyeplugin.services.TyeApplicationManagerOld
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.components.service
@@ -13,7 +13,7 @@ import kotlinx.coroutines.runBlocking
 class RefreshDashboardAction : AnAction() {
     override fun update(e: AnActionEvent) {
         if (e.project != null) {
-            val tyeApplication = e.project!!.service<TyeApplicationManager>()
+            val tyeApplication = e.project!!.service<TyeApplicationManagerOld>()
             e.presentation.isEnabledAndVisible = tyeApplication.isConnected
         } else {
             e.presentation.isEnabledAndVisible = false
@@ -33,7 +33,7 @@ class RefreshDashboardAction : AnAction() {
     }
 
     private fun updateDashboard(project: Project) {
-        val tyeApplication = project.service<TyeApplicationManager>()
+        val tyeApplication = project.service<TyeApplicationManagerOld>()
         runBlocking {
             tyeApplication.update()
         }
