@@ -15,7 +15,7 @@ plugins {
     // Gradle Qodana Plugin
     id("org.jetbrains.qodana") version "0.1.13"
     // Kotlin multiplatform / multi-format serialization
-    id("org.jetbrains.kotlin.plugin.serialization") version "1.5.30"
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.5.31"
 }
 
 group = properties("pluginGroup")
