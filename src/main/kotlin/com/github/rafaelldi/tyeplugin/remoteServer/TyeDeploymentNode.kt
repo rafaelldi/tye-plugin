@@ -19,9 +19,9 @@ class TyeDeploymentNode(
     serverNode: ServersTreeStructure.RemoteServerNode,
     value: Deployment,
     nodeProducer: ServersTreeStructure.DeploymentNodeProducer,
-    private val nodeComponentProvider: TyeDeploymentNodeComponentProvider
+    nodeComponentProvider: TyeDeploymentNodeComponentProvider
 ) : DeploymentNodeImpl(project, connection, serverNode, value, nodeProducer) {
-    private var nodeComponent: TyeDeploymentNodeComponent? = null
+    private val nodeComponent: TyeDeploymentNodeComponent = nodeComponentProvider.getComponent(value)
 
     override fun getChildren(): MutableCollection<out AbstractTreeNode<*>> {
         val result = ArrayList<AbstractTreeNode<Any>>()
@@ -40,11 +40,5 @@ class TyeDeploymentNode(
         }
     }
 
-    override fun getComponent(): JComponent {
-        if (nodeComponent == null) {
-            nodeComponent = nodeComponentProvider.getComponent(value)
-        }
-
-        return nodeComponent!!.getComponent()
-    }
+    override fun getComponent(): JComponent = nodeComponent.getComponent()
 }

@@ -3,13 +3,8 @@ package com.github.rafaelldi.tyeplugin.remoteServer
 import com.intellij.remoteServer.runtime.Deployment
 
 class TyeDeploymentNodeComponentProvider {
-    private var component: TyeDeploymentNodeComponent? = null
+    private val map: MutableMap<Deployment, TyeDeploymentNodeComponent> = mutableMapOf()
 
-    fun getComponent(deployment: Deployment): TyeDeploymentNodeComponent {
-        if (component == null) {
-            component = TyeDeploymentNodeComponent(deployment)
-        }
-
-        return component!!
-    }
+    fun getComponent(deployment: Deployment): TyeDeploymentNodeComponent =
+        map.computeIfAbsent(deployment, ::TyeDeploymentNodeComponent)
 }
