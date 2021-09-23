@@ -12,6 +12,7 @@ import java.awt.BorderLayout
 import javax.swing.JComponent
 import javax.swing.JPanel
 import javax.swing.table.DefaultTableModel
+import javax.swing.table.TableModel
 
 class TyeDeploymentNodeComponent(deployment: Deployment) {
     private val panel: JPanel
@@ -21,7 +22,7 @@ class TyeDeploymentNodeComponent(deployment: Deployment) {
             layout = BorderLayout()
 
             val runtime = deployment.runtime
-            if (runtime is TyeServiceRuntime<*>){
+            if (runtime is TyeServiceRuntime<*>) {
                 val propertiesTab = PropertiesTab(runtime.service.properties)
                 val portBindingsTab = PortBindingsTab(runtime.service.bindings)
                 val environmentVariablesTab = EnvironmentVariablesTab(runtime.service.environmentVariables)
@@ -62,7 +63,7 @@ private class PropertiesTab(properties: TyeServiceProperties) {
             addRow(arrayOf("Working directory", properties.workingDirectory))
         }
 
-        component = JBScrollPane(JBTable(table))
+        component = JBScrollPane(ValueTable(table))
     }
 }
 
@@ -104,7 +105,7 @@ private class PortBindingsTab(bindings: List<TyeServiceBinding>) {
             )
         }
 
-        component = JBScrollPane(JBTable(table))
+        component = JBScrollPane(ValueTable(table))
     }
 }
 
@@ -124,6 +125,10 @@ private class EnvironmentVariablesTab(environmentVariables: List<TyeServiceEnvir
             table.addRow(arrayOf(variable.name, variable.value))
         }
 
-        component = JBScrollPane(JBTable(table))
+        component = JBScrollPane(ValueTable(table))
     }
+}
+
+private class ValueTable(model: TableModel) : JBTable(model) {
+    override fun isCellEditable(row: Int, column: Int): Boolean = false
 }
