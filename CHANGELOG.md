@@ -4,12 +4,23 @@
 
 ## [Unreleased]
 
-## [0.1.3]
 ### Added
+
+- Tye group to the Services tool window
+
+### Removed
+
+- Tye tool window
+
+## [0.1.3]
+
+### Added
+
 - Action for updating tye global tool
 - Option to disable tye global tool new version check
 
 ### Changed
+
 - Tye global tool version is updated to 0.9.0-alpha.21380.1
 
 ### Fixed
