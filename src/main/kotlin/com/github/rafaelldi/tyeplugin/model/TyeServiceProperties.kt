@@ -1,6 +1,6 @@
 package com.github.rafaelldi.tyeplugin.model
 
-data class Properties(
+data class TyeServiceProperties(
     val id: String?,
     val type: String,
     val source: String,

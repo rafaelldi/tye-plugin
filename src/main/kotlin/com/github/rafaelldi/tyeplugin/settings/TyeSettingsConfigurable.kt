@@ -22,9 +22,6 @@ class TyeSettingsConfigurable(private val project: Project) : BoundConfigurable(
                 null
             )
         }
-        row("Tye host") {
-            textField(settings::tyeHost)
-        }
         titledRow("Options") {
             row {
                 checkBox("Overwrite existing tye.yaml during scaffolding", settings::overwriteTyeFile)

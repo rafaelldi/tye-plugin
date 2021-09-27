@@ -10,25 +10,36 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <!-- Startup -->
-        <backgroundPostStartupActivity implementation="com.github.rafaelldi.tyeplugin.startup.TyeUpdateGlobalToolStartupActivity"/>
+        <backgroundPostStartupActivity
+                implementation="com.github.rafaelldi.tyeplugin.startup.TyeUpdateGlobalToolStartupActivity"/>
 
         <!-- Files -->
-        <fileType implementationClass="com.github.rafaelldi.tyeplugin.file.TyeFileType" name="Tye" language="yaml" fileNames="tye.yaml" />
+        <fileType implementationClass="com.github.rafaelldi.tyeplugin.file.TyeFileType" name="Tye" language="yaml"
+                  fileNames="tye.yaml"/>
 
         <!-- Application settings -->
         <projectService serviceImplementation="com.github.rafaelldi.tyeplugin.settings.TyeSettingsState"/>
-        <projectConfigurable parentId="tools" instance="com.github.rafaelldi.tyeplugin.settings.TyeSettingsConfigurable" id="com.github.rafaelldi.tyeplugin.settings.TyeSettingsConfigurable" displayName="Tye" nonDefaultProject="false"/>
+        <projectConfigurable parentId="tools" instance="com.github.rafaelldi.tyeplugin.settings.TyeSettingsConfigurable"
+                             id="com.github.rafaelldi.tyeplugin.settings.TyeSettingsConfigurable" displayName="Tye"
+                             nonDefaultProject="false"/>
+        <applicationConfigurable parentId="com.github.rafaelldi.tyeplugin.settings.TyeSettingsConfigurable"
+                                 instance="com.github.rafaelldi.tyeplugin.settings.TyeRemoteServerConfigurable"
+                                 id="com.github.rafaelldi.tyeplugin.settings.TyeRemoteServerConfigurable"
+                                 displayName="Tye Hosts"/>
 
         <!-- Run configurations -->
         <configurationType implementation="com.github.rafaelldi.tyeplugin.runConfig.tyeRun.TyeConfigurationType"/>
-        <runConfigurationProducer implementation="com.github.rafaelldi.tyeplugin.runConfig.tyeRun.TyeRunConfigurationProducer"/>
-        <runLineMarkerContributor language="yaml" implementationClass="com.github.rafaelldi.tyeplugin.runConfig.tyeRun.TyeRunLineMarkerContributor"/>
-
-        <!-- Tool window -->
-        <toolWindow id="Tye Dashboard" anchor="bottom" icon="TyeIcons.TYE_TOOL_WINDOW" factoryClass="com.github.rafaelldi.tyeplugin.toolWindow.TyeToolWindowFactory" />
+        <runConfigurationProducer
+                implementation="com.github.rafaelldi.tyeplugin.runConfig.tyeRun.TyeRunConfigurationProducer"/>
+        <runLineMarkerContributor language="yaml"
+                                  implementationClass="com.github.rafaelldi.tyeplugin.runConfig.tyeRun.TyeRunLineMarkerContributor"/>
 
         <!-- Notifications -->
-        <notificationGroup id="Tye" displayType="BALLOON" />
+        <notificationGroup id="Tye" displayType="BALLOON"/>
+
+        <!-- Remote server -->
+        <remoteServer.type implementation="com.github.rafaelldi.tyeplugin.remoteServer.TyeHostType"/>
+        <serviceViewContributor implementation="com.github.rafaelldi.tyeplugin.remoteServer.TyeServiceViewContributor"/>
     </extensions>
 
     <extensions defaultExtensionNs="JavaScript.JsonSchema">
@@ -36,7 +47,8 @@
     </extensions>
 
     <actions>
-        <group id="com.github.rafaelldi.tyeplugin.actions.TyeGroupedActions" text="Tye" popup="true" icon="TyeIcons.TYE">
+        <group id="com.github.rafaelldi.tyeplugin.actions.TyeGroupedActions" text="Tye" popup="true"
+               icon="TyeIcons.TYE">
             <add-to-group group-id="ToolsMenu"/>
             <action id="com.github.rafaelldi.tyeplugin.actions.InstallTyeGlobalToolAction"
                     class="com.github.rafaelldi.tyeplugin.actions.InstallTyeGlobalToolAction"
@@ -55,37 +67,12 @@
             </action>
         </group>
 
-        <group id="com.github.rafaelldi.tyeplugin.actions.TyeToolWindowGroupedActions">
-            <action id="com.github.rafaelldi.tyeplugin.actions.ConnectToTyeHostAction"
-                    class="com.github.rafaelldi.tyeplugin.actions.ConnectToTyeHostAction"
-                    text="Connect"
-                    description="Connect to tye host"
-                    icon="AllIcons.General.Add">
-            </action>
-            <action id="com.github.rafaelldi.tyeplugin.actions.RefreshDashboardAction"
-                    class="com.github.rafaelldi.tyeplugin.actions.RefreshDashboardAction"
-                    text="Refresh"
-                    description="Refresh tye dashboard"
-                    icon="AllIcons.Actions.Refresh">
-            </action>
-            <action id="com.github.rafaelldi.tyeplugin.actions.TyeApplicationShutdownAction"
-                    class="com.github.rafaelldi.tyeplugin.actions.TyeApplicationShutdownAction"
-                    text="Shutdown"
-                    description="Tye application shutdown"
-                    icon="AllIcons.Actions.Suspend">
-            </action>
-            <action id="com.github.rafaelldi.tyeplugin.actions.EditTyeSettingsAction"
-                    class="com.github.rafaelldi.tyeplugin.actions.EditTyeSettingsAction"
-                    text="Edit Configuration"
-                    description="Edit configuration"
-                    icon="AllIcons.General.Settings">
-            </action>
-            <action id="com.github.rafaelldi.tyeplugin.actions.OpenTyeWebDashboardAction"
-                    class="com.github.rafaelldi.tyeplugin.actions.OpenTyeWebDashboardAction"
-                    text="Web Dashboard"
-                    description="Open web dashboard"
-                    icon="AllIcons.General.Web">
-            </action>
+        <group id="Tye.RemoteServersViewToolbar.Main">
+            <reference ref="RemoteServers.ConnectServer"/>
+            <reference ref="RemoteServers.DisconnectServer"/>
+            <reference ref="RemoteServers.EditServerConfig"/>
         </group>
+        <group id="Tye.RemoteServersViewToolbar.Secondary"/>
+        <group id="Tye.RemoteServersViewToolbar.Toolbar"/>
     </actions>
 </idea-plugin>
