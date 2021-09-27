@@ -34,10 +34,6 @@
         <runLineMarkerContributor language="yaml"
                                   implementationClass="com.github.rafaelldi.tyeplugin.runConfig.tyeRun.TyeRunLineMarkerContributor"/>
 
-        <!-- Tool window -->
-        <toolWindow id="Tye Dashboard" anchor="bottom" icon="TyeIcons.TYE_TOOL_WINDOW"
-                    factoryClass="com.github.rafaelldi.tyeplugin.toolWindow.TyeToolWindowFactory"/>
-
         <!-- Notifications -->
         <notificationGroup id="Tye" displayType="BALLOON"/>
 
@@ -68,39 +64,6 @@
                     class="com.github.rafaelldi.tyeplugin.actions.ScaffoldTyeFileAction"
                     text="Scaffold Tye File"
                     description="Run tye init command in the solution directory">
-            </action>
-        </group>
-
-        <group id="com.github.rafaelldi.tyeplugin.actions.TyeToolWindowGroupedActions">
-            <action id="com.github.rafaelldi.tyeplugin.actions.ConnectToTyeHostAction"
-                    class="com.github.rafaelldi.tyeplugin.actions.ConnectToTyeHostAction"
-                    text="Connect"
-                    description="Connect to tye host"
-                    icon="AllIcons.General.Add">
-            </action>
-            <action id="com.github.rafaelldi.tyeplugin.actions.RefreshDashboardAction"
-                    class="com.github.rafaelldi.tyeplugin.actions.RefreshDashboardAction"
-                    text="Refresh"
-                    description="Refresh tye dashboard"
-                    icon="AllIcons.Actions.Refresh">
-            </action>
-            <action id="com.github.rafaelldi.tyeplugin.actions.TyeApplicationShutdownAction"
-                    class="com.github.rafaelldi.tyeplugin.actions.TyeApplicationShutdownAction"
-                    text="Shutdown"
-                    description="Tye application shutdown"
-                    icon="AllIcons.Actions.Suspend">
-            </action>
-            <action id="com.github.rafaelldi.tyeplugin.actions.EditTyeSettingsAction"
-                    class="com.github.rafaelldi.tyeplugin.actions.EditTyeSettingsAction"
-                    text="Edit Configuration"
-                    description="Edit configuration"
-                    icon="AllIcons.General.Settings">
-            </action>
-            <action id="com.github.rafaelldi.tyeplugin.actions.OpenTyeWebDashboardAction"
-                    class="com.github.rafaelldi.tyeplugin.actions.OpenTyeWebDashboardAction"
-                    text="Web Dashboard"
-                    description="Open web dashboard"
-                    icon="AllIcons.General.Web">
             </action>
         </group>
 

@@ -14,14 +14,11 @@ import com.intellij.util.xmlb.XmlSerializerUtil
 )
 class TyeSettingsState : PersistentStateComponent<TyeSettingsState> {
     companion object {
-        private const val DEFAULT_HOST_ADDRESS = "http://localhost:8000"
-
         @JvmStatic
         fun getInstance(project: Project): TyeSettingsState = project.service()
     }
 
     var tyeToolPath: String = TyePathProvider.getDefaultGlobalPath()
-    var tyeHost = DEFAULT_HOST_ADDRESS
     var overwriteTyeFile = false
     var checkTyeNewVersions = false
 
