@@ -12,6 +12,10 @@
 
 - Tye tool window
 
+### Changed
+
+- Tye global tool version is updated to 0.10.0-alpha.21420.1
+
 ## [0.1.3]
 
 ### Added
