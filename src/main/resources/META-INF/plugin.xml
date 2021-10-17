@@ -71,6 +71,11 @@
             <reference ref="RemoteServers.ConnectServer"/>
             <reference ref="RemoteServers.DisconnectServer"/>
             <reference ref="RemoteServers.EditServerConfig"/>
+            <action id="Tye.RemoteServers.OpenTyeWebDashboard"
+                    class="com.github.rafaelldi.tyeplugin.actions.OpenTyeWebDashboardAction"
+                    text="Web Dashboard"
+                    description="Open web dashboard"
+                    icon="AllIcons.General.Web"/>
         </group>
         <group id="Tye.RemoteServersViewToolbar.Secondary"/>
         <group id="Tye.RemoteServersViewToolbar.Toolbar"/>

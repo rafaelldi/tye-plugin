@@ -1,6 +1,5 @@
 package com.github.rafaelldi.tyeplugin.remoteServer
 
-import com.intellij.icons.AllIcons
 import com.intellij.openapi.project.Project
 import com.intellij.remoteServer.RemoteServerConfigurable
 import com.intellij.remoteServer.ServerType
