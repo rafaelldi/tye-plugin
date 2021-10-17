@@ -6,7 +6,6 @@ import com.intellij.remoteServer.runtime.ServerTaskExecutor
 import com.intellij.remoteServer.runtime.deployment.DeploymentLogManager
 import com.intellij.remoteServer.runtime.deployment.DeploymentTask
 import com.intellij.remoteServer.runtime.deployment.ServerRuntimeInstance
-import kotlinx.coroutines.runBlocking
 import java.net.ConnectException
 
 class TyeServerRuntimeInstance(

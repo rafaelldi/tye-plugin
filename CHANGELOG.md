@@ -16,6 +16,10 @@
 
 - Tye global tool version is updated to 0.10.0-alpha.21420.1
 
+### Fixed
+
+- New version check during the startup
+
 ## [0.1.3]
 
 ### Added
