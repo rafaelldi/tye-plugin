@@ -1,31 +1,24 @@
 package com.github.rafaelldi.tyeplugin.actions
 
 import com.github.rafaelldi.tyeplugin.remoteServer.TyeHostConfiguration
-import com.github.rafaelldi.tyeplugin.remoteServer.TyeHostType
+import com.github.rafaelldi.tyeplugin.runtimes.TyeApplicationRuntime
 import com.intellij.execution.services.ServiceViewActionUtils
 import com.intellij.ide.BrowserUtil
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.project.DumbAwareAction
-import com.intellij.remoteServer.impl.runtime.ui.tree.ServersTreeNode
-import com.intellij.remoteServer.impl.runtime.ui.tree.ServersTreeStructure.RemoteServerNode
+import com.intellij.remoteServer.impl.runtime.ui.tree.DeploymentNode
+import com.intellij.remoteServer.util.ApplicationActionUtils
 
 class OpenTyeWebDashboardAction : DumbAwareAction() {
     override fun actionPerformed(e: AnActionEvent) {
-        val node = ServiceViewActionUtils.getTarget(e, ServersTreeNode::class.java)
-        if (node !is RemoteServerNode || node.server.type !is TyeHostType || !node.isConnected)
-            return
-
-        val config = node.server.configuration as TyeHostConfiguration
+        val node = ServiceViewActionUtils.getTarget(e, DeploymentNode::class.java)
+        val deployment = ApplicationActionUtils.getDeployment(node) ?: return
+        val config = deployment.connection.server.configuration as TyeHostConfiguration
         BrowserUtil.browse(config.hostAddress)
     }
 
     override fun update(e: AnActionEvent) {
-        val node = ServiceViewActionUtils.getTarget(e, ServersTreeNode::class.java)
-        if (node is RemoteServerNode && node.server.type is TyeHostType) {
-            e.presentation.isVisible = true
-            e.presentation.isEnabled = node.isConnected
-        } else {
-            e.presentation.isEnabledAndVisible = false
-        }
+        val runtime = ApplicationActionUtils.getApplicationRuntime(e, TyeApplicationRuntime::class.java)
+        e.presentation.isEnabledAndVisible = runtime != null
     }
 }
