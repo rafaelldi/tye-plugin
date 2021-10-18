@@ -3,9 +3,7 @@ package com.github.rafaelldi.tyeplugin.services
 import com.github.rafaelldi.tyeplugin.api.TyeApiClient
 import com.github.rafaelldi.tyeplugin.model.TyeApplication
 import com.github.rafaelldi.tyeplugin.model.toService
-import com.github.rafaelldi.tyeplugin.remoteServer.toRuntime
 import com.intellij.openapi.components.service
-import com.intellij.remoteServer.util.CloudApplicationRuntime
 import kotlinx.coroutines.runBlocking
 
 class TyeApplicationManager(private val host: String) {
@@ -19,12 +17,11 @@ class TyeApplicationManager(private val host: String) {
         }
     }
 
-    fun getServices(): List<CloudApplicationRuntime> {
+    fun getApplication(): TyeApplication? {
         if (application?.isServicesEmpty() == true) {
             updateApplication()
         }
-
-        return application?.getServices()?.map { it.toRuntime() } ?: emptyList()
+        return application
     }
 
     fun disconnect() {

@@ -2,10 +2,10 @@ package com.github.rafaelldi.tyeplugin.remoteServer
 
 import com.github.rafaelldi.tyeplugin.model.*
 import com.github.rafaelldi.tyeplugin.runtimes.*
-import com.intellij.remoteServer.util.CloudApplicationRuntime
 
+fun TyeApplication.toRuntime(): TyeApplicationRuntime = TyeApplicationRuntime(this)
 
-fun TyeService.toRuntime(): CloudApplicationRuntime = when (this) {
+fun TyeService.toRuntime(): TyeBaseRuntime = when (this) {
     is TyeContainerService -> TyeServiceDockerRuntime(this)
     is TyeProjectService -> TyeServiceProjectRuntime(this)
     is TyeExecutableService -> TyeServiceExecutableRuntime(this)

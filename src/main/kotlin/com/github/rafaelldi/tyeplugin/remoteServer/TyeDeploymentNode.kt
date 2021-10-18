@@ -1,5 +1,6 @@
 package com.github.rafaelldi.tyeplugin.remoteServer
 
+import com.github.rafaelldi.tyeplugin.runtimes.TyeApplicationRuntime
 import com.github.rafaelldi.tyeplugin.runtimes.TyeServiceDockerRuntime
 import com.github.rafaelldi.tyeplugin.runtimes.TyeServiceExecutableRuntime
 import com.github.rafaelldi.tyeplugin.runtimes.TyeServiceProjectRuntime
@@ -33,6 +34,7 @@ class TyeDeploymentNode(
         super.update(presentation)
         val deployment = this.deployment
         when (deployment.runtime) {
+            is TyeApplicationRuntime -> presentation.setIcon(TyeIcons.TYE)
             is TyeServiceProjectRuntime -> presentation.setIcon(TyeIcons.TYE_NODE_DOT_NET)
             is TyeServiceDockerRuntime -> presentation.setIcon(TyeIcons.TYE_NODE_DOCKER)
             is TyeServiceExecutableRuntime -> presentation.setIcon(TyeIcons.TYE_NODE_EXECUTABLE)
