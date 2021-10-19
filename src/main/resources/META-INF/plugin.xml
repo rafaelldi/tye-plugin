@@ -76,6 +76,11 @@
                     text="Web Dashboard"
                     description="Open web dashboard"
                     icon="AllIcons.General.Web"/>
+            <action id="Tye.RemoteServers.TyeApplicationShutdown"
+                    class="com.github.rafaelldi.tyeplugin.actions.TyeApplicationShutdownAction"
+                    text="Shutdown"
+                    description="Tye application shutdown"
+                    icon="AllIcons.Process.Stop"/>
         </group>
         <group id="Tye.RemoteServersViewToolbar.Secondary"/>
         <group id="Tye.RemoteServersViewToolbar.Toolbar"/>

@@ -8,8 +8,6 @@ object TyeIcons {
     @JvmField
     val TYE_RUN = IconLoader.getIcon("/icons/tyeRun.svg", javaClass)
     @JvmField
-    val TYE_TOOL_WINDOW = IconLoader.getIcon("/icons/tyeToolWindow.svg", javaClass)
-    @JvmField
     val TYE_FILE = IconLoader.getIcon("/icons/tyeFile.svg", javaClass)
     @JvmField
     val TYE_NODE = IconLoader.getIcon("/icons/tyeNode.svg", javaClass)

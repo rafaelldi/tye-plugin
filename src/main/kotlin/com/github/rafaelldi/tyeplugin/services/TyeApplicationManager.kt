@@ -3,9 +3,9 @@ package com.github.rafaelldi.tyeplugin.services
 import com.github.rafaelldi.tyeplugin.api.TyeApiClient
 import com.github.rafaelldi.tyeplugin.model.TyeApplication
 import com.github.rafaelldi.tyeplugin.model.toService
-import com.github.rafaelldi.tyeplugin.remoteServer.toRuntime
+import com.github.rafaelldi.tyeplugin.runtimes.TyeBaseRuntime
+import com.github.rafaelldi.tyeplugin.runtimes.toRuntime
 import com.intellij.openapi.components.service
-import com.intellij.remoteServer.util.CloudApplicationRuntime
 import kotlinx.coroutines.runBlocking
 
 class TyeApplicationManager(private val host: String) {
@@ -19,12 +19,30 @@ class TyeApplicationManager(private val host: String) {
         }
     }
 
-    fun getServices(): List<CloudApplicationRuntime> {
-        if (application?.isServicesEmpty() == true) {
-            updateApplication()
+    fun getRuntimes(): List<TyeBaseRuntime> {
+        if (application == null) {
+            return emptyList()
         }
 
-        return application?.getServices()?.map { it.toRuntime() } ?: emptyList()
+        val runtimes = mutableListOf<TyeBaseRuntime>()
+
+        val applicationRuntime = application!!.toRuntime(this)
+        runtimes.add(applicationRuntime)
+
+        if (application!!.isServicesEmpty()) {
+            updateApplication()
+        }
+        val serviceRuntimes = application!!.getServices().map { it.toRuntime(applicationRuntime) }
+        runtimes.addAll(serviceRuntimes)
+
+        return runtimes
+    }
+
+    fun shutdownApplication() {
+        runBlocking {
+            client.controlPlaneShutdown(host)
+        }
+        application = null
     }
 
     fun disconnect() {

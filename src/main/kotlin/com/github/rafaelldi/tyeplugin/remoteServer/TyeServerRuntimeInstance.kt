@@ -26,11 +26,11 @@ class TyeServerRuntimeInstance(
     override fun computeDeployments(callback: ComputeDeploymentsCallback) {
         taskExecutor.submit({
             try {
-                tyeApplicationManager.getServices().forEach {
+                val runtimes = tyeApplicationManager.getRuntimes()
+                runtimes.forEach {
                     val deployment = callback.addDeployment(it.applicationName, it, it.status, it.statusText)
                     it.setDeploymentModel(deployment)
                 }
-
                 callback.succeeded()
             } catch (e: ConnectException) {
                 callback.errorOccurred("Cannot connect to the host")
