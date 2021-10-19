@@ -8,7 +8,7 @@ import com.intellij.remoteServer.util.AgentTaskExecutor
 import com.intellij.remoteServer.util.CloudApplicationRuntime
 
 sealed class TyeBaseRuntime(applicationName: String?) : CloudApplicationRuntime(applicationName) {
-    private var parent: TyeBaseRuntime? = null
+    protected var parent: TyeBaseRuntime? = null
 
     override fun getCloudType(): ServerType<*> = TyeHostType.getInstance()
 
@@ -22,10 +22,6 @@ sealed class TyeBaseRuntime(applicationName: String?) : CloudApplicationRuntime(
 
     override fun getAgentTaskExecutor(): AgentTaskExecutor {
         throw UnsupportedOperationException()
-    }
-
-    fun setParent(parentRuntime: TyeBaseRuntime) {
-        parent = parentRuntime
     }
 
     override fun getParent(): DeploymentRuntime? = parent
