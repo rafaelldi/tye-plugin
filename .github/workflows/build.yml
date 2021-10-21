@@ -66,6 +66,7 @@ jobs:
           echo "::set-output name=changelog::$CHANGELOG"
           echo "::set-output name=pluginVerifierHomeDir::~/.pluginVerifier"
           ./gradlew listProductsReleases # prepare list of IDEs for Plugin Verifier
+
       # Run tests
       - name: Run Tests
         run: ./gradlew test
@@ -117,6 +118,7 @@ jobs:
           FILENAME=`ls *.zip`
           unzip "$FILENAME" -d content
           echo "::set-output name=filename::$FILENAME"
+
       # Store already-built plugin as an artifact for downloading
       - name: Upload artifact
         uses: actions/upload-artifact@v2.2.4
@@ -145,6 +147,7 @@ jobs:
           gh api repos/{owner}/{repo}/releases \
             --jq '.[] | select(.draft == true) | .id' \
             | xargs -I '{}' gh api -X DELETE repos/{owner}/{repo}/releases/{}
+
       # Create new release draft - which is not publicly visible and requires manual acceptance
       - name: Create Release Draft
         env:
@@ -153,4 +156,7 @@ jobs:
           gh release create v${{ needs.build.outputs.version }} \
             --draft \
             --title "v${{ needs.build.outputs.version }}" \
-            --notes "${{ needs.build.outputs.changelog }}"
+            --notes "$(cat << 'EOM'
+          ${{ needs.build.outputs.changelog }}
+          EOM
+          )"
