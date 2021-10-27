@@ -40,9 +40,9 @@ class TyeServiceViewContributor : RemoteServersServiceViewContributor(), Service
     }
 
     override fun getActionGroups(): ActionGroups = ActionGroups(
-        "Tye.RemoteServersViewToolbar.Main",
-        "Tye.RemoteServersViewToolbar.Secondary",
-        "Tye.RemoteServersViewToolbar.Toolbar"
+        "Tye.RemoteServers.Main",
+        "Tye.RemoteServers.Secondary",
+        "Tye.RemoteServers.Toolbar"
     )
 
     override fun createNodeContributor(node: AbstractTreeNode<*>): RemoteServerNodeServiceViewContributor =
