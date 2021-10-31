@@ -1,7 +1,7 @@
 package com.github.rafaelldi.tyeplugin.remoteServer
 
 import com.github.rafaelldi.tyeplugin.model.TyeServiceBinding
-import com.github.rafaelldi.tyeplugin.model.TyeServiceEnvironmentVariable
+import com.github.rafaelldi.tyeplugin.model.TyeEnvironmentVariable
 import com.github.rafaelldi.tyeplugin.model.TyeServiceProperties
 import com.github.rafaelldi.tyeplugin.runtimes.TyeServiceRuntime
 import com.intellij.remoteServer.runtime.Deployment
@@ -109,7 +109,7 @@ private class PortBindingsTab(bindings: List<TyeServiceBinding>) {
     }
 }
 
-private class EnvironmentVariablesTab(environmentVariables: List<TyeServiceEnvironmentVariable>) {
+private class EnvironmentVariablesTab(environmentVariables: List<TyeEnvironmentVariable>) {
     companion object {
         const val TITLE = "Environment Variables"
         private const val NAME_COLUMN_TITLE = "Name"
