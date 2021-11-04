@@ -20,20 +20,26 @@ class TyeApplicationManager(private val host: String) {
     }
 
     fun getRuntimes(): List<TyeBaseRuntime> {
-        if (application == null) {
-            return emptyList()
-        }
+        val currentApplication = application ?: return emptyList()
 
         val runtimes = mutableListOf<TyeBaseRuntime>()
 
-        val applicationRuntime = application!!.toRuntime(this)
+        val applicationRuntime = currentApplication.toRuntime(this)
         runtimes.add(applicationRuntime)
 
-        if (application!!.isServicesEmpty()) {
+        if (currentApplication.isServicesEmpty()) {
             updateApplication()
         }
-        val serviceRuntimes = application!!.getServices().map { it.toRuntime(applicationRuntime) }
-        runtimes.addAll(serviceRuntimes)
+
+        currentApplication.getServices().forEach { service ->
+            val serviceRuntime = service.toRuntime(applicationRuntime)
+            runtimes.add(serviceRuntime)
+
+            val replicaRuntimes = service.replicas?.map { it.toRuntime(serviceRuntime) }
+            if (!replicaRuntimes.isNullOrEmpty()) {
+                runtimes.addAll(replicaRuntimes)
+            }
+        }
 
         return runtimes
     }
@@ -52,7 +58,7 @@ class TyeApplicationManager(private val host: String) {
     private fun updateApplication() {
         runBlocking {
             val servicesDto = client.getServices(host)
-            application?.updateServices(servicesDto.map { it.toService() })
+            application?.updateServices(servicesDto.mapNotNull { it.toService() })
         }
     }
 }

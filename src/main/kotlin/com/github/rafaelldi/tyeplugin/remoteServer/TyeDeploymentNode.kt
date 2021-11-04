@@ -1,9 +1,7 @@
 package com.github.rafaelldi.tyeplugin.remoteServer
 
-import com.github.rafaelldi.tyeplugin.runtimes.TyeApplicationRuntime
-import com.github.rafaelldi.tyeplugin.runtimes.TyeServiceDockerRuntime
-import com.github.rafaelldi.tyeplugin.runtimes.TyeServiceExecutableRuntime
-import com.github.rafaelldi.tyeplugin.runtimes.TyeServiceProjectRuntime
+import com.github.rafaelldi.tyeplugin.remoteServer.components.TyeDeploymentNodeComponent
+import com.github.rafaelldi.tyeplugin.runtimes.*
 import com.intellij.ide.projectView.PresentationData
 import com.intellij.ide.util.treeView.AbstractTreeNode
 import com.intellij.openapi.project.Project
@@ -38,6 +36,7 @@ class TyeDeploymentNode(
             is TyeServiceProjectRuntime -> presentation.setIcon(TyeIcons.TYE_NODE_DOT_NET)
             is TyeServiceDockerRuntime -> presentation.setIcon(TyeIcons.TYE_NODE_DOCKER)
             is TyeServiceExecutableRuntime -> presentation.setIcon(TyeIcons.TYE_NODE_EXECUTABLE)
+            is TyeReplicaRuntime<*> -> presentation.setIcon(TyeIcons.TYE_NODE_REPLICA)
             else -> presentation.setIcon(TyeIcons.TYE_NODE)
         }
     }

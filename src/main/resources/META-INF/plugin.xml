@@ -3,8 +3,6 @@
     <name>Tye</name>
     <vendor url="https://github.com/rafaelldi">Rival Abdrakhmanov</vendor>
 
-    <!-- Product and plugin compatibility requirements -->
-    <!-- https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
     <depends>com.intellij.modules.platform</depends>
     <depends>org.jetbrains.plugins.yaml</depends>
 

@@ -1,38 +1,66 @@
 package com.github.rafaelldi.tyeplugin.model
 
-import com.github.rafaelldi.tyeplugin.api.model.ConfigurationSourceDto
-import com.github.rafaelldi.tyeplugin.api.model.ServiceBindingDto
-import com.github.rafaelldi.tyeplugin.api.model.ServiceDto
-import com.github.rafaelldi.tyeplugin.api.model.ServiceType
+import com.github.rafaelldi.tyeplugin.api.dto.*
 
-fun ServiceDto.toService(): TyeService {
-    val properties = this.toProperties()
+fun ServiceDto.toService(): TyeService? {
     val bindings = description?.bindings?.map { it.toBinding() } ?: emptyList()
     val envVars = description?.configuration?.map { it.toEnvironmentVariable() } ?: emptyList()
 
     return when (serviceType) {
-        ServiceType.External -> TyeExternalService(properties, bindings, envVars)
-        ServiceType.Project -> TyeProjectService(properties, bindings, envVars)
-        ServiceType.Executable -> TyeExecutableService(properties, bindings, envVars)
-        ServiceType.Container -> TyeContainerService(properties, bindings, envVars)
-        ServiceType.Function -> TyeFunctionService(properties, bindings, envVars)
-        ServiceType.Ingress -> TyeIngressService(properties, bindings, envVars)
+        ServiceType.Project -> TyeProjectService(
+            this.toProjectProperties(),
+            bindings,
+            envVars,
+            this.replicas?.toProjectReplicas() ?: emptyList()
+        )
+        ServiceType.Executable -> TyeExecutableService(
+            this.toExecutableProperties(),
+            bindings,
+            envVars
+        )
+        ServiceType.Container -> TyeContainerService(
+            this.toContainerProperties(),
+            bindings,
+            envVars,
+            this.replicas?.toContainerReplicas() ?: emptyList()
+        )
+        else -> null
     }
 }
 
-fun ServiceDto.toProperties(): TyeServiceProperties = TyeServiceProperties(
+private fun ServiceDto.toProjectProperties(): TyeProjectServiceProperties = TyeProjectServiceProperties(
     description?.name,
     serviceType.toString(),
     serviceSource.toString(),
     description?.replicas,
     restarts,
     description?.runInfo?.project,
-    description?.runInfo?.image,
-    description?.runInfo?.executable,
-    description?.runInfo?.workingDirectory
+    description?.runInfo?.build,
+    description?.runInfo?.args
 )
 
-fun ServiceBindingDto.toBinding(): TyeServiceBinding = TyeServiceBinding(
+private fun ServiceDto.toContainerProperties(): TyeContainerServiceProperties = TyeContainerServiceProperties(
+    description?.name,
+    serviceType.toString(),
+    serviceSource.toString(),
+    description?.replicas,
+    restarts,
+    description?.runInfo?.image,
+    description?.runInfo?.args
+)
+
+private fun ServiceDto.toExecutableProperties(): TyeExecutableServiceProperties = TyeExecutableServiceProperties(
+    description?.name,
+    serviceType.toString(),
+    serviceSource.toString(),
+    description?.replicas,
+    restarts,
+    description?.runInfo?.executable,
+    description?.runInfo?.workingDirectory,
+    description?.runInfo?.args
+)
+
+private fun ServiceBindingDto.toBinding(): TyeServiceBinding = TyeServiceBinding(
     name,
     connectionString,
     protocol,
@@ -41,4 +69,42 @@ fun ServiceBindingDto.toBinding(): TyeServiceBinding = TyeServiceBinding(
     containerPort
 )
 
-fun ConfigurationSourceDto.toEnvironmentVariable(): TyeServiceEnvironmentVariable = TyeServiceEnvironmentVariable(name, value)
+private fun Map<String, ReplicaStatusDto>.toProjectReplicas(): List<TyeProjectServiceReplica> = this.map {
+    TyeProjectServiceReplica(
+        it.key,
+        it.value.state?.toState(),
+        it.value.ports,
+        it.value.environment?.toEnvironmentVariables(),
+        it.value.pid,
+        it.value.exitCode
+    )
+}
+
+private fun Map<String, ReplicaStatusDto>.toContainerReplicas(): List<TyeContainerServiceReplica> = this.map {
+    TyeContainerServiceReplica(
+        it.key,
+        it.value.state?.toState(),
+        it.value.ports,
+        it.value.environment?.toEnvironmentVariables(),
+        it.value.dockerCommand,
+        it.value.containerId,
+        it.value.dockerNetwork,
+        it.value.dockerNetworkAlias
+    )
+}
+
+private fun ReplicaState.toState(): TyeReplicaState = when (this) {
+    ReplicaState.Removed -> TyeReplicaState.Removed
+    ReplicaState.Added -> TyeReplicaState.Added
+    ReplicaState.Started -> TyeReplicaState.Started
+    ReplicaState.Stopped -> TyeReplicaState.Stopped
+    ReplicaState.Healthy -> TyeReplicaState.Healthy
+    ReplicaState.Ready -> TyeReplicaState.Ready
+}
+
+private fun ConfigurationSourceDto.toEnvironmentVariable(): TyeEnvironmentVariable =
+    TyeEnvironmentVariable(name ?: "", value)
+
+private fun Map<String, String>.toEnvironmentVariables(): List<TyeEnvironmentVariable> = this.map {
+    TyeEnvironmentVariable(it.key, it.value)
+}

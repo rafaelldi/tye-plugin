@@ -1,7 +1,7 @@
 package com.github.rafaelldi.tyeplugin.api
 
-import com.github.rafaelldi.tyeplugin.api.model.ApplicationDto
-import com.github.rafaelldi.tyeplugin.api.model.ServiceDto
+import com.github.rafaelldi.tyeplugin.api.dto.ApplicationDto
+import com.github.rafaelldi.tyeplugin.api.dto.ServiceDto
 import com.intellij.openapi.Disposable
 import com.intellij.openapi.components.Service
 import io.ktor.client.HttpClient
