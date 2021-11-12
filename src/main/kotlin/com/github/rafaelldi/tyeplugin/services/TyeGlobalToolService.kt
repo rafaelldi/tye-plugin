@@ -14,6 +14,8 @@ import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.project.Project
+import com.jetbrains.rd.platform.util.getComponent
+import com.jetbrains.rider.runtime.RiderDotNetActiveRuntimeHost
 
 @Service
 class TyeGlobalToolService(private val project: Project) {
@@ -21,13 +23,16 @@ class TyeGlobalToolService(private val project: Project) {
         private const val TYE_ACTUAL_VERSION = "0.10.0-alpha.21420.1"
     }
 
+    private val activeRuntimeHost = project.getComponent<RiderDotNetActiveRuntimeHost>()
     private val log = Logger.getInstance(TyeGlobalToolService::class.java)
     private val tyeActualVersion = ToolVersion(TYE_ACTUAL_VERSION)
 
     fun installTyeGlobalTool() {
-        val isDotNetInstalled = isDotNetInstalled()
+        val dotnetPath = getDotnetPath() ?: return
+
+        val isDotNetInstalled = isDotNetRuntime31Installed(dotnetPath)
         if (!isDotNetInstalled) {
-            Notification("Tye", ".NET Core 3.1 is not installed", "", NotificationType.ERROR)
+            Notification("Tye", ".NET Core 3.1 Runtime is not installed", "", NotificationType.ERROR)
                 .addAction(object : NotificationAction("Go to .NET Core installation page") {
                     override fun actionPerformed(e: AnActionEvent, notification: Notification) {
                         BrowserUtil.browse("https://dotnet.microsoft.com/download/dotnet/3.1")
@@ -37,7 +42,7 @@ class TyeGlobalToolService(private val project: Project) {
             return
         }
 
-        val isTyeGlobalToolInstalled = isTyeGlobalToolInstalled()
+        val isTyeGlobalToolInstalled = isTyeGlobalToolInstalled(dotnetPath)
         if (isTyeGlobalToolInstalled) {
             Notification("Tye", "Tye is already installed", "", NotificationType.INFORMATION)
                 .notify(project)
@@ -46,7 +51,7 @@ class TyeGlobalToolService(private val project: Project) {
 
         val commandLine = GeneralCommandLine()
             .withParentEnvironmentType(GeneralCommandLine.ParentEnvironmentType.CONSOLE)
-            .withExePath("dotnet")
+            .withExePath(dotnetPath)
             .withParameters("tool", "install", "Microsoft.Tye", "--global", "--version", TYE_ACTUAL_VERSION)
         val output = ExecUtil.execAndGetOutput(commandLine)
         val success = output.exitCode == 0
@@ -71,7 +76,9 @@ class TyeGlobalToolService(private val project: Project) {
     }
 
     fun updateTyeGlobalTool() {
-        val isTyeGlobalToolInstalled = isTyeGlobalToolInstalled()
+        val dotnetPath = getDotnetPath() ?: return
+
+        val isTyeGlobalToolInstalled = isTyeGlobalToolInstalled(dotnetPath)
         if (!isTyeGlobalToolInstalled) {
             Notification("Tye", "Tye is not installed", "", NotificationType.WARNING)
                 .addAction(InstallTyeGlobalToolNotificationAction())
@@ -88,7 +95,7 @@ class TyeGlobalToolService(private val project: Project) {
 
         val commandLine = GeneralCommandLine()
             .withParentEnvironmentType(GeneralCommandLine.ParentEnvironmentType.CONSOLE)
-            .withExePath("dotnet")
+            .withExePath(dotnetPath)
             .withParameters("tool", "update", "Microsoft.Tye", "--global", "--version", TYE_ACTUAL_VERSION)
         val output = ExecUtil.execAndGetOutput(commandLine)
         val success = output.exitCode == 0
@@ -112,30 +119,22 @@ class TyeGlobalToolService(private val project: Project) {
     }
 
     fun isActualTyeGlobalToolVersionInstalled(): Boolean {
-        val isTyeGlobalToolInstalled = isTyeGlobalToolInstalled()
+        val dotnetPath = getDotnetPath() ?: return false
+
+        val isTyeGlobalToolInstalled = isTyeGlobalToolInstalled(dotnetPath)
         if (!isTyeGlobalToolInstalled) return false
 
-        val currentVersion = getTyeGlobalToolVersion() ?: return false
+        val currentVersion = getTyeGlobalToolVersion(dotnetPath) ?: return false
 
         return currentVersion >= tyeActualVersion
     }
 
-    private fun isTyeGlobalToolInstalled(): Boolean {
-        val output = getListOfGlobalTools()
+    private fun getDotnetPath(): String? = activeRuntimeHost.dotNetCoreRuntime.value?.cliExePath
 
-        if (output.exitCode != 0) {
-            log.error(output.stderr)
-            return false
-        }
-
-        val regex = Regex("^microsoft\\.tye", RegexOption.MULTILINE)
-        return regex.containsMatchIn(output.stdout)
-    }
-
-    private fun isDotNetInstalled(): Boolean {
+    private fun isDotNetRuntime31Installed(dotnetPath: String): Boolean {
         val commandLine = GeneralCommandLine()
             .withParentEnvironmentType(GeneralCommandLine.ParentEnvironmentType.CONSOLE)
-            .withExePath("dotnet")
+            .withExePath(dotnetPath)
             .withParameters("--list-runtimes")
         val output = ExecUtil.execAndGetOutput(commandLine)
 
@@ -148,8 +147,20 @@ class TyeGlobalToolService(private val project: Project) {
         return regex.containsMatchIn(output.stdout)
     }
 
-    private fun getTyeGlobalToolVersion(): ToolVersion? {
-        val output = getListOfGlobalTools()
+    private fun isTyeGlobalToolInstalled(dotnetPath: String): Boolean {
+        val output = getListOfGlobalTools(dotnetPath)
+
+        if (output.exitCode != 0) {
+            log.error(output.stderr)
+            return false
+        }
+
+        val regex = Regex("^microsoft\\.tye", RegexOption.MULTILINE)
+        return regex.containsMatchIn(output.stdout)
+    }
+
+    private fun getTyeGlobalToolVersion(dotnetPath: String): ToolVersion? {
+        val output = getListOfGlobalTools(dotnetPath)
 
         if (output.exitCode != 0) {
             log.error(output.stderr)
@@ -162,10 +173,10 @@ class TyeGlobalToolService(private val project: Project) {
         return ToolVersion(versionString)
     }
 
-    private fun getListOfGlobalTools(): ProcessOutput {
+    private fun getListOfGlobalTools(dotnetPath: String): ProcessOutput {
         val commandLine = GeneralCommandLine()
             .withParentEnvironmentType(GeneralCommandLine.ParentEnvironmentType.CONSOLE)
-            .withExePath("dotnet")
+            .withExePath(dotnetPath)
             .withParameters("tool", "list", "--global")
 
         return ExecUtil.execAndGetOutput(commandLine)
