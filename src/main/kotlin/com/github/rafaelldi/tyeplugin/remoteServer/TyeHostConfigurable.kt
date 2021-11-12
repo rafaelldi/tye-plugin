@@ -26,4 +26,6 @@ class TyeHostConfigurable(configuration: TyeHostConfiguration) :
     override fun applyCoreTo(configuration: TyeHostConfiguration?, forComparison: Boolean) {
         myConfiguration.hostAddress = component.getHostAddress()
     }
+
+    override fun canCheckConnection(): Boolean = false
 }

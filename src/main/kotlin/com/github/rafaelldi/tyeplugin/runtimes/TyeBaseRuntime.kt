@@ -1,6 +1,7 @@
 package com.github.rafaelldi.tyeplugin.runtimes
 
 import com.github.rafaelldi.tyeplugin.remoteServer.TyeHostType
+import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.remoteServer.ServerType
 import com.intellij.remoteServer.runtime.ServerTaskExecutor
 import com.intellij.remoteServer.runtime.deployment.DeploymentRuntime
@@ -25,4 +26,6 @@ sealed class TyeBaseRuntime(applicationName: String?) : CloudApplicationRuntime(
     }
 
     override fun getParent(): DeploymentRuntime? = parent
+
+    open fun getVirtualFile(): VirtualFile? = null
 }
