@@ -3,34 +3,29 @@
 # tye-plugin Changelog
 
 ## [Unreleased]
+### Added
+- List of replicas to the Services tool window
+- Action to go to the source file from the Services tool window
 
 ## [0.2.0]
-
 ### Added
-
 - Tye group to the Services tool window
 
 ### Removed
-
 - Tye tool window
 
 ### Changed
-
 - Tye global tool version is updated to 0.10.0-alpha.21420.1
 
 ### Fixed
-
 - New version check during the startup
 
 ## [0.1.3]
-
 ### Added
-
 - Action for updating tye global tool
 - Option to disable tye global tool new version check
 
 ### Changed
-
 - Tye global tool version is updated to 0.9.0-alpha.21380.1
 
 ### Fixed
