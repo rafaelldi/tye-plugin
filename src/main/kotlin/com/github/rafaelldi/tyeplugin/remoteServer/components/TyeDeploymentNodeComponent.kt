@@ -38,12 +38,10 @@ class TyeDeploymentNodeComponent(deployment: Deployment) {
                     is TyeProjectServiceReplica -> ProjectReplicaPropertiesTab(runtime.replica)
                 }
 
-                val portsTab = PortsTab(runtime.replica.ports)
                 val environmentVariablesTab = EnvironmentVariablesTab(runtime.replica.environmentVariables)
 
                 val tabbedPane = JBTabbedPane().apply {
                     addTab(propertiesTab.tabName, propertiesTab.component)
-                    addTab(PortsTab.TITLE, portsTab.component)
                     addTab(EnvironmentVariablesTab.TITLE, environmentVariablesTab.component)
                 }
                 add(tabbedPane)

@@ -20,6 +20,7 @@ class ProjectReplicaPropertiesTab(replica: TyeProjectServiceReplica) : Propertie
             addRow(arrayOf("Name", replica.name))
             addRow(arrayOf("Pid", replica.pid))
             addRow(arrayOf("Exit code", replica.exitCode))
+            addRow(arrayOf("Ports", replica.ports?.joinToString()))
         }
 
         component = JBScrollPane(ValueTable(table))

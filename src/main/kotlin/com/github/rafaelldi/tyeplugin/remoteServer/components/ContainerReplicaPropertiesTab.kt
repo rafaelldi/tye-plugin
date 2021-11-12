@@ -22,6 +22,7 @@ class ContainerReplicaPropertiesTab(replica: TyeContainerServiceReplica) : Prope
             addRow(arrayOf("Container id", replica.containerId))
             addRow(arrayOf("Docker network", replica.dockerNetwork))
             addRow(arrayOf("Docker network alias", replica.dockerNetworkAlias))
+            addRow(arrayOf("Ports", replica.ports?.joinToString()))
         }
 
         component = JBScrollPane(ValueTable(table))
