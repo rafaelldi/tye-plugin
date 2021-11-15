@@ -18,6 +18,8 @@ class TyeHostType : ServerType<TyeHostConfiguration>("tye") {
 
     override fun getPresentableName(): String = "Tye"
 
+    override fun getDeploymentConfigurationFactoryId(): String = "Tye"
+
     override fun getIcon(): Icon = TyeIcons.TYE
 
     override fun createDefaultConfiguration(): TyeHostConfiguration = TyeHostConfiguration.createDefault()
