@@ -17,8 +17,10 @@ class TyeUpdateGlobalToolStartupActivity : StartupActivity.DumbAware {
             return
 
         val tyeGlobalToolService = project.service<TyeGlobalToolService>()
-        val isActualVersionInstalled = tyeGlobalToolService.isActualTyeGlobalToolVersionInstalled()
+        val isTyeInstalled = tyeGlobalToolService.isTyeGlobalToolInstalled()
+        if (!isTyeInstalled) return
 
+        val isActualVersionInstalled = tyeGlobalToolService.isActualTyeGlobalToolVersionInstalled()
         if (isActualVersionInstalled) return
 
         Notification("Tye", "New version of tye global tool is available", "", NotificationType.INFORMATION)

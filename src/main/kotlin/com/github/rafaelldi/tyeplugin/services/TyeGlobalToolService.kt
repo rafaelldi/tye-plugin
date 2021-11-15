@@ -111,16 +111,7 @@ class TyeGlobalToolService(private val project: Project) {
         }
     }
 
-    fun isActualTyeGlobalToolVersionInstalled(): Boolean {
-        val isTyeGlobalToolInstalled = isTyeGlobalToolInstalled()
-        if (!isTyeGlobalToolInstalled) return false
-
-        val currentVersion = getTyeGlobalToolVersion() ?: return false
-
-        return currentVersion >= tyeActualVersion
-    }
-
-    private fun isTyeGlobalToolInstalled(): Boolean {
+    fun isTyeGlobalToolInstalled(): Boolean {
         val output = getListOfGlobalTools()
 
         if (output.exitCode != 0) {
@@ -130,6 +121,12 @@ class TyeGlobalToolService(private val project: Project) {
 
         val regex = Regex("^microsoft\\.tye", RegexOption.MULTILINE)
         return regex.containsMatchIn(output.stdout)
+    }
+
+    fun isActualTyeGlobalToolVersionInstalled(): Boolean {
+        val currentVersion = getTyeGlobalToolVersion() ?: return false
+
+        return currentVersion >= tyeActualVersion
     }
 
     private fun isDotNetInstalled(): Boolean {
