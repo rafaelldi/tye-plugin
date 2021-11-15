@@ -3,12 +3,9 @@
 # tye-plugin Changelog
 
 ## [Unreleased]
-### Added
-- List of replicas to the Services tool window
-- Action to go to the source file from the Services tool window
 
-### Fixed
-- Do not show notification about a new version if tye isn't installed
+## [0.2.1]
+### Added
 
 ## [0.2.0]
 ### Added
