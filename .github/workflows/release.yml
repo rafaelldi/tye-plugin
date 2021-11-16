@@ -37,9 +37,8 @@ jobs:
           ${{ github.event.release.body }}
           EOM
           )"
-
+          
           echo "::set-output name=changelog::$CHANGELOG"
-
       # Update Unreleased section with the current release note
       - name: Patch Changelog
         if: ${{ steps.properties.outputs.changelog != '' }}
@@ -48,7 +47,6 @@ jobs:
           ${{ steps.properties.outputs.changelog }}
           EOM
           )"
-
       # Publish the plugin to the Marketplace
       - name: Publish Plugin
         env:

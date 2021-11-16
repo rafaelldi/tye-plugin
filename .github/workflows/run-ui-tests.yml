@@ -3,7 +3,7 @@
 # - wait for IDE to start
 # - run UI tests with separate Gradle task
 #
-# Please check https://github.com/JetBrains/intellij-ui-test-robot for information about UI tests with IntelliJ Platform.
+# Please check https://github.com/JetBrains/intellij-ui-test-robot for information about UI tests with IntelliJ Platform
 #
 # Workflow is triggered manually.
 
