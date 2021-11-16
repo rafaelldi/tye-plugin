@@ -27,10 +27,10 @@ class TyeGlobalToolService(private val project: Project) {
     fun installTyeGlobalTool() {
         val isDotNetInstalled = isDotNetInstalled()
         if (!isDotNetInstalled) {
-            Notification("Tye", ".NET Core 3.1 is not installed", "", NotificationType.ERROR)
-                .addAction(object : NotificationAction("Go to .NET Core installation page") {
+            Notification("Tye", ".NET 6 is not installed", "", NotificationType.ERROR)
+                .addAction(object : NotificationAction("Go to .NET installation page") {
                     override fun actionPerformed(e: AnActionEvent, notification: Notification) {
-                        BrowserUtil.browse("https://dotnet.microsoft.com/download/dotnet/3.1")
+                        BrowserUtil.browse("https://dotnet.microsoft.com/download/dotnet/6.0")
                     }
                 })
                 .notify(project)
@@ -111,6 +111,22 @@ class TyeGlobalToolService(private val project: Project) {
         }
     }
 
+    private fun isDotNetInstalled(): Boolean {
+        val commandLine = GeneralCommandLine()
+            .withParentEnvironmentType(GeneralCommandLine.ParentEnvironmentType.CONSOLE)
+            .withExePath("dotnet")
+            .withParameters("--list-runtimes")
+        val output = ExecUtil.execAndGetOutput(commandLine)
+
+        if (output.exitCode != 0) {
+            log.error(output.stderr)
+            return false
+        }
+
+        val regex = Regex("^Microsoft\\.AspNetCore\\.App 6", RegexOption.MULTILINE)
+        return regex.containsMatchIn(output.stdout)
+    }
+
     fun isTyeGlobalToolInstalled(): Boolean {
         val output = getListOfGlobalTools()
 
@@ -127,22 +143,6 @@ class TyeGlobalToolService(private val project: Project) {
         val currentVersion = getTyeGlobalToolVersion() ?: return false
 
         return currentVersion >= tyeActualVersion
-    }
-
-    private fun isDotNetInstalled(): Boolean {
-        val commandLine = GeneralCommandLine()
-            .withParentEnvironmentType(GeneralCommandLine.ParentEnvironmentType.CONSOLE)
-            .withExePath("dotnet")
-            .withParameters("--list-runtimes")
-        val output = ExecUtil.execAndGetOutput(commandLine)
-
-        if (output.exitCode != 0) {
-            log.error(output.stderr)
-            return false
-        }
-
-        val regex = Regex("^Microsoft\\.AspNetCore\\.App 3\\.1", RegexOption.MULTILINE)
-        return regex.containsMatchIn(output.stdout)
     }
 
     private fun getTyeGlobalToolVersion(): ToolVersion? {
