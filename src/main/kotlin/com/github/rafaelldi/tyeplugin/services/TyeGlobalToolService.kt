@@ -25,9 +25,9 @@ class TyeGlobalToolService(private val project: Project) {
     private val tyeActualVersion = ToolVersion(TYE_ACTUAL_VERSION)
 
     fun installTyeGlobalTool() {
-        val isDotNetInstalled = isDotNetInstalled()
-        if (!isDotNetInstalled) {
-            Notification("Tye", ".NET 6 is not installed", "", NotificationType.ERROR)
+        val isDotNet6Installed = isDotNet6Installed()
+        if (!isDotNet6Installed) {
+            Notification("Tye", ".NET 6 is not installed", "", NotificationType.WARNING)
                 .addAction(object : NotificationAction("Go to .NET installation page") {
                     override fun actionPerformed(e: AnActionEvent, notification: Notification) {
                         BrowserUtil.browse("https://dotnet.microsoft.com/download/dotnet/6.0")
@@ -86,6 +86,18 @@ class TyeGlobalToolService(private val project: Project) {
             return
         }
 
+        val isDotNet6Installed = isDotNet6Installed()
+        if (!isDotNet6Installed) {
+            Notification("Tye", "To update tye you need to install .NET 6", "", NotificationType.WARNING)
+                .addAction(object : NotificationAction("Go to .NET installation page") {
+                    override fun actionPerformed(e: AnActionEvent, notification: Notification) {
+                        BrowserUtil.browse("https://dotnet.microsoft.com/download/dotnet/6.0")
+                    }
+                })
+                .notify(project)
+            return
+        }
+
         val commandLine = GeneralCommandLine()
             .withParentEnvironmentType(GeneralCommandLine.ParentEnvironmentType.CONSOLE)
             .withExePath("dotnet")
@@ -111,7 +123,7 @@ class TyeGlobalToolService(private val project: Project) {
         }
     }
 
-    private fun isDotNetInstalled(): Boolean {
+    private fun isDotNet6Installed(): Boolean {
         val commandLine = GeneralCommandLine()
             .withParentEnvironmentType(GeneralCommandLine.ParentEnvironmentType.CONSOLE)
             .withExePath("dotnet")
