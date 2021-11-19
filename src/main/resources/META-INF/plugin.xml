@@ -86,4 +86,9 @@
             <add-to-group group-id="ServiceView.AddService"/>
         </action>
     </actions>
+
+    <projectListeners>
+        <listener class="com.github.rafaelldi.tyeplugin.listeners.TyeSettingsGlobalToolListener"
+                  topic="com.github.rafaelldi.tyeplugin.listeners.TyeGlobalToolListener"/>
+    </projectListeners>
 </idea-plugin>

@@ -19,6 +19,7 @@ class TyeSettingsState : PersistentStateComponent<TyeSettingsState> {
     }
 
     var tyeToolPath: String = TyePathProvider.getDefaultGlobalPath()
+    var tyeToolVersion: String = ""
     var overwriteTyeFile = false
     var checkTyeNewVersions = false
 
