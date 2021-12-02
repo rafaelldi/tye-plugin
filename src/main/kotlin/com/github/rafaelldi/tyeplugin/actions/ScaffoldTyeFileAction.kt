@@ -1,7 +1,7 @@
 package com.github.rafaelldi.tyeplugin.actions
 
 import com.github.rafaelldi.tyeplugin.services.TyeCliService
-import com.github.rafaelldi.tyeplugin.settings.TyeSettingsState
+import com.github.rafaelldi.tyeplugin.settings.TyeSettings
 import com.github.rafaelldi.tyeplugin.util.TYE_FILE_NAME
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
@@ -20,7 +20,7 @@ class ScaffoldTyeFileAction : AnAction() {
     }
 
     override fun actionPerformed(e: AnActionEvent) {
-        val settings = TyeSettingsState.getInstance(e.project!!)
+        val settings = TyeSettings.getInstance(e.project!!)
         var overwriteFile = settings.overwriteTyeFile
         val pathToTyeFile = Paths.get(e.project!!.basePath!!, TYE_FILE_NAME)
 

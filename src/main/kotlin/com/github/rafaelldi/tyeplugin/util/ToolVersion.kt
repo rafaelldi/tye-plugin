@@ -1,7 +1,6 @@
 package com.github.rafaelldi.tyeplugin.util
 
 class ToolVersion(versionString: String) : Comparable<ToolVersion> {
-
     private val parts: List<Int> = versionString
         .split("-")[0]
         .split(".")
@@ -14,4 +13,6 @@ class ToolVersion(versionString: String) : Comparable<ToolVersion> {
         }
         return 0
     }
+
+    override fun toString(): String = parts.joinToString(".", "v. ")
 }

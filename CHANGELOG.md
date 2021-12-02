@@ -6,6 +6,7 @@
 ### Added
 - List of replicas to the Services tool window
 - Action to go to the source file from the Services tool window
+- Version label for tool path input in the settings
 
 ### Fixed
 - Do not show notification about a new version if tye isn't installed

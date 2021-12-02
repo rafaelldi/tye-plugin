@@ -2,6 +2,7 @@ package com.github.rafaelldi.tyeplugin.services
 
 import com.github.rafaelldi.tyeplugin.cli.TyeCliClient
 import com.github.rafaelldi.tyeplugin.util.TYE_FILE_NAME
+import com.github.rafaelldi.tyeplugin.util.ToolVersion
 import com.intellij.execution.util.ExecUtil
 import com.intellij.notification.Notification
 import com.intellij.notification.NotificationType
@@ -18,8 +19,8 @@ class TyeCliService(private val project: Project) {
     private val tyePathProvider: TyePathProvider = project.service()
     private val log = Logger.getInstance(TyeCliService::class.java)
 
-    fun getVersion(): String? {
-        val tyePath = tyePathProvider.getPath() ?: return null
+    fun getVersion(path: String?): ToolVersion? {
+        val tyePath = path ?: tyePathProvider.getPath() ?: return null
 
         val commandLine = tyeCliClient.version(tyePath)
         val output = ExecUtil.execAndGetOutput(commandLine)
@@ -30,7 +31,7 @@ class TyeCliService(private val project: Project) {
             return null
         }
 
-        return output.stdout
+        return ToolVersion(output.stdout)
     }
 
     fun scaffoldTyeFile(overwriteFile: Boolean) {

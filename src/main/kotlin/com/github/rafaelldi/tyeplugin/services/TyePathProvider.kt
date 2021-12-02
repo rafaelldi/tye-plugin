@@ -1,6 +1,6 @@
 package com.github.rafaelldi.tyeplugin.services
 
-import com.github.rafaelldi.tyeplugin.settings.TyeSettingsState
+import com.github.rafaelldi.tyeplugin.settings.TyeSettings
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.SystemInfo
@@ -26,9 +26,9 @@ class TyePathProvider(private val project: Project) {
     }
 
     fun getPath(): String? {
-        val customPath = TyeSettingsState.getInstance(project).tyeToolPath
+        val customPath = TyeSettings.getInstance(project).tyeToolPath
 
-        if (customPath.isNotEmpty() && isToolExists(customPath))
+        if (!customPath.isNullOrEmpty() && isToolExists(customPath))
             return customPath
 
         val defaultPath = getDefaultGlobalPath()

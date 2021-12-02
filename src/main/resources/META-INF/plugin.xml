@@ -16,7 +16,7 @@
                   fileNames="tye.yaml"/>
 
         <!-- Application settings -->
-        <projectService serviceImplementation="com.github.rafaelldi.tyeplugin.settings.TyeSettingsState"/>
+        <projectService serviceImplementation="com.github.rafaelldi.tyeplugin.settings.TyeSettings"/>
         <projectConfigurable parentId="tools" instance="com.github.rafaelldi.tyeplugin.settings.TyeSettingsConfigurable"
                              id="com.github.rafaelldi.tyeplugin.settings.TyeSettingsConfigurable" displayName="Tye"
                              nonDefaultProject="false"/>
@@ -86,9 +86,4 @@
             <add-to-group group-id="ServiceView.AddService"/>
         </action>
     </actions>
-
-    <projectListeners>
-        <listener class="com.github.rafaelldi.tyeplugin.listeners.TyeSettingsGlobalToolListener"
-                  topic="com.github.rafaelldi.tyeplugin.listeners.TyeGlobalToolListener"/>
-    </projectListeners>
 </idea-plugin>

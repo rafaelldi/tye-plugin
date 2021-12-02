@@ -1,7 +1,7 @@
 package com.github.rafaelldi.tyeplugin.services
 
 import com.github.rafaelldi.tyeplugin.actions.InstallTyeGlobalToolNotificationAction
-import com.github.rafaelldi.tyeplugin.settings.TyeSettingsState
+import com.github.rafaelldi.tyeplugin.settings.TyeSettings
 import com.github.rafaelldi.tyeplugin.util.ToolVersion
 import com.intellij.execution.configurations.GeneralCommandLine
 import com.intellij.execution.process.ProcessOutput
@@ -53,7 +53,7 @@ class TyeGlobalToolService(private val project: Project) {
 
         if (success) {
             log.info("Tye is successfully installed with version $TYE_ACTUAL_VERSION")
-            TyeSettingsState.getInstance(project).tyeToolPath = TyePathProvider.getDefaultGlobalPath()
+            TyeSettings.getInstance(project).tyeToolPath = TyePathProvider.getDefaultGlobalPath()
 
             Notification("Tye", "Tye is successfully installed", "", NotificationType.INFORMATION)
                 .notify(project)

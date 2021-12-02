@@ -3,7 +3,7 @@ package com.github.rafaelldi.tyeplugin.startup
 import com.github.rafaelldi.tyeplugin.actions.DisableTyeNewVersionCheckAction
 import com.github.rafaelldi.tyeplugin.actions.UpdateTyeGlobalToolNotificationAction
 import com.github.rafaelldi.tyeplugin.services.TyeGlobalToolService
-import com.github.rafaelldi.tyeplugin.settings.TyeSettingsState
+import com.github.rafaelldi.tyeplugin.settings.TyeSettings
 import com.intellij.notification.Notification
 import com.intellij.notification.NotificationType
 import com.intellij.openapi.components.service
@@ -12,7 +12,7 @@ import com.intellij.openapi.startup.StartupActivity
 
 class TyeUpdateGlobalToolStartupActivity : StartupActivity.DumbAware {
     override fun runActivity(project: Project) {
-        val settings = TyeSettingsState.getInstance(project)
+        val settings = TyeSettings.getInstance(project)
         if (!settings.checkTyeNewVersions)
             return
 
