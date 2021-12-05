@@ -3,6 +3,8 @@
 # tye-plugin Changelog
 
 ## [Unreleased]
+
+## [0.2.1]
 ### Added
 - List of replicas to the Services tool window
 - Action to go to the source file from the Services tool window
