@@ -3,7 +3,8 @@ package com.github.rafaelldi.tyeplugin.remoteServer
 import com.github.rafaelldi.tyeplugin.cli.TyeCliClient
 import com.github.rafaelldi.tyeplugin.runtimes.TyeDeploymentRuntime
 import com.github.rafaelldi.tyeplugin.services.TyeApplicationManager
-import com.intellij.execution.process.KillableColoredProcessHandler
+import com.github.rafaelldi.tyeplugin.services.TyePathProvider
+import com.intellij.execution.ExecutionException
 import com.intellij.execution.process.ProcessTerminatedListener
 import com.intellij.openapi.components.service
 import com.intellij.remoteServer.runtime.ServerConnector
@@ -53,11 +54,12 @@ class TyeServerRuntimeInstance(
         callback: DeploymentOperationCallback
     ) {
         taskExecutor.submit({
-            val tyePath = "tye"
+            val tyePathProvider = task.project.service<TyePathProvider>()
+            val tyePath = tyePathProvider.getPath() ?: throw ExecutionException("Tye path not specified.")
             val options = TyeCliClient.RunOptions(
                 task.configuration.pathArgument!!,
                 task.project.basePath,
-                8000,
+                8000, //TODO: Fix
                 task.configuration.noBuildArgument,
                 task.configuration.dockerArgument,
                 task.configuration.dashboardArgument,
@@ -69,8 +71,7 @@ class TyeServerRuntimeInstance(
                 task.configuration.tracesProviderUrl
             )
 
-            val commandLine = tyeCliClient.run(tyePath, options)
-            val handler = KillableColoredProcessHandler(commandLine)
+            val handler = tyeCliClient.run(tyePath, options)
             ProcessTerminatedListener.attach(handler)
             handler.startNotify()
 

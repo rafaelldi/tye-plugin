@@ -3,7 +3,6 @@ package com.github.rafaelldi.tyeplugin.services
 import com.github.rafaelldi.tyeplugin.cli.TyeCliClient
 import com.github.rafaelldi.tyeplugin.util.TYE_FILE_NAME
 import com.github.rafaelldi.tyeplugin.util.ToolVersion
-import com.intellij.execution.util.ExecUtil
 import com.intellij.notification.Notification
 import com.intellij.notification.NotificationType
 import com.intellij.openapi.components.Service
@@ -22,27 +21,23 @@ class TyeCliService(private val project: Project) {
     fun getVersion(path: String?): ToolVersion? {
         val tyePath = path ?: tyePathProvider.getPath() ?: return null
 
-        val commandLine = tyeCliClient.version(tyePath)
-        val output = ExecUtil.execAndGetOutput(commandLine)
-        val success = output.exitCode == 0
+        val output = tyeCliClient.version(tyePath)
 
-        if (!success) {
+        if (output.checkSuccess(log)) {
+            return ToolVersion(output.stdout)
+        } else {
             log.error(output.stderr)
             return null
         }
-
-        return ToolVersion(output.stdout)
     }
 
     fun scaffoldTyeFile(overwriteFile: Boolean) {
         val tyePath = tyePathProvider.getPath() ?: return
 
         val options = TyeCliClient.InitOptions(project.basePath!!, project.basePath, overwriteFile)
-        val commandLine = tyeCliClient.init(tyePath, options)
-        val output = ExecUtil.execAndGetOutput(commandLine)
-        val success = output.exitCode == 0
+        val output = tyeCliClient.init(tyePath, options)
 
-        if (success) {
+        if (output.checkSuccess(log)) {
             log.info("File tye.yaml is scaffolded")
             VfsUtil.findFile(Paths.get(project.basePath!!, TYE_FILE_NAME), true)
 
