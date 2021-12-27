@@ -54,20 +54,19 @@ class TyeServerRuntimeInstance(
     ) {
         taskExecutor.submit({
             val tyePath = "tye"
-            val path = ""
             val options = TyeCliClient.RunOptions(
-                path,
-                null,
+                task.configuration.pathArgument!!,
+                task.project.basePath,
                 8000,
-                false,
-                false,
-                false,
-                "info",
-                null,
-                "none",
-                null,
-                "none",
-                null
+                task.configuration.noBuildArgument,
+                task.configuration.dockerArgument,
+                task.configuration.dashboardArgument,
+                task.configuration.verbosityArgument.value,
+                task.configuration.tagsArgument,
+                task.configuration.logsProvider.argumentName,
+                task.configuration.logsProviderUrl,
+                task.configuration.tracesProvider.argumentName,
+                task.configuration.tracesProviderUrl
             )
 
             val commandLine = tyeCliClient.run(tyePath, options)

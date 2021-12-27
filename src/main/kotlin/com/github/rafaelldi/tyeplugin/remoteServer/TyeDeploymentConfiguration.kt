@@ -26,17 +26,3 @@ class TyeDeploymentConfiguration : DeploymentConfigurationBase<TyeDeploymentConf
         }
     }
 }
-
-enum class Verbosity {
-    DEBUG {
-        override fun value(): String = "debug"
-    },
-    INFO {
-        override fun value(): String = "info"
-    },
-    QUIET {
-        override fun value(): String = "quiet"
-    };
-
-    open fun value(): String = error("Not implemented for $this")
-}
