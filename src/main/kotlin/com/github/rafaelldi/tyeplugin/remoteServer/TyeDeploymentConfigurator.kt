@@ -17,5 +17,10 @@ class TyeDeploymentConfigurator(private val project: Project) :
     override fun createEditor(
         source: DeploymentSource,
         server: RemoteServer<TyeHostConfiguration>?
-    ): SettingsEditor<TyeDeploymentConfiguration> = TyeDeploymentEditor()
+    ): SettingsEditor<TyeDeploymentConfiguration> = TyeDeploymentEditor(project)
+
+    override fun suggestConfigurationName(
+        deploymentSource: DeploymentSource,
+        deploymentConfiguration: TyeDeploymentConfiguration
+    ): String = "Tye Run"
 }

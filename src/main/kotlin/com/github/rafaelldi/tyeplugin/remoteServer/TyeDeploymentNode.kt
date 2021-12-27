@@ -42,4 +42,8 @@ class TyeDeploymentNode(
     }
 
     override fun getComponent(): JComponent = nodeComponent.getComponent()
+
+    override fun isDeployActionEnabled(): Boolean {
+        return super.isDeployActionEnabled()
+    }
 }

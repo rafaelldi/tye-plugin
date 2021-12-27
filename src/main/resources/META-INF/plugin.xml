@@ -38,6 +38,7 @@
         <!-- Remote server -->
         <remoteServer.type implementation="com.github.rafaelldi.tyeplugin.remoteServer.TyeHostType"/>
         <serviceViewContributor implementation="com.github.rafaelldi.tyeplugin.remoteServer.TyeServiceViewContributor"/>
+        <remoteServer.deploymentSource.type implementation="com.github.rafaelldi.tyeplugin.remoteServer.TyeSingletonDeploymentSourceType"/>
     </extensions>
 
     <extensions defaultExtensionNs="JavaScript.JsonSchema">
