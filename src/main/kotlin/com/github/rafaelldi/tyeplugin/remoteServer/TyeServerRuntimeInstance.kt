@@ -15,12 +15,11 @@ import com.intellij.remoteServer.runtime.deployment.ServerRuntimeInstance
 import java.net.ConnectException
 
 class TyeServerRuntimeInstance(
-    configuration: TyeHostConfiguration,
+    private val configuration: TyeHostConfiguration,
     private val taskExecutor: ServerTaskExecutor
 ) : ServerRuntimeInstance<TyeDeploymentConfiguration>() {
 
-    private val tyeApplicationManager: TyeApplicationManager = TyeApplicationManager(configuration.hostAddress)
-    private val tyeCliClient: TyeCliClient = service()
+    private val tyeApplicationManager: TyeApplicationManager = TyeApplicationManager(configuration.hostUrl)
 
     override fun computeDeployments(callback: ComputeDeploymentsCallback) {
         taskExecutor.submit({
@@ -40,7 +39,8 @@ class TyeServerRuntimeInstance(
     fun connect(callback: ServerConnector.ConnectionCallback<TyeDeploymentConfiguration>) {
         taskExecutor.submit({
             try {
-                tyeApplicationManager.connect()
+
+                //tyeApplicationManager.connect()
                 callback.connected(this)
             } catch (e: ConnectException) {
                 callback.errorOccurred("Cannot connect to the host")
@@ -59,7 +59,7 @@ class TyeServerRuntimeInstance(
             val options = TyeCliClient.RunOptions(
                 task.configuration.pathArgument!!,
                 task.project.basePath,
-                8000, //TODO: Fix
+                configuration.hostUrl.port,
                 task.configuration.noBuildArgument,
                 task.configuration.dockerArgument,
                 task.configuration.dashboardArgument,
@@ -71,6 +71,7 @@ class TyeServerRuntimeInstance(
                 task.configuration.tracesProviderUrl
             )
 
+            val tyeCliClient = service<TyeCliClient>()
             val handler = tyeCliClient.run(tyePath, options)
             ProcessTerminatedListener.attach(handler)
             handler.startNotify()

@@ -22,7 +22,6 @@ import javax.swing.JTextField
 
 class TyeSettingsConfigurable(private val project: Project) : BoundConfigurable("Tye") {
     private val settings: TyeSettings get() = TyeSettings.getInstance(project)
-    private val tyeCliService: TyeCliService = project.service()
 
     override fun createPanel(): DialogPanel = panel {
         row("Tye tool path") {
@@ -37,6 +36,7 @@ class TyeSettingsConfigurable(private val project: Project) : BoundConfigurable(
             { chosenFile ->
                 ProgressManager.getInstance().run(object : Task.Backgroundable(project, "Get tye version") {
                     override fun run(indicator: ProgressIndicator) {
+                        val tyeCliService = project.service<TyeCliService>()
                         val version = tyeCliService.getVersion(chosenFile.path)
                         if (version != null) {
                             invokeLater {

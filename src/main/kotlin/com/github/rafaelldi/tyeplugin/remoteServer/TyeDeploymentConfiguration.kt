@@ -20,9 +20,18 @@ class TyeDeploymentConfiguration : DeploymentConfigurationBase<TyeDeploymentConf
     var tracesProvider = TracesProvider.NONE
     var tracesProviderUrl: String? = null
 
-    override fun checkConfiguration(server: RemoteServer<*>?, deploymentSource: DeploymentSource?, project: Project?) {
+    override fun checkConfiguration(
+        server: RemoteServer<*>?,
+        deploymentSource: DeploymentSource?,
+        project: Project?
+    ) {
         if (pathArgument.isNullOrEmpty()) {
             throw RuntimeConfigurationError("Path argument not specified.")
+        }
+
+        val configuration = server?.configuration as? TyeHostConfiguration ?: return
+        if (configuration.hostUrl.host != "localhost") {
+            throw RuntimeConfigurationError("Only localhost is supported for the server.")
         }
     }
 }

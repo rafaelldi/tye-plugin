@@ -4,7 +4,6 @@ import com.github.rafaelldi.tyeplugin.cli.TyeCliClient
 import com.github.rafaelldi.tyeplugin.services.TyePathProvider
 import com.intellij.execution.ExecutionException
 import com.intellij.execution.configurations.CommandLineState
-import com.intellij.execution.process.KillableProcessHandler
 import com.intellij.execution.process.ProcessHandler
 import com.intellij.execution.process.ProcessTerminatedListener
 import com.intellij.execution.runners.ExecutionEnvironment
@@ -16,16 +15,17 @@ open class TyeCommandLineState(
     private val runConfig: TyeRunConfiguration,
     private val project: Project
 ) : CommandLineState(environment) {
-    private val tyeCliClient: TyeCliClient = service()
-    private val tyePathProvider: TyePathProvider = project.service()
 
     override fun startProcess(): ProcessHandler {
+        val tyePathProvider = project.service<TyePathProvider>()
         val tyePath = tyePathProvider.getPath() ?: throw ExecutionException("Tye path not specified.")
 
         val options = buildOptions()
-        val commandLine = tyeCliClient.run(tyePath, options)
 
-        val handler = KillableProcessHandler(commandLine)
+        val tyeCliClient = service<TyeCliClient>()
+        val handler = tyeCliClient.run(tyePath, options)
+
+        //val handler = KillableProcessHandler(commandLine)
         ProcessTerminatedListener.attach(handler, environment.project)
 
         return handler
