@@ -111,6 +111,35 @@ class TyeGlobalToolService(private val project: Project) {
         }
     }
 
+    fun uninstallTyeGlobalTool() {
+        val isTyeGlobalToolInstalled = isTyeGlobalToolInstalled()
+        if (!isTyeGlobalToolInstalled) {
+            Notification("Tye", "Tye is not installed", "", NotificationType.WARNING)
+                .addAction(InstallTyeGlobalToolNotificationAction())
+                .notify(project)
+            return
+        }
+
+        val commandLine = GeneralCommandLine()
+            .withParentEnvironmentType(GeneralCommandLine.ParentEnvironmentType.CONSOLE)
+            .withExePath("dotnet")
+            .withParameters("tool", "uninstall", "Microsoft.Tye", "--global")
+        val output = ExecUtil.execAndGetOutput(commandLine)
+        val success = output.exitCode == 0
+
+        if (success) {
+            log.info("Tye is successfully uninstalled")
+
+            Notification("Tye", "Tye is successfully uninstalled", "", NotificationType.INFORMATION)
+                .notify(project)
+        } else {
+            log.error(output.stderr)
+
+            Notification("Tye", "Tye uninstallation failed", output.stderr, NotificationType.ERROR)
+                .notify(project)
+        }
+    }
+
     fun isTyeGlobalToolInstalled(): Boolean {
         val output = getListOfGlobalTools()
 

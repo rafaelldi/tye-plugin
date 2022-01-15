@@ -62,6 +62,11 @@
                     text="Scaffold Tye File"
                     description="Run tye init command in the solution directory">
             </action>
+            <action id="Tye.Tools.UninstallTyeGlobalToolAction"
+                    class="com.github.rafaelldi.tyeplugin.actions.UninstallTyeGlobalToolAction"
+                    text="Uninstall Tye Global Tool"
+                    description="Uninstall Microsoft.Tye tool">
+            </action>
         </group>
 
         <group id="Tye.RemoteServers.Main">
