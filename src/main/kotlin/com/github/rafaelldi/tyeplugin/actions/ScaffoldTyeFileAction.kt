@@ -6,9 +6,7 @@ import com.github.rafaelldi.tyeplugin.util.TYE_FILE_NAME
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.components.service
-import com.intellij.openapi.progress.ProgressIndicator
-import com.intellij.openapi.progress.ProgressManager
-import com.intellij.openapi.progress.Task
+import com.intellij.openapi.progress.runBackgroundableTask
 import com.intellij.openapi.ui.Messages
 import com.intellij.openapi.ui.showOkCancelDialog
 import com.intellij.openapi.util.io.FileUtil
@@ -35,16 +33,12 @@ class ScaffoldTyeFileAction : AnAction() {
             else return
         }
 
-        val task = object : Task.Backgroundable(e.project, "Scaffold tye file") {
-            override fun run(indicator: ProgressIndicator) {
-                val tyeCliService = e.project!!.service<TyeCliService>()
+        val tyeCliService = e.project!!.service<TyeCliService>()
+        runBackgroundableTask("Scaffold Tye File", e.project) {
+            it.isIndeterminate = true
+            it.text = "Scaffolding tye.yaml file"
 
-                indicator.isIndeterminate = true
-                indicator.text = "Scaffolding tye.yaml file"
-
-                tyeCliService.scaffoldTyeFile(overwriteFile)
-            }
+            tyeCliService.scaffoldTyeFile(overwriteFile)
         }
-        ProgressManager.getInstance().run(task)
     }
 }

@@ -1,7 +1,7 @@
 package com.github.rafaelldi.tyeplugin.startup
 
-import com.github.rafaelldi.tyeplugin.actions.DisableTyeNewVersionCheckAction
-import com.github.rafaelldi.tyeplugin.actions.UpdateTyeGlobalToolNotificationAction
+import com.github.rafaelldi.tyeplugin.actions.notification.DisableTyeNewVersionCheckAction
+import com.github.rafaelldi.tyeplugin.actions.notification.UpdateTyeGlobalToolAction
 import com.github.rafaelldi.tyeplugin.services.TyeGlobalToolService
 import com.github.rafaelldi.tyeplugin.settings.TyeSettings
 import com.intellij.notification.Notification
@@ -24,7 +24,7 @@ class TyeUpdateGlobalToolStartupActivity : StartupActivity.DumbAware {
         if (isActualVersionInstalled) return
 
         Notification("Tye", "New version of tye global tool is available", "", NotificationType.INFORMATION)
-            .addAction(UpdateTyeGlobalToolNotificationAction())
+            .addAction(UpdateTyeGlobalToolAction())
             .addAction(DisableTyeNewVersionCheckAction())
             .notify(project)
     }

@@ -1,6 +1,6 @@
 package com.github.rafaelldi.tyeplugin.services
 
-import com.github.rafaelldi.tyeplugin.actions.InstallTyeGlobalToolNotificationAction
+import com.github.rafaelldi.tyeplugin.actions.notification.InstallTyeGlobalToolAction
 import com.github.rafaelldi.tyeplugin.settings.TyeSettings
 import com.github.rafaelldi.tyeplugin.util.ToolVersion
 import com.intellij.execution.configurations.GeneralCommandLine
@@ -74,7 +74,7 @@ class TyeGlobalToolService(private val project: Project) {
         val isTyeGlobalToolInstalled = isTyeGlobalToolInstalled()
         if (!isTyeGlobalToolInstalled) {
             Notification("Tye", "Tye is not installed", "", NotificationType.WARNING)
-                .addAction(InstallTyeGlobalToolNotificationAction())
+                .addAction(InstallTyeGlobalToolAction())
                 .notify(project)
             return
         }
@@ -115,7 +115,7 @@ class TyeGlobalToolService(private val project: Project) {
         val isTyeGlobalToolInstalled = isTyeGlobalToolInstalled()
         if (!isTyeGlobalToolInstalled) {
             Notification("Tye", "Tye is not installed", "", NotificationType.WARNING)
-                .addAction(InstallTyeGlobalToolNotificationAction())
+                .addAction(InstallTyeGlobalToolAction())
                 .notify(project)
             return
         }
