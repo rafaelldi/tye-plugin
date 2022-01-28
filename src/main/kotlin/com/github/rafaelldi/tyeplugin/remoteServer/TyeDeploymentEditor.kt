@@ -1,7 +1,5 @@
 package com.github.rafaelldi.tyeplugin.remoteServer
 
-import com.github.rafaelldi.tyeplugin.runConfig.tyeRun.LogsProvider
-import com.github.rafaelldi.tyeplugin.runConfig.tyeRun.TracesProvider
 import com.intellij.execution.ui.FragmentedSettingsEditor
 import com.intellij.execution.ui.SettingsEditorFragment
 import com.intellij.execution.ui.utils.Fragment

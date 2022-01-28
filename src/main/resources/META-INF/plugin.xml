@@ -25,13 +25,6 @@
                                  id="com.github.rafaelldi.tyeplugin.settings.TyeRemoteServerConfigurable"
                                  displayName="Tye Hosts"/>
 
-        <!-- Run configurations -->
-        <configurationType implementation="com.github.rafaelldi.tyeplugin.runConfig.tyeRun.TyeConfigurationType"/>
-        <runConfigurationProducer
-                implementation="com.github.rafaelldi.tyeplugin.runConfig.tyeRun.TyeRunConfigurationProducer"/>
-        <runLineMarkerContributor language="yaml"
-                                  implementationClass="com.github.rafaelldi.tyeplugin.runConfig.tyeRun.TyeRunLineMarkerContributor"/>
-
         <!-- Notifications -->
         <notificationGroup id="Tye" displayType="BALLOON"/>
 

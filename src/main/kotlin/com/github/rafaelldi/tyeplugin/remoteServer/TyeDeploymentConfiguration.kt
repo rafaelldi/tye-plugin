@@ -1,7 +1,5 @@
 package com.github.rafaelldi.tyeplugin.remoteServer
 
-import com.github.rafaelldi.tyeplugin.runConfig.tyeRun.LogsProvider
-import com.github.rafaelldi.tyeplugin.runConfig.tyeRun.TracesProvider
 import com.intellij.execution.configurations.RuntimeConfigurationError
 import com.intellij.openapi.project.Project
 import com.intellij.remoteServer.configuration.RemoteServer
