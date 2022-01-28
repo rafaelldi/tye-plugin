@@ -95,7 +95,7 @@ class TyeDeploymentEditor(private val project: Project) : FragmentedSettingsEdit
     }
 
     override fun createFragments(): MutableCollection<SettingsEditorFragment<TyeDeploymentConfiguration, *>> {
-        val builder = FragmentsBuilder<TyeDeploymentConfiguration>()
+        val builder = FragmentsBuilder<TyeDeploymentConfiguration>(null, "tye", emptyList())
         builder.fragment("tye.configuration.path", pathField) { this.setupPathField() }
         builder.group("tye.configuration.options", "Options") { this.setupOptionsGroup() }
 
