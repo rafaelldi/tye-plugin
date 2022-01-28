@@ -1,4 +1,4 @@
-package com.github.rafaelldi.tyeplugin.runConfig.tyeRun
+package com.github.rafaelldi.tyeplugin.remoteServer
 
 @Suppress("unused")
 enum class TracesProvider(private val displayName: String, val argumentName: String) {

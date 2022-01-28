@@ -25,19 +25,13 @@
                                  id="com.github.rafaelldi.tyeplugin.settings.TyeRemoteServerConfigurable"
                                  displayName="Tye Hosts"/>
 
-        <!-- Run configurations -->
-        <configurationType implementation="com.github.rafaelldi.tyeplugin.runConfig.tyeRun.TyeConfigurationType"/>
-        <runConfigurationProducer
-                implementation="com.github.rafaelldi.tyeplugin.runConfig.tyeRun.TyeRunConfigurationProducer"/>
-        <runLineMarkerContributor language="yaml"
-                                  implementationClass="com.github.rafaelldi.tyeplugin.runConfig.tyeRun.TyeRunLineMarkerContributor"/>
-
         <!-- Notifications -->
         <notificationGroup id="Tye" displayType="BALLOON"/>
 
         <!-- Remote server -->
         <remoteServer.type implementation="com.github.rafaelldi.tyeplugin.remoteServer.TyeHostType"/>
         <serviceViewContributor implementation="com.github.rafaelldi.tyeplugin.remoteServer.TyeServiceViewContributor"/>
+        <remoteServer.deploymentSource.type implementation="com.github.rafaelldi.tyeplugin.remoteServer.TyeSingletonDeploymentSourceType"/>
     </extensions>
 
     <extensions defaultExtensionNs="JavaScript.JsonSchema">
@@ -82,7 +76,7 @@
                     class="com.github.rafaelldi.tyeplugin.actions.TyeApplicationShutdownAction"
                     text="Shutdown"
                     description="Tye application shutdown"
-                    icon="AllIcons.Process.Stop"/>
+                    icon="AllIcons.Nodes.Undeploy"/>
         </group>
         <group id="Tye.RemoteServers.Secondary"/>
         <group id="Tye.RemoteServers.Toolbar"/>

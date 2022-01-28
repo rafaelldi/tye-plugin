@@ -2,7 +2,10 @@ package com.github.rafaelldi.tyeplugin.cli
 
 import com.github.rafaelldi.tyeplugin.cli.builders.TyeInitCliBuilder
 import com.github.rafaelldi.tyeplugin.cli.builders.TyeRunCliBuilder
-import com.intellij.execution.configurations.GeneralCommandLine
+import com.github.rafaelldi.tyeplugin.cli.builders.TyeVersionCliBuilder
+import com.intellij.execution.process.KillableColoredProcessHandler
+import com.intellij.execution.process.ProcessOutput
+import com.intellij.execution.util.ExecUtil
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.diagnostic.Logger
 
@@ -34,64 +37,49 @@ class TyeCliClient {
 
     private val log = Logger.getInstance(TyeCliClient::class.java)
 
-    fun version(tyePath: String): GeneralCommandLine {
+    fun version(tyePath: String): ProcessOutput {
         log.info("Call version command")
 
-        return GeneralCommandLine()
-            .withParentEnvironmentType(GeneralCommandLine.ParentEnvironmentType.CONSOLE)
-            .withExePath(tyePath)
-            .withParameters("--version")
+        val cliBuilder = TyeVersionCliBuilder(tyePath)
+
+        val commandLine = cliBuilder.build()
+        return ExecUtil.execAndGetOutput(commandLine)
     }
 
-    fun init(tyePath: String, options: InitOptions): GeneralCommandLine {
-        val cliBuilder = TyeInitCliBuilder(options.path)
+    fun init(tyePath: String, options: InitOptions): ProcessOutput {
+        log.info("Call init command")
 
+        val cliBuilder = TyeInitCliBuilder(tyePath, options.workDirectory)
+
+        cliBuilder.setPath(options.path)
         if (options.overwriteExistingFile) cliBuilder.setForce()
 
-        val arguments = cliBuilder.build()
-
-        log.info("Call init command with arguments $arguments")
-
-        return GeneralCommandLine()
-            .withParentEnvironmentType(GeneralCommandLine.ParentEnvironmentType.CONSOLE)
-            .withWorkDirectory(options.workDirectory)
-            .withExePath(tyePath)
-            .withParameters(arguments)
+        val commandLine = cliBuilder.build()
+        return ExecUtil.execAndGetOutput(commandLine)
     }
 
-    fun run(tyePath: String, options: RunOptions): GeneralCommandLine {
-        val cliBuilder = TyeRunCliBuilder(options.path)
+    fun run(tyePath: String, options: RunOptions): KillableColoredProcessHandler {
+        log.info("Call run command")
 
+        val cliBuilder = TyeRunCliBuilder(tyePath, options.workDirectory)
+
+        cliBuilder.setPath(options.path)
         if (options.port != DEFAULT_PORT) cliBuilder.setPort(options.port)
-
         if (options.noBuild) cliBuilder.setNoBuild()
-
         if (options.docker) cliBuilder.setDocker()
-
         if (options.dashboard) cliBuilder.setDashboard()
-
         if (options.verbosity != DEFAULT_VERBOSITY) cliBuilder.setVerbosity(options.verbosity)
-
         if (!options.tags.isNullOrBlank()) cliBuilder.setTags(options.tags)
-
         if (options.logsProvider != DEFAULT_LOGS_PROVIDER) cliBuilder.setLogs(
             options.logsProvider,
             options.logsProviderUrl
         )
-
         if (options.tracesProvider != DEFAULT_TRACES_PROVIDER) cliBuilder.setTraces(
             options.tracesProvider,
             options.tracesProviderUrl
         )
 
-        val arguments = cliBuilder.build()
-
-        log.info("Call run command with arguments $arguments")
-
-        return GeneralCommandLine()
-            .withParentEnvironmentType(GeneralCommandLine.ParentEnvironmentType.CONSOLE)
-            .withWorkDirectory(options.workDirectory)
-            .withExePath(tyePath)
-            .withParameters(arguments)
+        val commandLine = cliBuilder.build()
+        return KillableColoredProcessHandler.Silent(commandLine)
     }
 }

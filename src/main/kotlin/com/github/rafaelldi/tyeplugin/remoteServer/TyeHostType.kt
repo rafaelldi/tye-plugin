@@ -4,6 +4,7 @@ import com.intellij.openapi.project.Project
 import com.intellij.remoteServer.RemoteServerConfigurable
 import com.intellij.remoteServer.ServerType
 import com.intellij.remoteServer.configuration.deployment.DeploymentConfigurator
+import com.intellij.remoteServer.configuration.deployment.SingletonDeploymentSourceType
 import com.intellij.remoteServer.runtime.ServerConnector
 import com.intellij.remoteServer.runtime.ServerTaskExecutor
 import icons.TyeIcons
@@ -17,6 +18,8 @@ class TyeHostType : ServerType<TyeHostConfiguration>("tye") {
     }
 
     override fun getPresentableName(): String = "Tye"
+
+    override fun getDeploymentConfigurationTypePresentableName(): String = "Tye"
 
     override fun getDeploymentConfigurationFactoryId(): String = "Tye"
 
@@ -36,4 +39,9 @@ class TyeHostType : ServerType<TyeHostConfiguration>("tye") {
     ): ServerConnector<*> = TyeConnector(configuration, asyncTasksExecutor)
 
     override fun getCustomToolWindowId(): String = "Services"
+
+    override fun getSingletonDeploymentSourceTypes(): MutableList<SingletonDeploymentSourceType> =
+        listOf(TyeSingletonDeploymentSourceType.getInstance()).toMutableList()
+
+    override fun mayHaveProjectSpecificDeploymentSources(): Boolean = false
 }

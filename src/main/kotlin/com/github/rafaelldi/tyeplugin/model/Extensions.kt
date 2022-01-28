@@ -2,7 +2,9 @@ package com.github.rafaelldi.tyeplugin.model
 
 import com.github.rafaelldi.tyeplugin.api.dto.*
 
-fun ServiceDto.toService(): TyeService? {
+fun ApplicationDto.toModel(): TyeApplication = TyeApplication(id, name, source)
+
+fun ServiceDto.toModel(): TyeService? {
     val bindings = description?.bindings?.map { it.toBinding() } ?: emptyList()
     val envVars = description?.configuration?.map { it.toEnvironmentVariable() } ?: emptyList()
 

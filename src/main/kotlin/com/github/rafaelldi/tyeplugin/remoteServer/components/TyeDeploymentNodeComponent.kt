@@ -16,35 +16,37 @@ class TyeDeploymentNodeComponent(deployment: Deployment) {
         panel = JPanel().apply {
             layout = BorderLayout()
 
-            val runtime = deployment.runtime
-            if (runtime is TyeServiceRuntime<*>) {
-                val propertiesTab = when (runtime.service) {
-                    is TyeContainerService -> ContainerServicePropertiesTab(runtime.service.properties as TyeContainerServiceProperties)
-                    is TyeExecutableService -> ExecutableServicePropertiesTab(runtime.service.properties as TyeExecutableServiceProperties)
-                    is TyeProjectService -> ProjectServicePropertiesTab(runtime.service.properties as TyeProjectServiceProperties)
-                }
-                val portBindingsTab = PortBindingsTab(runtime.service.bindings)
-                val environmentVariablesTab = EnvironmentVariablesTab(runtime.service.environmentVariables)
+            when (val runtime = deployment.runtime) {
+                is TyeServiceRuntime<*> -> {
+                    val propertiesTab = when (runtime.service) {
+                        is TyeContainerService -> ContainerServicePropertiesTab(runtime.service.properties as TyeContainerServiceProperties)
+                        is TyeExecutableService -> ExecutableServicePropertiesTab(runtime.service.properties as TyeExecutableServiceProperties)
+                        is TyeProjectService -> ProjectServicePropertiesTab(runtime.service.properties as TyeProjectServiceProperties)
+                    }
+                    val portBindingsTab = PortBindingsTab(runtime.service.bindings)
+                    val environmentVariablesTab = EnvironmentVariablesTab(runtime.service.environmentVariables)
 
-                val tabbedPane = JBTabbedPane().apply {
-                    addTab(propertiesTab.tabName, propertiesTab.component)
-                    addTab(PortBindingsTab.TITLE, portBindingsTab.component)
-                    addTab(EnvironmentVariablesTab.TITLE, environmentVariablesTab.component)
+                    val tabbedPane = JBTabbedPane().apply {
+                        addTab(propertiesTab.tabName, propertiesTab.component)
+                        addTab(PortBindingsTab.TITLE, portBindingsTab.component)
+                        addTab(EnvironmentVariablesTab.TITLE, environmentVariablesTab.component)
+                    }
+                    add(tabbedPane)
                 }
-                add(tabbedPane)
-            } else if (runtime is TyeReplicaRuntime<*>) {
-                val propertiesTab = when(runtime.replica) {
-                    is TyeContainerServiceReplica -> ContainerReplicaPropertiesTab(runtime.replica)
-                    is TyeProjectServiceReplica -> ProjectReplicaPropertiesTab(runtime.replica)
-                }
+                is TyeReplicaRuntime<*> -> {
+                    val propertiesTab = when(runtime.replica) {
+                        is TyeContainerServiceReplica -> ContainerReplicaPropertiesTab(runtime.replica)
+                        is TyeProjectServiceReplica -> ProjectReplicaPropertiesTab(runtime.replica)
+                    }
 
-                val environmentVariablesTab = EnvironmentVariablesTab(runtime.replica.environmentVariables)
+                    val environmentVariablesTab = EnvironmentVariablesTab(runtime.replica.environmentVariables)
 
-                val tabbedPane = JBTabbedPane().apply {
-                    addTab(propertiesTab.tabName, propertiesTab.component)
-                    addTab(EnvironmentVariablesTab.TITLE, environmentVariablesTab.component)
+                    val tabbedPane = JBTabbedPane().apply {
+                        addTab(propertiesTab.tabName, propertiesTab.component)
+                        addTab(EnvironmentVariablesTab.TITLE, environmentVariablesTab.component)
+                    }
+                    add(tabbedPane)
                 }
-                add(tabbedPane)
             }
         }
     }
