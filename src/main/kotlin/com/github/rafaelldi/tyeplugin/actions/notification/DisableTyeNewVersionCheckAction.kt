@@ -1,4 +1,4 @@
-package com.github.rafaelldi.tyeplugin.actions
+package com.github.rafaelldi.tyeplugin.actions.notification
 
 import com.github.rafaelldi.tyeplugin.settings.TyeSettingsConfigurable
 import com.intellij.notification.Notification
@@ -8,7 +8,9 @@ import com.intellij.openapi.options.ShowSettingsUtil
 
 class DisableTyeNewVersionCheckAction  : NotificationAction("Disable new version check"){
     override fun actionPerformed(e: AnActionEvent, notification: Notification) {
-        if (e.project == null) return
+        if (e.project == null)
+            return
+
         ShowSettingsUtil.getInstance().editConfigurable(e.project, TyeSettingsConfigurable(e.project!!))
     }
 }

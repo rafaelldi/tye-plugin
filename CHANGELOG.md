@@ -3,6 +3,8 @@
 # tye-plugin Changelog
 
 ## [Unreleased]
+### Added
+- New action to uninstall tye global tool
 
 ## [0.2.1]
 ### Added

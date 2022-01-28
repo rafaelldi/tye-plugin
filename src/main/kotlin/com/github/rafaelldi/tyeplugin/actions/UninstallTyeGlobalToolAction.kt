@@ -6,7 +6,7 @@ import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.components.service
 import com.intellij.openapi.progress.runBackgroundableTask
 
-class InstallTyeGlobalToolAction : AnAction() {
+class UninstallTyeGlobalToolAction : AnAction() {
     override fun update(e: AnActionEvent) {
         e.presentation.isEnabledAndVisible = e.project != null
     }
@@ -14,11 +14,11 @@ class InstallTyeGlobalToolAction : AnAction() {
     override fun actionPerformed(e: AnActionEvent) {
         val tyeGlobalToolService = e.project!!.service<TyeGlobalToolService>()
 
-        runBackgroundableTask("Install Tye Global Tool", e.project) {
+        runBackgroundableTask("Uninstall Tye Global Tool", e.project){
             it.isIndeterminate = true
-            it.text = "Installing tye global tool"
+            it.text = "Uninstalling tye global tool"
 
-            tyeGlobalToolService.installTyeGlobalTool()
+            tyeGlobalToolService.uninstallTyeGlobalTool()
         }
     }
 }
