@@ -78,7 +78,7 @@
                     class="com.github.rafaelldi.tyeplugin.actions.TyeApplicationShutdownAction"
                     text="Shutdown"
                     description="Tye application shutdown"
-                    icon="AllIcons.Process.Stop"/>
+                    icon="AllIcons.Nodes.Undeploy"/>
         </group>
         <group id="Tye.RemoteServers.Secondary"/>
         <group id="Tye.RemoteServers.Toolbar"/>

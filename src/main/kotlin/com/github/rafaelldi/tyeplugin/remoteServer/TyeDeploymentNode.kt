@@ -37,13 +37,9 @@ class TyeDeploymentNode(
             is TyeServiceDockerRuntime -> presentation.setIcon(TyeIcons.TYE_NODE_DOCKER)
             is TyeServiceExecutableRuntime -> presentation.setIcon(TyeIcons.TYE_NODE_EXECUTABLE)
             is TyeReplicaRuntime<*> -> presentation.setIcon(TyeIcons.TYE_NODE_REPLICA)
-            else -> presentation.setIcon(TyeIcons.TYE_NODE)
+            else -> presentation.setIcon(TyeIcons.TYE)
         }
     }
 
     override fun getComponent(): JComponent = nodeComponent.getComponent()
-
-    override fun isDeployActionEnabled(): Boolean {
-        return super.isDeployActionEnabled()
-    }
 }

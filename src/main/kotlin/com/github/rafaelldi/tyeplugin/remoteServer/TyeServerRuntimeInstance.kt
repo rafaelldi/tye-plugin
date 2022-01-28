@@ -1,50 +1,23 @@
 package com.github.rafaelldi.tyeplugin.remoteServer
 
-import com.github.rafaelldi.tyeplugin.cli.TyeCliClient
-import com.github.rafaelldi.tyeplugin.runtimes.TyeDeploymentRuntime
 import com.github.rafaelldi.tyeplugin.services.TyeApplicationManager
-import com.github.rafaelldi.tyeplugin.services.TyePathProvider
-import com.intellij.execution.ExecutionException
-import com.intellij.execution.process.ProcessTerminatedListener
-import com.intellij.openapi.components.service
+import com.intellij.remoteServer.configuration.deployment.DeploymentSource
 import com.intellij.remoteServer.runtime.ServerConnector
 import com.intellij.remoteServer.runtime.ServerTaskExecutor
 import com.intellij.remoteServer.runtime.deployment.DeploymentLogManager
 import com.intellij.remoteServer.runtime.deployment.DeploymentTask
 import com.intellij.remoteServer.runtime.deployment.ServerRuntimeInstance
-import java.net.ConnectException
 
 class TyeServerRuntimeInstance(
     private val configuration: TyeHostConfiguration,
     private val taskExecutor: ServerTaskExecutor
 ) : ServerRuntimeInstance<TyeDeploymentConfiguration>() {
-
-    private val tyeApplicationManager: TyeApplicationManager = TyeApplicationManager(configuration.hostUrl)
-
-    override fun computeDeployments(callback: ComputeDeploymentsCallback) {
-        taskExecutor.submit({
-            try {
-                val runtimes = tyeApplicationManager.getRuntimes()
-                runtimes.forEach {
-                    val deployment = callback.addDeployment(it.applicationName, it, it.status, it.statusText)
-                    it.setDeploymentModel(deployment)
-                }
-                callback.succeeded()
-            } catch (e: ConnectException) {
-                callback.errorOccurred("Cannot connect to the host")
-            }
-        }, callback)
-    }
+    private var tyeApplicationManager: TyeApplicationManager? = null
 
     fun connect(callback: ServerConnector.ConnectionCallback<TyeDeploymentConfiguration>) {
         taskExecutor.submit({
-            try {
-
-                //tyeApplicationManager.connect()
-                callback.connected(this)
-            } catch (e: ConnectException) {
-                callback.errorOccurred("Cannot connect to the host")
-            }
+            tyeApplicationManager = TyeApplicationManager(configuration.hostUrl)
+            callback.connected(this)
         }, callback)
     }
 
@@ -54,37 +27,31 @@ class TyeServerRuntimeInstance(
         callback: DeploymentOperationCallback
     ) {
         taskExecutor.submit({
-            val tyePathProvider = task.project.service<TyePathProvider>()
-            val tyePath = tyePathProvider.getPath() ?: throw ExecutionException("Tye path not specified.")
-            val options = TyeCliClient.RunOptions(
-                task.configuration.pathArgument!!,
-                task.project.basePath,
-                configuration.hostUrl.port,
-                task.configuration.noBuildArgument,
-                task.configuration.dockerArgument,
-                task.configuration.dashboardArgument,
-                task.configuration.verbosityArgument.value,
-                task.configuration.tagsArgument,
-                task.configuration.logsProvider.argumentName,
-                task.configuration.logsProviderUrl,
-                task.configuration.tracesProvider.argumentName,
-                task.configuration.tracesProviderUrl
-            )
-
-            val tyeCliClient = service<TyeCliClient>()
-            val handler = tyeCliClient.run(tyePath, options)
-            ProcessTerminatedListener.attach(handler)
-            handler.startNotify()
-
-            val runtime = TyeDeploymentRuntime(handler)
+            val runtime = tyeApplicationManager!!.runApplication(task)
             callback.started(runtime)
+
+            tyeApplicationManager!!.waitForReadiness()
             callback.succeeded(runtime)
         }, callback)
     }
 
-    override fun disconnect() {
-        taskExecutor.submit {
-            tyeApplicationManager.disconnect()
-        }
+    override fun computeDeployments(callback: ComputeDeploymentsCallback) {
+        taskExecutor.submit({
+            tyeApplicationManager!!.updateApplication()
+
+            val runtimes = tyeApplicationManager!!.getRuntimes()
+            runtimes.forEach {
+                val deployment = callback.addDeployment(it.applicationName, it, it.status, it.statusText)
+                it.setDeploymentModel(deployment)
+            }
+            callback.succeeded()
+        }, callback)
     }
+
+    override fun disconnect() {
+        tyeApplicationManager = null
+    }
+
+    override fun getDeploymentName(source: DeploymentSource, configuration: TyeDeploymentConfiguration): String =
+        "Tye Application"
 }

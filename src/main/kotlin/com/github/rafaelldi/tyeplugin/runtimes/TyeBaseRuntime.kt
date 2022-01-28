@@ -13,6 +13,8 @@ sealed class TyeBaseRuntime(applicationName: String?) : CloudApplicationRuntime(
 
     override fun getCloudType(): ServerType<*> = TyeHostType.getInstance()
 
+    override fun isUndeploySupported(): Boolean = false
+
     override fun undeploy(callback: UndeploymentTaskCallback) {
         throw UnsupportedOperationException()
     }

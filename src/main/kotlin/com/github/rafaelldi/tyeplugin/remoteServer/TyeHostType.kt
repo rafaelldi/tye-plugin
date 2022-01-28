@@ -19,6 +19,8 @@ class TyeHostType : ServerType<TyeHostConfiguration>("tye") {
 
     override fun getPresentableName(): String = "Tye"
 
+    override fun getDeploymentConfigurationTypePresentableName(): String = "Tye"
+
     override fun getDeploymentConfigurationFactoryId(): String = "Tye"
 
     override fun getIcon(): Icon = TyeIcons.TYE

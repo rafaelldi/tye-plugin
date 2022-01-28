@@ -1,6 +1,7 @@
 package com.github.rafaelldi.tyeplugin.remoteServer
 
 import com.github.rafaelldi.tyeplugin.runtimes.TyeBaseRuntime
+import com.intellij.execution.services.ServiceViewLocatableDescriptor
 import com.intellij.ide.util.PsiNavigationSupport
 import com.intellij.ide.util.treeView.AbstractTreeNode
 import com.intellij.pom.Navigatable
@@ -12,7 +13,7 @@ import com.intellij.remoteServer.util.ApplicationActionUtils
 class TyeNodeServiceViewDescriptor(
     node: AbstractTreeNode<*>,
     actionGroups: RemoteServersServiceViewContributor.ActionGroups
-) : RemoteServerNodeDescriptor(node, actionGroups) {
+) : RemoteServerNodeDescriptor(node, actionGroups), ServiceViewLocatableDescriptor {
     override fun getNavigatable(): Navigatable? {
         if (node !is DeploymentNode) {
             return null

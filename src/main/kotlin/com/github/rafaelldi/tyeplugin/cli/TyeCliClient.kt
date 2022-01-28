@@ -80,6 +80,6 @@ class TyeCliClient {
         )
 
         val commandLine = cliBuilder.build()
-        return KillableColoredProcessHandler(commandLine)
+        return KillableColoredProcessHandler.Silent(commandLine)
     }
 }
