@@ -6,6 +6,9 @@
 ### Added
 - New action to uninstall tye global tool
 
+### Changed
+- Rewrite run configuration
+
 ## [0.2.1]
 ### Added
 - List of replicas to the Services tool window
