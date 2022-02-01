@@ -1,8 +1,5 @@
 package com.github.rafaelldi.tyeplugin.api.dto
 
-import kotlinx.serialization.Serializable
-
-@Serializable
 data class RunInfoDto(
     val type: RunInfoType,
     val args: String?,

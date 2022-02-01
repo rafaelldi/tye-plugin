@@ -7,15 +7,13 @@ plugins {
     // Java support
     id("java")
     // Kotlin support
-    id("org.jetbrains.kotlin.jvm") version "1.6.10"
+    kotlin("jvm") version "1.6.10"
     // Gradle IntelliJ Plugin
     id("org.jetbrains.intellij") version "1.3.1"
     // Gradle Changelog Plugin
     id("org.jetbrains.changelog") version "1.3.1"
     // Gradle Qodana Plugin
     id("org.jetbrains.qodana") version "0.1.13"
-    // Kotlin serialization
-    id("org.jetbrains.kotlin.plugin.serialization") version "1.6.10"
 }
 
 group = properties("pluginGroup")
@@ -25,10 +23,11 @@ version = properties("pluginVersion")
 repositories {
     mavenCentral()
 }
+
 dependencies {
     implementation("io.ktor:ktor-client-core:1.6.7")
     implementation("io.ktor:ktor-client-cio:1.6.7")
-    implementation("io.ktor:ktor-client-serialization:1.6.7")
+    implementation("io.ktor:ktor-client-gson:1.6.7")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.5.2")
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.10")
 }

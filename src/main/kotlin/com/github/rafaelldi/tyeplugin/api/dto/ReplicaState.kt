@@ -1,20 +1,18 @@
 package com.github.rafaelldi.tyeplugin.api.dto
 
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
+import com.google.gson.annotations.SerializedName
 
-@Serializable
 enum class ReplicaState {
-    @SerialName("removed")
+    @SerializedName("removed")
     Removed,
-    @SerialName("added")
+    @SerializedName("added")
     Added,
-    @SerialName("started")
+    @SerializedName("started")
     Started,
-    @SerialName("stopped")
+    @SerializedName("stopped")
     Stopped,
-    @SerialName("healthy")
+    @SerializedName("healthy")
     Healthy,
-    @SerialName("ready")
+    @SerializedName("ready")
     Ready
 }

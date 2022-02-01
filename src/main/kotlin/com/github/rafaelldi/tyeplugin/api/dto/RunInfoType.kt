@@ -1,14 +1,12 @@
 package com.github.rafaelldi.tyeplugin.api.dto
 
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
+import com.google.gson.annotations.SerializedName
 
-@Serializable
 enum class RunInfoType {
-    @SerialName("project")
+    @SerializedName("project")
     Project,
-    @SerialName("executable")
+    @SerializedName("executable")
     Executable,
-    @SerialName("docker")
+    @SerializedName("docker")
     Docker
 }

@@ -6,19 +6,15 @@ import com.intellij.openapi.Disposable
 import com.intellij.openapi.components.Service
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
-import io.ktor.client.features.json.JsonFeature
-import io.ktor.client.features.json.serializer.*
+import io.ktor.client.features.json.*
 import io.ktor.client.request.*
 import io.ktor.http.*
-import kotlinx.serialization.json.Json
 
 @Service
 class TyeApiClient : Disposable {
     private val httpClient: HttpClient = HttpClient(CIO) {
         install(JsonFeature) {
-            serializer = KotlinxSerializer(Json {
-               ignoreUnknownKeys = true
-            })     
+            serializer = GsonSerializer()
         }
     }
 

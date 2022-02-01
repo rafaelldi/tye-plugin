@@ -1,20 +1,18 @@
 package com.github.rafaelldi.tyeplugin.api.dto
 
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
+import com.google.gson.annotations.SerializedName
 
-@Serializable
 enum class ServiceType {
-    @SerialName("external")
+    @SerializedName("external")
     External,
-    @SerialName("project")
+    @SerializedName("project")
     Project,
-    @SerialName("executable")
+    @SerializedName("executable")
     Executable,
-    @SerialName("container")
+    @SerializedName("container")
     Container,
-    @SerialName("function")
+    @SerializedName("function")
     Function,
-    @SerialName("ingress")
+    @SerializedName("ingress")
     Ingress
 }

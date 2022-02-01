@@ -1,19 +1,17 @@
 package com.github.rafaelldi.tyeplugin.api.dto
 
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
+import com.google.gson.annotations.SerializedName
 
-@Serializable
 enum class ServiceSource {
-    @SerialName("unknown")
+    @SerializedName("unknown")
     Unknown,
 
-    @SerialName("configuration")
+    @SerializedName("configuration")
     Configuration,
 
-    @SerialName("extension")
+    @SerializedName("extension")
     Extension,
 
-    @SerialName("host")
+    @SerializedName("host")
     Host
 }
