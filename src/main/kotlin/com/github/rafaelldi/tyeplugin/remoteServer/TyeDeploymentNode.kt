@@ -36,6 +36,7 @@ class TyeDeploymentNode(
             is TyeServiceProjectRuntime -> presentation.setIcon(TyeIcons.TYE_NODE_DOT_NET)
             is TyeServiceDockerRuntime -> presentation.setIcon(TyeIcons.TYE_NODE_DOCKER)
             is TyeServiceExecutableRuntime -> presentation.setIcon(TyeIcons.TYE_NODE_EXECUTABLE)
+            is TyeServiceIngressRuntime -> presentation.setIcon(TyeIcons.TYE_NODE_INGRESS)
             is TyeReplicaRuntime<*> -> presentation.setIcon(TyeIcons.TYE_NODE_REPLICA)
             else -> presentation.setIcon(TyeIcons.TYE)
         }

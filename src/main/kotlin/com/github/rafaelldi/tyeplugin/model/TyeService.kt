@@ -3,7 +3,7 @@ package com.github.rafaelldi.tyeplugin.model
 sealed class TyeService(
     val properties: TyeServiceProperties,
     val bindings: List<TyeServiceBinding>,
-    val environmentVariables: List<TyeEnvironmentVariable>,
+    val environmentVariables: List<TyeEnvironmentVariable>?,
     val replicas: List<TyeServiceReplica>?
 ) {
     abstract fun getServiceName(): String

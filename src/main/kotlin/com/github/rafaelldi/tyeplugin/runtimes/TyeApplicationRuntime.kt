@@ -50,6 +50,7 @@ class TyeApplicationRuntime(
             is TyeContainerService -> TyeServiceDockerRuntime(model, parent) as TyeServiceRuntime<TyeService>
             is TyeProjectService -> TyeServiceProjectRuntime(model, parent) as TyeServiceRuntime<TyeService>
             is TyeExecutableService -> TyeServiceExecutableRuntime(model, parent) as TyeServiceRuntime<TyeService>
+            is TyeIngressService -> TyeServiceIngressRuntime(model, parent) as TyeServiceRuntime<TyeService>
         }
 
     fun getServices(): List<TyeServiceRuntime<TyeService>> = serviceRuntimes.values.toList()

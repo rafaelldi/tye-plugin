@@ -1,11 +1,11 @@
 package com.github.rafaelldi.tyeplugin.remoteServer.components
 
-import com.github.rafaelldi.tyeplugin.model.TyeContainerServiceReplica
+import com.github.rafaelldi.tyeplugin.model.TyeIngressServiceReplica
 import com.intellij.ui.components.JBScrollPane
 import javax.swing.JComponent
 import javax.swing.table.DefaultTableModel
 
-class ContainerReplicaPropertiesTab(replica: TyeContainerServiceReplica) : PropertiesTab() {
+class IngressReplicaPropertiesTab(replica: TyeIngressServiceReplica) : PropertiesTab() {
     companion object {
         private const val NAME_COLUMN_TITLE = "Name"
         private const val VALUE_COLUMN_TITLE = "Value"
@@ -19,10 +19,6 @@ class ContainerReplicaPropertiesTab(replica: TyeContainerServiceReplica) : Prope
         with(table) {
             addRow(arrayOf("Name", replica.name))
             addRow(arrayOf("State", replica.state))
-            addRow(arrayOf("Docker command", replica.dockerCommand))
-            addRow(arrayOf("Container id", replica.containerId))
-            addRow(arrayOf("Docker network", replica.dockerNetwork))
-            addRow(arrayOf("Docker network alias", replica.dockerNetworkAlias))
             addRow(arrayOf("Ports", replica.ports?.joinToString()))
         }
 

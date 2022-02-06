@@ -1,11 +1,11 @@
 package com.github.rafaelldi.tyeplugin.remoteServer.components
 
-import com.github.rafaelldi.tyeplugin.model.TyeProjectServiceReplica
+import com.github.rafaelldi.tyeplugin.model.TyeIngressServiceProperties
 import com.intellij.ui.components.JBScrollPane
 import javax.swing.JComponent
 import javax.swing.table.DefaultTableModel
 
-class ProjectReplicaPropertiesTab(replica: TyeProjectServiceReplica) : PropertiesTab()  {
+class IngressServicePropertiesTab(properties: TyeIngressServiceProperties) : PropertiesTab() {
     companion object {
         private const val NAME_COLUMN_TITLE = "Name"
         private const val VALUE_COLUMN_TITLE = "Value"
@@ -17,11 +17,11 @@ class ProjectReplicaPropertiesTab(replica: TyeProjectServiceReplica) : Propertie
         val table = DefaultTableModel(arrayOf(NAME_COLUMN_TITLE, VALUE_COLUMN_TITLE), 0)
 
         with(table) {
-            addRow(arrayOf("Name", replica.name))
-            addRow(arrayOf("State", replica.state))
-            addRow(arrayOf("Pid", replica.pid))
-            addRow(arrayOf("Exit code", replica.exitCode))
-            addRow(arrayOf("Ports", replica.ports?.joinToString()))
+            addRow(arrayOf("Id", properties.id))
+            addRow(arrayOf("Type", properties.type))
+            addRow(arrayOf("Source", properties.source))
+            addRow(arrayOf("Replicas", properties.replicas))
+            addRow(arrayOf("Restarts", properties.restarts))
         }
 
         component = JBScrollPane(ValueTable(table))

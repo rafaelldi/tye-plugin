@@ -5,7 +5,7 @@ import com.intellij.ui.components.JBScrollPane
 import javax.swing.JComponent
 import javax.swing.table.DefaultTableModel
 
-class EnvironmentVariablesTab(environmentVariables: List<TyeEnvironmentVariable>?) {
+class EnvironmentVariablesTab(environmentVariables: List<TyeEnvironmentVariable>) {
     companion object {
         const val TITLE = "Environment Variables"
         private const val NAME_COLUMN_TITLE = "Name"

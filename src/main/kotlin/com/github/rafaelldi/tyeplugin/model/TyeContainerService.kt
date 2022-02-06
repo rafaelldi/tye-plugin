@@ -1,4 +1,4 @@
-package com.github.rafaelldi.tyeplugin.model
+ package com.github.rafaelldi.tyeplugin.model
 
 class TyeContainerService(
     properties: TyeContainerServiceProperties,
@@ -6,7 +6,7 @@ class TyeContainerService(
     environmentVariables: List<TyeEnvironmentVariable>,
     replicas: List<TyeContainerServiceReplica>
 ) : TyeService(properties, bindings, environmentVariables, replicas) {
-    override fun getServiceName(): String = properties.id ?: "unknown"
+    override fun getServiceName(): String = properties.id ?: "container"
 }
 
 class TyeContainerServiceProperties(

@@ -1,9 +1,6 @@
 package com.github.rafaelldi.tyeplugin.runtimes
 
-import com.github.rafaelldi.tyeplugin.model.TyeContainerServiceReplica
-import com.github.rafaelldi.tyeplugin.model.TyeProjectServiceReplica
-import com.github.rafaelldi.tyeplugin.model.TyeService
-import com.github.rafaelldi.tyeplugin.model.TyeServiceReplica
+import com.github.rafaelldi.tyeplugin.model.*
 import com.intellij.openapi.vfs.VirtualFile
 
 sealed class TyeServiceRuntime<T>(val service: T, parentRuntime: TyeApplicationRuntime) :
@@ -39,6 +36,7 @@ sealed class TyeServiceRuntime<T>(val service: T, parentRuntime: TyeApplicationR
         when (model) {
             is TyeContainerServiceReplica -> TyeReplicaRuntime(model, parent)
             is TyeProjectServiceReplica -> TyeReplicaRuntime(model, parent)
+            is TyeIngressServiceReplica -> TyeReplicaRuntime(model, parent)
         }
 
     fun getReplicas(): List<TyeReplicaRuntime<TyeServiceReplica>> = replicaRuntimes.values.toList()

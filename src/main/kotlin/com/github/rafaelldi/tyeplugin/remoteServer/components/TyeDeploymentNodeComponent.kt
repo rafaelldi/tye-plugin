@@ -22,28 +22,40 @@ class TyeDeploymentNodeComponent(deployment: Deployment) {
                         is TyeContainerService -> ContainerServicePropertiesTab(runtime.service.properties as TyeContainerServiceProperties)
                         is TyeExecutableService -> ExecutableServicePropertiesTab(runtime.service.properties as TyeExecutableServiceProperties)
                         is TyeProjectService -> ProjectServicePropertiesTab(runtime.service.properties as TyeProjectServiceProperties)
+                        is TyeIngressService -> IngressServicePropertiesTab(runtime.service.properties as TyeIngressServiceProperties)
                     }
                     val portBindingsTab = PortBindingsTab(runtime.service.bindings)
-                    val environmentVariablesTab = EnvironmentVariablesTab(runtime.service.environmentVariables)
+                    val environmentVariablesTab =
+                        if (runtime.service.environmentVariables != null)
+                            EnvironmentVariablesTab(runtime.service.environmentVariables)
+                        else null
 
                     val tabbedPane = JBTabbedPane().apply {
                         addTab(propertiesTab.tabName, propertiesTab.component)
                         addTab(PortBindingsTab.TITLE, portBindingsTab.component)
-                        addTab(EnvironmentVariablesTab.TITLE, environmentVariablesTab.component)
+                        if (environmentVariablesTab != null) {
+                            addTab(EnvironmentVariablesTab.TITLE, environmentVariablesTab.component)
+                        }
                     }
                     add(tabbedPane)
                 }
                 is TyeReplicaRuntime<*> -> {
-                    val propertiesTab = when(runtime.replica) {
+                    val propertiesTab = when (runtime.replica) {
                         is TyeContainerServiceReplica -> ContainerReplicaPropertiesTab(runtime.replica)
                         is TyeProjectServiceReplica -> ProjectReplicaPropertiesTab(runtime.replica)
+                        is TyeIngressServiceReplica -> IngressReplicaPropertiesTab(runtime.replica)
                     }
 
-                    val environmentVariablesTab = EnvironmentVariablesTab(runtime.replica.environmentVariables)
+                    val environmentVariablesTab =
+                        if (runtime.replica.environmentVariables != null)
+                            EnvironmentVariablesTab(runtime.replica.environmentVariables)
+                        else null
 
                     val tabbedPane = JBTabbedPane().apply {
                         addTab(propertiesTab.tabName, propertiesTab.component)
-                        addTab(EnvironmentVariablesTab.TITLE, environmentVariablesTab.component)
+                        if (environmentVariablesTab != null) {
+                            addTab(EnvironmentVariablesTab.TITLE, environmentVariablesTab.component)
+                        }
                     }
                     add(tabbedPane)
                 }

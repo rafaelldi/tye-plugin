@@ -5,7 +5,7 @@ class TyeExecutableService(
     bindings: List<TyeServiceBinding>,
     environmentVariables: List<TyeEnvironmentVariable>
 ) : TyeService(properties, bindings, environmentVariables, null) {
-    override fun getServiceName(): String = properties.id ?: "unknown"
+    override fun getServiceName(): String = properties.id ?: "executable"
 }
 
 class TyeExecutableServiceProperties(

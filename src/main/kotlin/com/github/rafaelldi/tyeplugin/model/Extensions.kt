@@ -26,6 +26,11 @@ fun ServiceDto.toModel(): TyeService? {
             envVars,
             this.replicas?.toContainerReplicas() ?: emptyList()
         )
+        ServiceType.Ingress -> TyeIngressService(
+            this.toIngressProperties(),
+            bindings,
+            this.replicas?.toIngressReplicas() ?: emptyList()
+        )
         else -> null
     }
 }
@@ -62,6 +67,14 @@ private fun ServiceDto.toExecutableProperties(): TyeExecutableServiceProperties 
     description?.runInfo?.args
 )
 
+private fun ServiceDto.toIngressProperties(): TyeIngressServiceProperties = TyeIngressServiceProperties(
+    description?.name,
+    serviceType.toString(),
+    serviceSource.toString(),
+    description?.replicas,
+    restarts
+)
+
 private fun ServiceBindingDto.toBinding(): TyeServiceBinding = TyeServiceBinding(
     name,
     connectionString,
@@ -92,6 +105,14 @@ private fun Map<String, ReplicaStatusDto>.toContainerReplicas(): List<TyeContain
         it.value.containerId,
         it.value.dockerNetwork,
         it.value.dockerNetworkAlias
+    )
+}
+
+private fun Map<String, ReplicaStatusDto>.toIngressReplicas(): List<TyeIngressServiceReplica> = this.map {
+    TyeIngressServiceReplica(
+        it.key,
+        it.value.state?.toState(),
+        it.value.ports
     )
 }
 

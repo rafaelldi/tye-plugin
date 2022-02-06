@@ -6,7 +6,7 @@ class TyeProjectService(
     environmentVariables: List<TyeEnvironmentVariable>,
     replicas: List<TyeProjectServiceReplica>
 ) : TyeService(properties, bindings, environmentVariables, replicas) {
-    override fun getServiceName(): String = properties.id ?: "unknown"
+    override fun getServiceName(): String = properties.id ?: "project"
 }
 
 class TyeProjectServiceProperties(

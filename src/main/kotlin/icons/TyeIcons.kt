@@ -18,5 +18,7 @@ object TyeIcons {
     @JvmField
     val TYE_NODE_EXECUTABLE = IconLoader.getIcon("/icons/tyeNodeExecutable.svg", javaClass)
     @JvmField
+    val TYE_NODE_INGRESS = IconLoader.getIcon("/icons/tyeNodeIngress.svg", javaClass)
+    @JvmField
     val TYE_NODE_REPLICA = IconLoader.getIcon("/icons/tyeNodeReplica.svg", javaClass)
 }

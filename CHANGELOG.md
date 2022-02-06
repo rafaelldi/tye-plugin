@@ -5,6 +5,7 @@
 ## [Unreleased]
 ### Added
 - New action to uninstall tye global tool
+- Ingress nodes
 
 ### Changed
 - Rewrite run configuration
