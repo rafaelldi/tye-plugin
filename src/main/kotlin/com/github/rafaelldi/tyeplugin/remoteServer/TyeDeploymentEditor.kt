@@ -73,10 +73,10 @@ class TyeDeploymentEditor(private val project: Project) : FragmentedSettingsEdit
             row("Logs provider:") {
                 logsProviderComboBox()
                     .growPolicy(GrowPolicy.MEDIUM_TEXT)
-                row("Logs provider url:") {
-                    logsProviderUrlTextField()
-                        .growPolicy(GrowPolicy.MEDIUM_TEXT)
-                }
+            }
+            row("Logs provider url:") {
+                logsProviderUrlTextField()
+                    .growPolicy(GrowPolicy.MEDIUM_TEXT)
             }
         }
 
@@ -86,10 +86,10 @@ class TyeDeploymentEditor(private val project: Project) : FragmentedSettingsEdit
             row("Traces provider:") {
                 tracesProviderComboBox()
                     .growPolicy(GrowPolicy.MEDIUM_TEXT)
-                row("Traces provider url:") {
-                    tracesProviderUrlTextField()
-                        .growPolicy(GrowPolicy.MEDIUM_TEXT)
-                }
+            }
+            row("Traces provider url:") {
+                tracesProviderUrlTextField()
+                    .growPolicy(GrowPolicy.MEDIUM_TEXT)
             }
         }
     }
