@@ -1,5 +1,8 @@
-package com.github.rafaelldi.tyeplugin.remoteServer
+package com.github.rafaelldi.tyeplugin.remoteServer.deployment
 
+import com.github.rafaelldi.tyeplugin.remoteServer.LogsProvider
+import com.github.rafaelldi.tyeplugin.remoteServer.TracesProvider
+import com.github.rafaelldi.tyeplugin.remoteServer.Verbosity
 import com.intellij.execution.ui.FragmentedSettingsEditor
 import com.intellij.execution.ui.SettingsEditorFragment
 import com.intellij.execution.ui.utils.Fragment

@@ -1,4 +1,4 @@
-package com.github.rafaelldi.tyeplugin.remoteServer
+package com.github.rafaelldi.tyeplugin.remoteServer.deployment
 
 import com.github.rafaelldi.tyeplugin.remoteServer.components.TyeDeploymentNodeComponent
 import com.intellij.remoteServer.runtime.Deployment

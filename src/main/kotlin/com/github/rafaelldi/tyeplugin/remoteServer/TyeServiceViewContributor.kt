@@ -1,5 +1,7 @@
 package com.github.rafaelldi.tyeplugin.remoteServer
 
+import com.github.rafaelldi.tyeplugin.remoteServer.deployment.TyeDeploymentNode
+import com.github.rafaelldi.tyeplugin.remoteServer.deployment.TyeDeploymentNodeComponentProvider
 import com.intellij.execution.services.ServiceViewDescriptor
 import com.intellij.execution.services.ServiceViewLazyContributor
 import com.intellij.execution.services.SimpleServiceViewDescriptor

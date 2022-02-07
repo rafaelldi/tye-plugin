@@ -3,7 +3,7 @@ package com.github.rafaelldi.tyeplugin.services
 import com.github.rafaelldi.tyeplugin.api.TyeApiClient
 import com.github.rafaelldi.tyeplugin.cli.TyeCliClient
 import com.github.rafaelldi.tyeplugin.model.toModel
-import com.github.rafaelldi.tyeplugin.remoteServer.TyeDeploymentConfiguration
+import com.github.rafaelldi.tyeplugin.remoteServer.deployment.TyeDeploymentConfiguration
 import com.github.rafaelldi.tyeplugin.runtimes.TyeApplicationRuntime
 import com.github.rafaelldi.tyeplugin.runtimes.TyeBaseRuntime
 import com.intellij.execution.ExecutionException
@@ -17,6 +17,8 @@ import java.net.ConnectException
 
 class TyeApplicationManager(private val tyeHost: Url) {
     private var currentApplicationRuntime: TyeApplicationRuntime? = null
+
+    fun getCurrentApplication() : TyeApplicationRuntime? = currentApplicationRuntime
 
     fun runApplication(
         deploymentTask: DeploymentTask<TyeDeploymentConfiguration>

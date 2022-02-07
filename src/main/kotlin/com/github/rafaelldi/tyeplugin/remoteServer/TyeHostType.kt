@@ -1,5 +1,7 @@
 package com.github.rafaelldi.tyeplugin.remoteServer
 
+import com.github.rafaelldi.tyeplugin.remoteServer.deployment.TyeDeploymentConfigurator
+import com.github.rafaelldi.tyeplugin.remoteServer.deployment.TyeSingletonDeploymentSourceType
 import com.intellij.openapi.project.Project
 import com.intellij.remoteServer.RemoteServerConfigurable
 import com.intellij.remoteServer.ServerType

@@ -1,5 +1,6 @@
 package com.github.rafaelldi.tyeplugin.remoteServer
 
+import com.github.rafaelldi.tyeplugin.remoteServer.deployment.TyeDeploymentConfiguration
 import com.github.rafaelldi.tyeplugin.services.TyeApplicationManager
 import com.intellij.remoteServer.configuration.deployment.DeploymentSource
 import com.intellij.remoteServer.runtime.ServerConnector
@@ -26,20 +27,29 @@ class TyeServerRuntimeInstance(
         logManager: DeploymentLogManager,
         callback: DeploymentOperationCallback
     ) {
-        taskExecutor.submit({
-            val runtime = tyeApplicationManager!!.runApplication(task)
-            callback.started(runtime)
+        val manager = tyeApplicationManager ?: return
 
-            tyeApplicationManager!!.waitForReadiness()
-            callback.succeeded(runtime)
-        }, callback)
+        val currentApplication = manager.getCurrentApplication()
+        if (currentApplication != null) {
+            callback.succeeded(currentApplication)
+        } else {
+            taskExecutor.submit({
+                val runtime = manager.runApplication(task)
+                callback.started(runtime)
+
+                manager.waitForReadiness()
+                callback.succeeded(runtime)
+            }, callback)
+        }
     }
 
     override fun computeDeployments(callback: ComputeDeploymentsCallback) {
-        taskExecutor.submit({
-            tyeApplicationManager!!.updateApplication()
+        val manager = tyeApplicationManager ?: return
 
-            val runtimes = tyeApplicationManager!!.getRuntimes()
+        taskExecutor.submit({
+            manager.updateApplication()
+
+            val runtimes = manager.getRuntimes()
             runtimes.forEach {
                 val deployment = callback.addDeployment(it.applicationName, it, it.status, it.statusText)
                 it.setDeploymentModel(deployment)

@@ -1,5 +1,6 @@
 package com.github.rafaelldi.tyeplugin.remoteServer
 
+import com.github.rafaelldi.tyeplugin.remoteServer.deployment.TyeDeploymentConfiguration
 import com.intellij.remoteServer.runtime.ServerConnector
 import com.intellij.remoteServer.runtime.ServerTaskExecutor
 

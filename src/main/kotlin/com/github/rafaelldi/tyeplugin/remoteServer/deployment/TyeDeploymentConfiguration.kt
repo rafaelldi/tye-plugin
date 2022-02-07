@@ -1,5 +1,6 @@
-package com.github.rafaelldi.tyeplugin.remoteServer
+package com.github.rafaelldi.tyeplugin.remoteServer.deployment
 
+import com.github.rafaelldi.tyeplugin.remoteServer.*
 import com.intellij.execution.configurations.RuntimeConfigurationError
 import com.intellij.openapi.project.Project
 import com.intellij.remoteServer.configuration.RemoteServer
