@@ -30,7 +30,6 @@ class TyeDeploymentNode(
 
     override fun update(presentation: PresentationData) {
         super.update(presentation)
-        val deployment = this.deployment
         when (deployment.runtime) {
             is TyeApplicationRuntime -> presentation.setIcon(TyeIcons.TYE)
             is TyeServiceProjectRuntime -> presentation.setIcon(TyeIcons.TYE_NODE_DOT_NET)

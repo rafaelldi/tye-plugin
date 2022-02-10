@@ -7,14 +7,14 @@ import com.intellij.notification.Notification
 import com.intellij.notification.NotificationType
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.components.service
-import com.intellij.openapi.diagnostic.Logger
+import com.intellij.openapi.diagnostic.logger
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VfsUtil
 import java.nio.file.Paths
 
 @Service
 class TyeCliService(private val project: Project) {
-    private val log = Logger.getInstance(TyeCliService::class.java)
+    private val log = logger<TyeCliService>()
 
     fun getVersion(path: String?): ToolVersion? {
         val tyePathProvider = project.service<TyePathProvider>()

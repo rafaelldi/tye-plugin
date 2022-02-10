@@ -2,10 +2,13 @@ package com.github.rafaelldi.tyeplugin.remoteServer
 
 import com.github.rafaelldi.tyeplugin.remoteServer.deployment.TyeDeploymentConfiguration
 import com.github.rafaelldi.tyeplugin.services.TyeApplicationManager
+import com.intellij.openapi.components.service
+import com.intellij.openapi.diagnostic.logger
 import com.intellij.remoteServer.configuration.deployment.DeploymentSource
 import com.intellij.remoteServer.runtime.ServerConnector
 import com.intellij.remoteServer.runtime.ServerTaskExecutor
 import com.intellij.remoteServer.runtime.deployment.DeploymentLogManager
+import com.intellij.remoteServer.runtime.deployment.DeploymentRuntime
 import com.intellij.remoteServer.runtime.deployment.DeploymentTask
 import com.intellij.remoteServer.runtime.deployment.ServerRuntimeInstance
 
@@ -13,13 +16,12 @@ class TyeServerRuntimeInstance(
     private val configuration: TyeHostConfiguration,
     private val taskExecutor: ServerTaskExecutor
 ) : ServerRuntimeInstance<TyeDeploymentConfiguration>() {
-    private var tyeApplicationManager: TyeApplicationManager? = null
+    private var tyeApplicationManager: TyeApplicationManager = service()
+    private val log = logger<TyeServerRuntimeInstance>()
 
     fun connect(callback: ServerConnector.ConnectionCallback<TyeDeploymentConfiguration>) {
-        taskExecutor.submit({
-            tyeApplicationManager = TyeApplicationManager(configuration.hostUrl)
-            callback.connected(this)
-        }, callback)
+        log.info("Server connected")
+        callback.connected(this)
     }
 
     override fun deploy(
@@ -27,30 +29,19 @@ class TyeServerRuntimeInstance(
         logManager: DeploymentLogManager,
         callback: DeploymentOperationCallback
     ) {
-        val manager = tyeApplicationManager ?: return
+        taskExecutor.submit({
+            tyeApplicationManager.runApplication(configuration.hostUrl, task).let {
+                callback.started(it)
 
-        val currentApplication = manager.getCurrentApplication()
-        if (currentApplication != null) {
-            callback.succeeded(currentApplication)
-        } else {
-            taskExecutor.submit({
-                val runtime = manager.runApplication(task)
-                callback.started(runtime)
-
-                manager.waitForReadiness()
-                callback.succeeded(runtime)
-            }, callback)
-        }
+                it.waitForReadiness()
+                callback.succeeded(it)
+            }
+        }, callback)
     }
 
     override fun computeDeployments(callback: ComputeDeploymentsCallback) {
-        val manager = tyeApplicationManager ?: return
-
         taskExecutor.submit({
-            manager.updateApplication()
-
-            val runtimes = manager.getRuntimes()
-            runtimes.forEach {
+            tyeApplicationManager.updateApplication(configuration.hostUrl).forEach {
                 val deployment = callback.addDeployment(it.applicationName, it, it.status, it.statusText)
                 it.setDeploymentModel(deployment)
             }
@@ -59,9 +50,15 @@ class TyeServerRuntimeInstance(
     }
 
     override fun disconnect() {
-        tyeApplicationManager = null
+        log.info("Server disconnected")
     }
 
     override fun getDeploymentName(source: DeploymentSource, configuration: TyeDeploymentConfiguration): String =
         "Tye Application"
+
+    override fun getRuntimeDeploymentName(
+        deploymentRuntime: DeploymentRuntime,
+        source: DeploymentSource,
+        configuration: TyeDeploymentConfiguration
+    ): String = "Tye Application"
 }

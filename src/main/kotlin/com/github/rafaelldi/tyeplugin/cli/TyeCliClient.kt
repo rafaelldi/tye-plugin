@@ -7,7 +7,7 @@ import com.intellij.execution.process.KillableColoredProcessHandler
 import com.intellij.execution.process.ProcessOutput
 import com.intellij.execution.util.ExecUtil
 import com.intellij.openapi.components.Service
-import com.intellij.openapi.diagnostic.Logger
+import com.intellij.openapi.diagnostic.logger
 
 @Service
 class TyeCliClient {
@@ -35,7 +35,7 @@ class TyeCliClient {
         val tracesProviderUrl: String?
     )
 
-    private val log = Logger.getInstance(TyeCliClient::class.java)
+    private val log = logger<TyeCliClient>()
 
     fun version(tyePath: String): ProcessOutput {
         log.info("Call version command")

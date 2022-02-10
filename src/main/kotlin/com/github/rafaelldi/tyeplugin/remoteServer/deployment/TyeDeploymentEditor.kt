@@ -17,7 +17,6 @@ import com.intellij.openapi.ui.TextBrowseFolderListener
 import com.intellij.openapi.ui.TextFieldWithBrowseButton
 import com.intellij.openapi.vfs.LocalFileSystem
 import com.intellij.openapi.vfs.VirtualFile
-import com.intellij.ui.components.JBRadioButton
 import com.intellij.ui.components.JBTextField
 import com.intellij.ui.components.fields.ExpandableTextField
 import com.intellij.ui.layout.GrowPolicy
@@ -28,9 +27,7 @@ class TyeDeploymentEditor(private val project: Project) : FragmentedSettingsEdit
     private val pathField: LabeledComponent<TextFieldWithBrowseButton>
     private val tagsField: LabeledComponent<ExpandableTextField>
     private val verbosityPanel: JPanel
-    private val debugRadioButton: JBRadioButton
-    private val infoRadioButton: JBRadioButton
-    private val quietRadioButton: JBRadioButton
+    private val verbosityComboBox: ComboBox<Verbosity>
     private val logsPanel: JPanel
     private val logsProviderComboBox: ComboBox<LogsProvider>
     private val logsProviderUrlTextField: JBTextField
@@ -57,16 +54,11 @@ class TyeDeploymentEditor(private val project: Project) : FragmentedSettingsEdit
         tagsField = LabeledComponent.create(tagsTextField, "Tags:")
         tagsField.labelLocation = "West"
 
-        debugRadioButton = JBRadioButton("Debug")
-        infoRadioButton = JBRadioButton("Info", true)
-        quietRadioButton = JBRadioButton("Quiet")
+        verbosityComboBox = ComboBox(Verbosity.values())
         verbosityPanel = panel {
-            row {
-                buttonGroup("Verbosity:") {
-                    debugRadioButton()
-                    infoRadioButton()
-                    quietRadioButton()
-                }
+            row("Verbosity:") {
+                verbosityComboBox()
+                    .growPolicy(GrowPolicy.MEDIUM_TEXT)
             }
         }
 
@@ -169,30 +161,13 @@ class TyeDeploymentEditor(private val project: Project) : FragmentedSettingsEdit
         this.actionHint = "Sets the output verbosity of the process"
         this.actionDescription = "--verbosity"
         this.visible = { it.verbosityArgument != Verbosity.INFO }
-        this.apply = { settings, component ->
-            settings.verbosityArgument =
-                if (infoRadioButton.isSelected) Verbosity.INFO
-                else if (debugRadioButton.isSelected) Verbosity.DEBUG
-                else Verbosity.QUIET
+        this.apply = { settings, _ ->
+            val verbosity = verbosityComboBox.item
+            settings.verbosityArgument = verbosity
         }
-        this.reset = { settings, component ->
-            when (settings.verbosityArgument) {
-                Verbosity.DEBUG -> {
-                    debugRadioButton.isSelected = true
-                    infoRadioButton.isSelected = false
-                    quietRadioButton.isSelected = false
-                }
-                Verbosity.INFO -> {
-                    debugRadioButton.isSelected = false
-                    infoRadioButton.isSelected = true
-                    quietRadioButton.isSelected = false
-                }
-                Verbosity.QUIET -> {
-                    debugRadioButton.isSelected = false
-                    infoRadioButton.isSelected = false
-                    quietRadioButton.isSelected = true
-                }
-            }
+        this.reset = { settings, _ ->
+            val verbosity = settings.verbosityArgument
+            verbosityComboBox.item = verbosity
         }
     }
 
@@ -201,7 +176,7 @@ class TyeDeploymentEditor(private val project: Project) : FragmentedSettingsEdit
         this.actionHint = "Write structured application logs to the specified log providers"
         this.actionDescription = "--logs"
         this.visible = { it.logsProvider != LogsProvider.NONE }
-        this.apply = { settings, component ->
+        this.apply = { settings, _ ->
             val logsProvider = logsProviderComboBox.item
             settings.logsProvider = logsProvider
             if (logsProvider.isProviderUrlEnabled())
@@ -209,7 +184,7 @@ class TyeDeploymentEditor(private val project: Project) : FragmentedSettingsEdit
             else
                 settings.logsProviderUrl = null
         }
-        this.reset = { settings, component ->
+        this.reset = { settings, _ ->
             val logsProvider = settings.logsProvider
             logsProviderComboBox.item = logsProvider
             if (logsProvider.isProviderUrlEnabled())
@@ -224,7 +199,7 @@ class TyeDeploymentEditor(private val project: Project) : FragmentedSettingsEdit
         this.actionHint = "Write distributed traces to the specified providers"
         this.actionDescription = "--dtrace"
         this.visible = { it.tracesProvider != TracesProvider.NONE }
-        this.apply = { settings, component ->
+        this.apply = { settings, _ ->
             val tracesProvider = tracesProviderComboBox.item
             settings.tracesProvider = tracesProvider
             if (tracesProvider.isProviderUrlEnabled())
@@ -232,7 +207,7 @@ class TyeDeploymentEditor(private val project: Project) : FragmentedSettingsEdit
             else
                 settings.tracesProviderUrl = null
         }
-        this.reset = { settings, component ->
+        this.reset = { settings, _ ->
             val tracesProvider = settings.tracesProvider
             tracesProviderComboBox.item = tracesProvider
             if (tracesProvider.isProviderUrlEnabled())

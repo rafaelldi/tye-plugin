@@ -12,7 +12,7 @@ import com.intellij.notification.NotificationAction
 import com.intellij.notification.NotificationType
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.components.Service
-import com.intellij.openapi.diagnostic.Logger
+import com.intellij.openapi.diagnostic.logger
 import com.intellij.openapi.project.Project
 
 @Service
@@ -21,7 +21,7 @@ class TyeGlobalToolService(private val project: Project) {
         private const val TYE_ACTUAL_VERSION = "0.10.0-alpha.21420.1"
     }
 
-    private val log = Logger.getInstance(TyeGlobalToolService::class.java)
+    private val log = logger<TyeGlobalToolService>()
     private val tyeActualVersion = ToolVersion(TYE_ACTUAL_VERSION)
 
     fun installTyeGlobalTool() {
@@ -49,9 +49,8 @@ class TyeGlobalToolService(private val project: Project) {
             .withExePath("dotnet")
             .withParameters("tool", "install", "Microsoft.Tye", "--global", "--version", TYE_ACTUAL_VERSION)
         val output = ExecUtil.execAndGetOutput(commandLine)
-        val success = output.exitCode == 0
 
-        if (success) {
+        if (output.checkSuccess(log)) {
             log.info("Tye is successfully installed with version $TYE_ACTUAL_VERSION")
             TyeSettings.getInstance(project).tyeToolPath = TyePathProvider.getDefaultGlobalPath()
 
@@ -91,9 +90,8 @@ class TyeGlobalToolService(private val project: Project) {
             .withExePath("dotnet")
             .withParameters("tool", "update", "Microsoft.Tye", "--global", "--version", TYE_ACTUAL_VERSION)
         val output = ExecUtil.execAndGetOutput(commandLine)
-        val success = output.exitCode == 0
 
-        if (success) {
+        if (output.checkSuccess(log)) {
             log.info("Tye is successfully updated to version $TYE_ACTUAL_VERSION")
 
             Notification("Tye", "Tye is successfully updated", "", NotificationType.INFORMATION)
@@ -125,9 +123,8 @@ class TyeGlobalToolService(private val project: Project) {
             .withExePath("dotnet")
             .withParameters("tool", "uninstall", "Microsoft.Tye", "--global")
         val output = ExecUtil.execAndGetOutput(commandLine)
-        val success = output.exitCode == 0
 
-        if (success) {
+        if (output.checkSuccess(log)) {
             log.info("Tye is successfully uninstalled")
 
             Notification("Tye", "Tye is successfully uninstalled", "", NotificationType.INFORMATION)
@@ -143,13 +140,13 @@ class TyeGlobalToolService(private val project: Project) {
     fun isTyeGlobalToolInstalled(): Boolean {
         val output = getListOfGlobalTools()
 
-        if (output.exitCode != 0) {
+        return if (output.checkSuccess(log)) {
+            val regex = Regex("^microsoft\\.tye", RegexOption.MULTILINE)
+            regex.containsMatchIn(output.stdout)
+        } else {
             log.error(output.stderr)
-            return false
+            false
         }
-
-        val regex = Regex("^microsoft\\.tye", RegexOption.MULTILINE)
-        return regex.containsMatchIn(output.stdout)
     }
 
     fun isActualTyeGlobalToolVersionInstalled(): Boolean {
@@ -165,27 +162,27 @@ class TyeGlobalToolService(private val project: Project) {
             .withParameters("--list-runtimes")
         val output = ExecUtil.execAndGetOutput(commandLine)
 
-        if (output.exitCode != 0) {
+        return if (output.checkSuccess(log)) {
+            val regex = Regex("^Microsoft\\.AspNetCore\\.App 3\\.1", RegexOption.MULTILINE)
+            regex.containsMatchIn(output.stdout)
+        } else {
             log.error(output.stderr)
-            return false
+            false
         }
-
-        val regex = Regex("^Microsoft\\.AspNetCore\\.App 3\\.1", RegexOption.MULTILINE)
-        return regex.containsMatchIn(output.stdout)
     }
 
     private fun getTyeGlobalToolVersion(): ToolVersion? {
         val output = getListOfGlobalTools()
 
-        if (output.exitCode != 0) {
+        if (output.checkSuccess(log)) {
+            val regex = Regex("^microsoft\\.tye\\s+([\\d.]+)", RegexOption.MULTILINE)
+            val versionString = regex.find(output.stdout)?.groups?.get(1)?.value ?: return null
+
+            return ToolVersion(versionString)
+        } else {
             log.error(output.stderr)
             return null
         }
-
-        val regex = Regex("^microsoft\\.tye\\s+([\\d.]+)", RegexOption.MULTILINE)
-        val versionString = regex.find(output.stdout)?.groups?.get(1)?.value ?: return null
-
-        return ToolVersion(versionString)
     }
 
     private fun getListOfGlobalTools(): ProcessOutput {
