@@ -29,5 +29,5 @@ sealed class TyeBaseRuntime(applicationName: String?) : CloudApplicationRuntime(
 
     override fun getParent(): DeploymentRuntime? = parent
 
-    open fun getVirtualFile(): VirtualFile? = null
+    open fun getSourceFile(): VirtualFile? = null
 }

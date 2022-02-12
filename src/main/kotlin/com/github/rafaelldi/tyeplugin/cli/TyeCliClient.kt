@@ -3,6 +3,7 @@ package com.github.rafaelldi.tyeplugin.cli
 import com.github.rafaelldi.tyeplugin.cli.builders.TyeInitCliBuilder
 import com.github.rafaelldi.tyeplugin.cli.builders.TyeRunCliBuilder
 import com.github.rafaelldi.tyeplugin.cli.builders.TyeVersionCliBuilder
+import com.intellij.execution.process.ColoredProcessHandler
 import com.intellij.execution.process.KillableColoredProcessHandler
 import com.intellij.execution.process.ProcessOutput
 import com.intellij.execution.util.ExecUtil
@@ -58,7 +59,7 @@ class TyeCliClient {
         return ExecUtil.execAndGetOutput(commandLine)
     }
 
-    fun run(tyePath: String, options: RunOptions): KillableColoredProcessHandler {
+    fun run(tyePath: String, options: RunOptions): ColoredProcessHandler {
         log.info("Call run command")
 
         val cliBuilder = TyeRunCliBuilder(tyePath, options.workDirectory)

@@ -41,7 +41,7 @@ sealed class TyeServiceRuntime<T>(val service: T, parentRuntime: TyeApplicationR
 
     fun getReplicas(): List<TyeReplicaRuntime<TyeServiceReplica>> = replicaRuntimes.values.toList()
 
-    override fun getVirtualFile(): VirtualFile? {
+    override fun getSourceFile(): VirtualFile? {
         return null
     }
 }

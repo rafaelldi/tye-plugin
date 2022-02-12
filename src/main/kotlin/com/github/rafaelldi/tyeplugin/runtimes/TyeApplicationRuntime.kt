@@ -6,7 +6,7 @@ import com.github.rafaelldi.tyeplugin.model.*
 import com.github.rafaelldi.tyeplugin.remoteServer.deployment.TyeDeploymentConfiguration
 import com.github.rafaelldi.tyeplugin.services.TyePathProvider
 import com.intellij.execution.ExecutionException
-import com.intellij.execution.process.KillableProcessHandler
+import com.intellij.execution.process.ColoredProcessHandler
 import com.intellij.execution.process.ProcessTerminatedListener
 import com.intellij.openapi.components.service
 import com.intellij.openapi.diagnostic.thisLogger
@@ -18,9 +18,10 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import java.net.ConnectException
 
-class TyeApplicationRuntime(applicationName: String, val host: Url) : TyeBaseRuntime(applicationName) {
+class TyeApplicationRuntime(applicationName: String, val host: Url) :
+    TyeBaseRuntime(applicationName) {
     private val serviceRuntimes: MutableMap<String, TyeServiceRuntime<TyeService>> = mutableMapOf()
-    private var processHandler: KillableProcessHandler? = null
+    private var processHandler: ColoredProcessHandler? = null
     private var model: TyeApplication? = null
 
     fun run(deploymentTask: DeploymentTask<TyeDeploymentConfiguration>) {
@@ -31,6 +32,7 @@ class TyeApplicationRuntime(applicationName: String, val host: Url) : TyeBaseRun
         val runOptions = createRunOptions(deploymentTask, host)
         val handler = cliClient.run(tyePath, runOptions)
         ProcessTerminatedListener.attach(handler)
+        handler.startNotify()
         processHandler = handler
     }
 
@@ -63,7 +65,7 @@ class TyeApplicationRuntime(applicationName: String, val host: Url) : TyeBaseRun
         }
     }
 
-    fun update(): List<TyeBaseRuntime> {
+    fun refresh(): List<TyeBaseRuntime> {
         runBlocking {
             val client = service<TyeApiClient>()
             try {
@@ -75,9 +77,9 @@ class TyeApplicationRuntime(applicationName: String, val host: Url) : TyeBaseRun
 
                 val servicesDto = client.getServices(host)
                 val serviceModels = servicesDto.mapNotNull { it.toModel() }
-                updateServices(serviceModels)
+                refreshServices(serviceModels)
             } catch (e: ConnectException) {
-                thisLogger().error("Cannot connect to the host", e)
+                thisLogger().warn("Cannot connect to the host", e)
             }
         }
 
@@ -92,7 +94,7 @@ class TyeApplicationRuntime(applicationName: String, val host: Url) : TyeBaseRun
         return runtimes.toList()
     }
 
-    private fun updateServices(newServices: List<TyeService>) {
+    private fun refreshServices(newServices: List<TyeService>) {
         val currentRuntimeNames = serviceRuntimes.keys.toHashSet()
         val newServiceNames = newServices.map { it.getServiceName() }.toHashSet()
 
@@ -119,30 +121,22 @@ class TyeApplicationRuntime(applicationName: String, val host: Url) : TyeBaseRun
             is TyeIngressService -> TyeServiceIngressRuntime(model, parent) as TyeServiceRuntime<TyeService>
         }
 
-    override fun getVirtualFile(): VirtualFile? {
+    override fun getSourceFile(): VirtualFile? {
         val path = model?.source ?: return null
         return LocalFileSystem.getInstance().findFileByPath(path)
     }
 
-    override fun isUndeploySupported(): Boolean = true
+    fun getProcessHandler(): ColoredProcessHandler? = processHandler
 
-    override fun undeploy(callback: UndeploymentTaskCallback) {
-        processHandler?.killProcess()
-    }
-
-    fun shutdownApplication() {
-        val handler = processHandler
-        if (handler != null) {
-            handler.killProcess()
-        } else {
-            runBlocking {
-                val apiClient = service<TyeApiClient>()
-                try {
-                    apiClient.controlPlaneShutdown(host)
-                } catch (e: ConnectException) {
-                    thisLogger().error("Cannot connect to the host", e)
-                }
+    fun shutdown() {
+        runBlocking {
+            val apiClient = service<TyeApiClient>()
+            try {
+                apiClient.controlPlaneShutdown(host)
+            } catch (e: ConnectException) {
+                thisLogger().warn("Cannot connect to the host", e)
             }
         }
+
     }
 }

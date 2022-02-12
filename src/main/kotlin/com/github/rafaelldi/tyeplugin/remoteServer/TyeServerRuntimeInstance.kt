@@ -41,7 +41,7 @@ class TyeServerRuntimeInstance(
 
     override fun computeDeployments(callback: ComputeDeploymentsCallback) {
         taskExecutor.submit({
-            tyeApplicationManager.updateApplication(configuration.hostUrl).forEach {
+            tyeApplicationManager.refreshApplication(configuration.hostUrl).forEach {
                 val deployment = callback.addDeployment(it.applicationName, it, it.status, it.statusText)
                 it.setDeploymentModel(deployment)
             }

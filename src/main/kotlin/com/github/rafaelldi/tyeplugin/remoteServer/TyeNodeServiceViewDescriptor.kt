@@ -20,7 +20,7 @@ class TyeNodeServiceViewDescriptor(
         }
         val project = node.project ?: return null
         val runtime = ApplicationActionUtils.getApplicationRuntime(node as DeploymentNode, TyeBaseRuntime::class.java)
-        val file = runtime?.getVirtualFile() ?: return null
+        val file = runtime?.getSourceFile() ?: return null
 
         return PsiNavigationSupport.getInstance().createNavigatable(project, file, 0)
     }

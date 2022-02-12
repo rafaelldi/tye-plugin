@@ -7,7 +7,7 @@ import com.intellij.openapi.vfs.VirtualFile
 
 class TyeServiceProjectRuntime(service: TyeProjectService, parentRuntime: TyeApplicationRuntime) :
     TyeServiceRuntime<TyeProjectService>(service, parentRuntime) {
-    override fun getVirtualFile(): VirtualFile? {
+    override fun getSourceFile(): VirtualFile? {
         val path = (service.properties as? TyeProjectServiceProperties)?.project ?: return null
         return LocalFileSystem.getInstance().findFileByPath(path)
     }

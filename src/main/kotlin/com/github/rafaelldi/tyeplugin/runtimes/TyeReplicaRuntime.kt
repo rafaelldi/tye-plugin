@@ -9,7 +9,7 @@ class TyeReplicaRuntime<T>(val replica: T, parentRuntime: TyeServiceRuntime<*>) 
         parent = parentRuntime
     }
 
-    override fun getVirtualFile(): VirtualFile? {
-        return parent?.getVirtualFile()
+    override fun getSourceFile(): VirtualFile? {
+        return parent?.getSourceFile()
     }
 }

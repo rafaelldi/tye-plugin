@@ -24,19 +24,19 @@ class TyeApplicationManager {
         return newApplicationRuntime
     }
 
-    fun updateApplication(host: Url): List<TyeBaseRuntime> {
+    fun refreshApplication(host: Url): List<TyeBaseRuntime> {
         val existingApplicationRuntime = applications[host.toString()]
         if (existingApplicationRuntime != null) {
-            return existingApplicationRuntime.update()
+            return existingApplicationRuntime.refresh()
         }
 
         val newApplicationRuntime = TyeApplicationRuntime("Tye Application", host)
-        return newApplicationRuntime.update()
+        return newApplicationRuntime.refresh()
     }
 
     fun shutdownApplication(host: Url) {
         val existingApplicationRuntime = applications[host.toString()] ?: return
-        existingApplicationRuntime.shutdownApplication()
+        existingApplicationRuntime.shutdown()
         applications.remove(host.toString())
     }
 }
