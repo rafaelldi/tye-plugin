@@ -18,7 +18,7 @@ import com.intellij.openapi.project.Project
 @Service
 class TyeGlobalToolService(private val project: Project) {
     companion object {
-        private const val TYE_ACTUAL_VERSION = "0.10.0-alpha.21420.1"
+        private const val TYE_ACTUAL_VERSION = "0.11.0-alpha.22111.1"
     }
 
     private val log = logger<TyeGlobalToolService>()

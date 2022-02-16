@@ -9,6 +9,7 @@
 
 ### Changed
 - Rewrite run configuration
+- Tye global tool version is updated to 0.11.0-alpha.22111.1
 
 ## [0.2.1]
 ### Added
