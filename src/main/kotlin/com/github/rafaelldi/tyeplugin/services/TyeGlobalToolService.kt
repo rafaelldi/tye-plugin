@@ -25,12 +25,12 @@ class TyeGlobalToolService(private val project: Project) {
     private val tyeActualVersion = ToolVersion(TYE_ACTUAL_VERSION)
 
     fun installTyeGlobalTool() {
-        val isDotNetInstalled = isDotNetInstalled()
-        if (!isDotNetInstalled) {
-            Notification("Tye", ".NET Core 3.1 is not installed", "", NotificationType.ERROR)
-                .addAction(object : NotificationAction("Go to .NET Core installation page") {
+        val isDotNet6Installed = isDotNet6Installed()
+        if (!isDotNet6Installed) {
+            Notification("Tye", ".NET 6 is not installed", "", NotificationType.WARNING)
+                .addAction(object : NotificationAction("Go to .NET installation page") {
                     override fun actionPerformed(e: AnActionEvent, notification: Notification) {
-                        BrowserUtil.browse("https://dotnet.microsoft.com/download/dotnet/3.1")
+                        BrowserUtil.browse("https://dotnet.microsoft.com/download/dotnet/6.0")
                     }
                 })
                 .notify(project)
@@ -81,6 +81,18 @@ class TyeGlobalToolService(private val project: Project) {
         val isActualVersionInstalled = isActualTyeGlobalToolVersionInstalled()
         if (isActualVersionInstalled) {
             Notification("Tye", "The actual version is already installed ", "", NotificationType.INFORMATION)
+                .notify(project)
+            return
+        }
+
+        val isDotNet6Installed = isDotNet6Installed()
+        if (!isDotNet6Installed) {
+            Notification("Tye", "To update tye you need to install .NET 6", "", NotificationType.WARNING)
+                .addAction(object : NotificationAction("Go to .NET installation page") {
+                    override fun actionPerformed(e: AnActionEvent, notification: Notification) {
+                        BrowserUtil.browse("https://dotnet.microsoft.com/download/dotnet/6.0")
+                    }
+                })
                 .notify(project)
             return
         }
@@ -155,7 +167,7 @@ class TyeGlobalToolService(private val project: Project) {
         return currentVersion >= tyeActualVersion
     }
 
-    private fun isDotNetInstalled(): Boolean {
+    private fun isDotNet6Installed(): Boolean {
         val commandLine = GeneralCommandLine()
             .withParentEnvironmentType(GeneralCommandLine.ParentEnvironmentType.CONSOLE)
             .withExePath("dotnet")
@@ -163,7 +175,7 @@ class TyeGlobalToolService(private val project: Project) {
         val output = ExecUtil.execAndGetOutput(commandLine)
 
         return if (output.checkSuccess(log)) {
-            val regex = Regex("^Microsoft\\.AspNetCore\\.App 3\\.1", RegexOption.MULTILINE)
+            val regex = Regex("^Microsoft\\\\.AspNetCore\\\\.App 6", RegexOption.MULTILINE)
             regex.containsMatchIn(output.stdout)
         } else {
             log.error(output.stderr)

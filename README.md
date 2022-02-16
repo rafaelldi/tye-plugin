@@ -19,7 +19,7 @@ Tye simplifies microservices development with local orchestrating of multiple .N
 
 ## Tye Installation
 
-1. Install [.NET Core 3.1](https://dotnet.microsoft.com/download/dotnet/3.1).
+1. Install [.NET Core 6](https://dotnet.microsoft.com/download/dotnet/6.0).
 2. Run action from the menu <kbd>Tools</kbd> -> <kbd>Tye</kbd> -> <kbd>Install Tye Global Tool</kbd> OR install tye via the [following command](https://github.com/dotnet/tye/blob/main/docs/getting_started.md):
 ```shell
 dotnet tool install -g Microsoft.Tye --version "0.11.0-alpha.22111.1"
