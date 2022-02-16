@@ -17,7 +17,7 @@ class EnvironmentVariablesTab(environmentVariables: List<TyeEnvironmentVariable>
     init {
         val table = DefaultTableModel(arrayOf(NAME_COLUMN_TITLE, VALUE_COLUMN_TITLE), 0)
 
-        for (variable in environmentVariables ?: emptyList()) {
+        for (variable in environmentVariables) {
             table.addRow(arrayOf(variable.name, variable.value))
         }
 

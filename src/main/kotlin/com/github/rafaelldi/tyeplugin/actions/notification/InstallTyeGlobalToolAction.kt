@@ -11,7 +11,7 @@ class InstallTyeGlobalToolAction : NotificationAction("Install tye global tool")
     override fun actionPerformed(e: AnActionEvent, notification: Notification) {
         val tyeGlobalToolService = e.project!!.service<TyeGlobalToolService>()
 
-        runBackgroundableTask("Install Tye Global Tool", e.project){
+        runBackgroundableTask("Install tye global tool", e.project){
             it.isIndeterminate = true
             it.text = "Installing tye global tool"
 

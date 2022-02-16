@@ -34,7 +34,7 @@ class ScaffoldTyeFileAction : AnAction() {
         }
 
         val tyeCliService = e.project!!.service<TyeCliService>()
-        runBackgroundableTask("Scaffold Tye File", e.project) {
+        runBackgroundableTask("Scaffold tye file", e.project) {
             it.isIndeterminate = true
             it.text = "Scaffolding tye.yaml file"
 

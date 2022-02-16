@@ -18,8 +18,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import java.net.ConnectException
 
-class TyeApplicationRuntime(applicationName: String, val host: Url) :
-    TyeBaseRuntime(applicationName) {
+class TyeApplicationRuntime(applicationName: String, val host: Url) : TyeBaseRuntime(applicationName) {
     private val serviceRuntimes: MutableMap<String, TyeServiceRuntime<TyeService>> = mutableMapOf()
     private var processHandler: ColoredProcessHandler? = null
     private var model: TyeApplication? = null
@@ -32,7 +31,6 @@ class TyeApplicationRuntime(applicationName: String, val host: Url) :
         val runOptions = createRunOptions(deploymentTask, host)
         val handler = cliClient.run(tyePath, runOptions)
         ProcessTerminatedListener.attach(handler)
-        handler.startNotify()
         processHandler = handler
     }
 
@@ -52,40 +50,37 @@ class TyeApplicationRuntime(applicationName: String, val host: Url) :
             task.configuration.tracesProviderUrl
         )
 
-    fun waitForReadiness() {
-        runBlocking {
-            val client = service<TyeApiClient>()
-            for (i in 1..10) {
-                try {
-                    client.getApplication(host)
-                } catch (e: ConnectException) {
-                    delay(500)
-                }
+    fun isLive(): Boolean = runBlocking {
+        val client = service<TyeApiClient>()
+        try {
+            client.getApplication(host)
+            return@runBlocking true
+        } catch (e: ConnectException) {
+            return@runBlocking false
+        }
+    }
+
+    fun waitForReadiness() = runBlocking {
+        for (i in 1..10) {
+            if (isLive()) {
+                break
+            } else {
+                delay(500)
             }
         }
     }
 
     fun refresh(): List<TyeBaseRuntime> {
-        runBlocking {
-            val client = service<TyeApiClient>()
-            try {
-                if (model == null) {
-                    val applicationDto = client.getApplication(host)
-                    val applicationModel = applicationDto.toModel()
-                    model = applicationModel
-                }
-
-                val servicesDto = client.getServices(host)
-                val serviceModels = servicesDto.mapNotNull { it.toModel() }
-                refreshServices(serviceModels)
-            } catch (e: ConnectException) {
-                thisLogger().warn("Cannot connect to the host", e)
-            }
+        if (model == null) {
+            val newModel = getModel()
+            model = newModel
         }
+
+        val updatedServices = getServices()
+        refreshServiceRuntimes(updatedServices)
 
         val runtimes = mutableListOf<TyeBaseRuntime>()
         runtimes.add(this)
-
         for (serviceRuntime in serviceRuntimes.values.toList()) {
             runtimes.add(serviceRuntime)
             runtimes.addAll(serviceRuntime.getReplicas())
@@ -94,7 +89,29 @@ class TyeApplicationRuntime(applicationName: String, val host: Url) :
         return runtimes.toList()
     }
 
-    private fun refreshServices(newServices: List<TyeService>) {
+    private fun getModel(): TyeApplication? = runBlocking {
+        val client = service<TyeApiClient>()
+        try {
+            val applicationDto = client.getApplication(host)
+            return@runBlocking applicationDto.toModel()
+        } catch (e: ConnectException) {
+            thisLogger().warn("Cannot connect to the host", e)
+            return@runBlocking null
+        }
+    }
+
+    private fun getServices(): List<TyeService> = runBlocking {
+        val client = service<TyeApiClient>()
+        try {
+            val servicesDto = client.getServices(host)
+            return@runBlocking servicesDto.mapNotNull { it.toModel() }
+        } catch (e: ConnectException) {
+            thisLogger().warn("Cannot connect to the host", e)
+            return@runBlocking emptyList<TyeService>()
+        }
+    }
+
+    private fun refreshServiceRuntimes(newServices: List<TyeService>) {
         val currentRuntimeNames = serviceRuntimes.keys.toHashSet()
         val newServiceNames = newServices.map { it.getServiceName() }.toHashSet()
 
@@ -129,6 +146,9 @@ class TyeApplicationRuntime(applicationName: String, val host: Url) :
     fun getProcessHandler(): ColoredProcessHandler? = processHandler
 
     fun shutdown() {
+        model = null
+        serviceRuntimes.clear()
+
         runBlocking {
             val apiClient = service<TyeApiClient>()
             try {
@@ -137,6 +157,5 @@ class TyeApplicationRuntime(applicationName: String, val host: Url) :
                 thisLogger().warn("Cannot connect to the host", e)
             }
         }
-
     }
 }

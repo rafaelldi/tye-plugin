@@ -4,12 +4,14 @@ import com.intellij.execution.filters.TextConsoleBuilderFactory
 import com.intellij.execution.process.ColoredProcessHandler
 import com.intellij.execution.process.KillableProcessHandler
 import com.intellij.execution.ui.ConsoleView
+import com.intellij.openapi.Disposable
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.util.Disposer
 import java.awt.BorderLayout
 import javax.swing.JComponent
 import javax.swing.JPanel
 
-class ConsoleTab(project: Project) {
+class ConsoleTab(project: Project): Disposable {
     companion object {
         const val TITLE = "Console"
     }
@@ -26,6 +28,8 @@ class ConsoleTab(project: Project) {
 
             add(consoleView.component, BorderLayout.CENTER)
         }
+
+        Disposer.register(this, consoleView)
     }
 
     fun attachToHandler(processHandler: ColoredProcessHandler) {
@@ -33,6 +37,10 @@ class ConsoleTab(project: Project) {
             activeProcessHandler?.detachProcess()
             activeProcessHandler = processHandler
             consoleView.attachToProcess(processHandler)
+            processHandler.startNotify()
         }
+    }
+
+    override fun dispose() {
     }
 }

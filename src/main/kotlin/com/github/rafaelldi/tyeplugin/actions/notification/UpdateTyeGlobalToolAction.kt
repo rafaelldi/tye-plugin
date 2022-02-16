@@ -11,7 +11,7 @@ class UpdateTyeGlobalToolAction : NotificationAction("Update tye global tool") {
     override fun actionPerformed(e: AnActionEvent, notification: Notification) {
         val tyeGlobalToolService = e.project!!.service<TyeGlobalToolService>()
 
-        runBackgroundableTask("Update Tye Global Tool", e.project) {
+        runBackgroundableTask("Update tye global tool", e.project) {
             it.isIndeterminate = true
             it.text = "Updating tye global tool"
 

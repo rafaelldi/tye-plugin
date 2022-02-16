@@ -25,7 +25,6 @@ class TyeDeploymentNodeComponentProvider(private val project: Project) {
 
             override fun onDeploymentsChanged(connection: ServerConnection<*>) {
             }
-
         })
     }
 

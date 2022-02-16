@@ -14,7 +14,7 @@ class InstallTyeGlobalToolAction : AnAction() {
     override fun actionPerformed(e: AnActionEvent) {
         val tyeGlobalToolService = e.project!!.service<TyeGlobalToolService>()
 
-        runBackgroundableTask("Install Tye Global Tool", e.project) {
+        runBackgroundableTask("Install tye global tool", e.project) {
             it.isIndeterminate = true
             it.text = "Installing tye global tool"
 
