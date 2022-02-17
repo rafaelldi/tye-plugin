@@ -175,7 +175,7 @@ class TyeGlobalToolService(private val project: Project) {
         val output = ExecUtil.execAndGetOutput(commandLine)
 
         return if (output.checkSuccess(log)) {
-            val regex = Regex("^Microsoft\\\\.AspNetCore\\\\.App 6", RegexOption.MULTILINE)
+            val regex = Regex("^Microsoft\\.AspNetCore\\.App 6", RegexOption.MULTILINE)
             regex.containsMatchIn(output.stdout)
         } else {
             log.error(output.stderr)
