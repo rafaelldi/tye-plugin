@@ -11,7 +11,7 @@ import java.awt.BorderLayout
 import javax.swing.JComponent
 import javax.swing.JPanel
 
-class ConsoleTab(project: Project): Disposable {
+class ConsoleTab(project: Project) : Disposable {
     companion object {
         const val TITLE = "Console"
     }
@@ -37,7 +37,9 @@ class ConsoleTab(project: Project): Disposable {
             activeProcessHandler?.detachProcess()
             activeProcessHandler = processHandler
             consoleView.attachToProcess(processHandler)
-            processHandler.startNotify()
+            if (!processHandler.isStartNotified) {
+                processHandler.startNotify()
+            }
         }
     }
 

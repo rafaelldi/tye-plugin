@@ -146,9 +146,6 @@ class TyeApplicationRuntime(applicationName: String, val host: Url) : TyeBaseRun
     fun getProcessHandler(): ColoredProcessHandler? = processHandler
 
     fun shutdown() {
-        model = null
-        serviceRuntimes.clear()
-
         runBlocking {
             val apiClient = service<TyeApiClient>()
             try {

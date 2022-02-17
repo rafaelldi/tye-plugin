@@ -52,11 +52,11 @@ class TyeApplicationManager {
     private fun isApplicationLive(runtime: TyeApplicationRuntime): Boolean {
         val isLive = runtime.isLive()
         val handler = runtime.getProcessHandler()
-        return isLive || handler != null
+        return isLive || (handler != null && !handler.isProcessTerminated)
     }
 
     fun shutdownApplication(host: Url) {
-        val existingApplicationRuntime = applications.remove(host.toString())?: return
+        val existingApplicationRuntime = applications[host.toString()] ?: return
         existingApplicationRuntime.shutdown()
     }
 }
