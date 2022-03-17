@@ -26,7 +26,7 @@ repositories {
 
 dependencies {
     implementation("io.ktor:ktor-client-core:1.6.8")
-    implementation("io.ktor:ktor-client-cio:1.6.7")
+    implementation("io.ktor:ktor-client-cio:1.6.8")
     implementation("io.ktor:ktor-client-gson:1.6.8")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.6.0")
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.10")
