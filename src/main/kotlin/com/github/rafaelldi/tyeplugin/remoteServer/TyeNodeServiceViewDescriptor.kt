@@ -1,3 +1,5 @@
+@file:Suppress("UnstableApiUsage")
+
 package com.github.rafaelldi.tyeplugin.remoteServer
 
 import com.github.rafaelldi.tyeplugin.runtimes.TyeBaseRuntime

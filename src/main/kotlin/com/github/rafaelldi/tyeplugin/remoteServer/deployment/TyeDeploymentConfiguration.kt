@@ -12,6 +12,7 @@ class TyeDeploymentConfiguration : DeploymentConfigurationBase<TyeDeploymentConf
     var noBuildArgument = false
     var dockerArgument = false
     var dashboardArgument = false
+    var watchArgument = false
     var verbosityArgument = Verbosity.INFO
     var tagsArgument: String? = null
     var logsProvider = LogsProvider.NONE

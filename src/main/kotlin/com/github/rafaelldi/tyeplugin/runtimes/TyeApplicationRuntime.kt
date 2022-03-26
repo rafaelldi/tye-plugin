@@ -42,6 +42,7 @@ class TyeApplicationRuntime(applicationName: String, val host: Url) : TyeBaseRun
             task.configuration.noBuildArgument,
             task.configuration.dockerArgument,
             task.configuration.dashboardArgument,
+            task.configuration.watchArgument,
             task.configuration.verbosityArgument.value,
             task.configuration.tagsArgument,
             task.configuration.logsProvider.argumentName,

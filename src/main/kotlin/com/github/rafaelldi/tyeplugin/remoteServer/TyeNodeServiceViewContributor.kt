@@ -1,3 +1,5 @@
+@file:Suppress("UnstableApiUsage")
+
 package com.github.rafaelldi.tyeplugin.remoteServer
 
 import com.intellij.execution.services.ServiceViewDescriptor

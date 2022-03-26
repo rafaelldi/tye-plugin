@@ -31,6 +31,10 @@ class TyeRunCliBuilder(private val tyeCliPath: String, private val workDirectory
         arguments.add("--dashboard")
     }
 
+    fun setWatch() {
+        arguments.add("--watch")
+    }
+
     fun setVerbosity(verbosity: String) {
         arguments.add("--verbosity")
         arguments.add(verbosity)

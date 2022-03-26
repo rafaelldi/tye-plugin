@@ -1,3 +1,5 @@
+@file:Suppress("UnstableApiUsage")
+
 package com.github.rafaelldi.tyeplugin.remoteServer.deployment
 
 import com.github.rafaelldi.tyeplugin.remoteServer.LogsProvider
@@ -119,6 +121,7 @@ class TyeDeploymentEditor(private val project: Project) : FragmentedSettingsEdit
             this.tag("tye.configuration.no-build", "No build") { this.setupNoBuildTag() }
             this.tag("tye.configuration.docker", "Docker") { this.setupDockerTag() }
             this.tag("tye.configuration.dashboard", "Dashboard") { this.setupDashboardTag() }
+            this.tag("tye.configuration.watch", "Watch") { this.setupWatchTag() }
         }
     }
 
@@ -154,6 +157,13 @@ class TyeDeploymentEditor(private val project: Project) : FragmentedSettingsEdit
         this.actionDescription = "--dashboard"
         this.setter = { configuration, b -> configuration.dashboardArgument = b }
         this.getter = { it.dashboardArgument }
+    }
+
+    private fun Tag<TyeDeploymentConfiguration>.setupWatchTag() {
+        this.actionHint = "Watches for file changes in all projects that are built by tye"
+        this.actionDescription = "--watch"
+        this.setter = { configuration, b -> configuration.watchArgument = b }
+        this.getter = { it.watchArgument }
     }
 
     private fun Fragment<TyeDeploymentConfiguration, JPanel>.setupVerbosity() {

@@ -28,6 +28,7 @@ class TyeCliClient {
         val noBuild: Boolean,
         val docker: Boolean,
         val dashboard: Boolean,
+        val watch: Boolean,
         val verbosity: String,
         val tags: String?,
         val logsProvider: String,
@@ -69,6 +70,7 @@ class TyeCliClient {
         if (options.noBuild) cliBuilder.setNoBuild()
         if (options.docker) cliBuilder.setDocker()
         if (options.dashboard) cliBuilder.setDashboard()
+        if (options.watch) cliBuilder.setWatch()
         if (options.verbosity != DEFAULT_VERBOSITY) cliBuilder.setVerbosity(options.verbosity)
         if (!options.tags.isNullOrBlank()) cliBuilder.setTags(options.tags)
         if (options.logsProvider != DEFAULT_LOGS_PROVIDER) cliBuilder.setLogs(
