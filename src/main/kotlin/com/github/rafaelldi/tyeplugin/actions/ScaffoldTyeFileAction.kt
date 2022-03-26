@@ -7,9 +7,8 @@ import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.components.service
 import com.intellij.openapi.progress.runBackgroundableTask
-import com.intellij.openapi.ui.Messages
-import com.intellij.openapi.ui.showOkCancelDialog
-import com.intellij.openapi.util.io.FileUtil
+import com.intellij.openapi.ui.showYesNoDialog
+import com.intellij.util.io.exists
 import java.nio.file.Paths
 
 class ScaffoldTyeFileAction : AnAction() {
@@ -18,27 +17,30 @@ class ScaffoldTyeFileAction : AnAction() {
     }
 
     override fun actionPerformed(e: AnActionEvent) {
-        val settings = TyeSettings.getInstance(e.project!!)
-        var overwriteFile = settings.overwriteTyeFile
-        val pathToTyeFile = Paths.get(e.project!!.basePath!!, TYE_FILE_NAME)
+        val project = e.project ?: return
+        val projectPath = project.basePath ?: return
 
-        if (!overwriteFile && FileUtil.exists(pathToTyeFile.toString())) {
-            val result = showOkCancelDialog(
+        val settings = TyeSettings.getInstance(project)
+        var overwriteFile = settings.overwriteTyeFile
+        val pathToTyeFile = Paths.get(projectPath, TYE_FILE_NAME)
+
+        if (!overwriteFile && pathToTyeFile.exists()) {
+            val result = showYesNoDialog(
                 "Overwrite?",
                 "File tye.yaml already exists. Overwrite it?",
-                "Ok"
+                project
             )
 
-            if (result == Messages.OK) overwriteFile = true
+            if (result) overwriteFile = true
             else return
         }
 
-        val tyeCliService = e.project!!.service<TyeCliService>()
-        runBackgroundableTask("Scaffold tye file", e.project) {
+        val tyeCliService = project.service<TyeCliService>()
+        runBackgroundableTask("Scaffold tye file", project) {
             it.isIndeterminate = true
             it.text = "Scaffolding tye.yaml file"
 
-            tyeCliService.scaffoldTyeFile(overwriteFile)
+            tyeCliService.scaffoldTyeFile(projectPath, overwriteFile)
         }
     }
 }

@@ -10,15 +10,16 @@ import com.intellij.openapi.components.service
 import com.intellij.openapi.diagnostic.logger
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VfsUtil
+import java.io.File
 import java.nio.file.Paths
 
 @Service
 class TyeCliService(private val project: Project) {
     private val log = logger<TyeCliService>()
 
-    fun getVersion(path: String?): ToolVersion? {
+    fun getVersion(toolPath: String?): ToolVersion? {
         val tyePathProvider = project.service<TyePathProvider>()
-        val tyePath = path ?: tyePathProvider.getPath() ?: return null
+        val tyePath = toolPath ?: tyePathProvider.getPath() ?: return null
 
         val tyeCliClient = service<TyeCliClient>()
         val output = tyeCliClient.version(tyePath)
@@ -31,18 +32,20 @@ class TyeCliService(private val project: Project) {
         }
     }
 
-    fun scaffoldTyeFile(overwriteFile: Boolean) {
+    fun scaffoldTyeFile(path: String, overwriteFile: Boolean) {
         val tyePathProvider = project.service<TyePathProvider>()
         val tyePath = tyePathProvider.getPath() ?: return
 
-        val options = TyeCliClient.InitOptions(project.basePath!!, project.basePath, overwriteFile)
+        val options = TyeCliClient.InitOptions(path, project.basePath, overwriteFile)
 
         val tyeCliClient = service<TyeCliClient>()
         val output = tyeCliClient.init(tyePath, options)
 
         if (output.checkSuccess(log)) {
             log.info("File tye.yaml is scaffolded")
-            VfsUtil.findFile(Paths.get(project.basePath!!, TYE_FILE_NAME), true)
+
+            val directory = getDirectoryFromPath(path)
+            VfsUtil.findFile(Paths.get(directory, TYE_FILE_NAME), true)?.refresh(true, false)
 
             Notification("Tye", "File tye.yaml is scaffolded", "", NotificationType.INFORMATION)
                 .notify(project)
@@ -51,6 +54,15 @@ class TyeCliService(private val project: Project) {
 
             Notification("Tye", "Tye file scaffolding failed", output.stderr, NotificationType.ERROR)
                 .notify(project)
+        }
+    }
+
+    private fun getDirectoryFromPath(path: String): String {
+        val file = File(path)
+        return if (file.isDirectory) {
+            path
+        } else {
+            file.parent
         }
     }
 }
