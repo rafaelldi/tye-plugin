@@ -9,6 +9,8 @@ import com.intellij.openapi.components.service
 import com.intellij.openapi.progress.runBackgroundableTask
 import com.intellij.openapi.ui.showYesNoDialog
 import com.intellij.util.io.exists
+import com.jetbrains.rider.projectView.solutionDirectoryPath
+import com.jetbrains.rider.projectView.solutionPath
 import java.nio.file.Paths
 
 class ScaffoldTyeFileAction : AnAction() {
@@ -18,11 +20,10 @@ class ScaffoldTyeFileAction : AnAction() {
 
     override fun actionPerformed(e: AnActionEvent) {
         val project = e.project ?: return
-        val projectPath = project.basePath ?: return
 
         val settings = TyeSettings.getInstance(project)
         var overwriteFile = settings.overwriteTyeFile
-        val pathToTyeFile = Paths.get(projectPath, TYE_FILE_NAME)
+        val pathToTyeFile = Paths.get(project.solutionDirectoryPath.toString(), TYE_FILE_NAME)
 
         if (!overwriteFile && pathToTyeFile.exists()) {
             val result = showYesNoDialog(
@@ -40,7 +41,7 @@ class ScaffoldTyeFileAction : AnAction() {
             it.isIndeterminate = true
             it.text = "Scaffolding tye.yaml file"
 
-            tyeCliService.scaffoldTyeFile(projectPath, overwriteFile)
+            tyeCliService.scaffoldTyeFile(project.solutionPath, overwriteFile)
         }
     }
 }
