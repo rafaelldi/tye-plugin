@@ -30,6 +30,7 @@ import javax.swing.JPanel
 class TyeDeploymentEditor(private val project: Project) : FragmentedSettingsEditor<TyeDeploymentConfiguration>(null) {
     private val pathField: LabeledComponent<TextFieldWithBrowseButton>
     private val tagsField: LabeledComponent<ExpandableTextField>
+    private val debugField: LabeledComponent<JBTextField>
     private val verbosityPanel: JPanel
     private val verbosityComboBox: ComboBox<Verbosity>
     private val logsPanel: JPanel
@@ -57,6 +58,10 @@ class TyeDeploymentEditor(private val project: Project) : FragmentedSettingsEdit
         val tagsTextField = ExpandableTextField()
         tagsField = LabeledComponent.create(tagsTextField, "Tags:")
         tagsField.labelLocation = "West"
+
+        val debugTextField = JBTextField()
+        debugField = LabeledComponent.create(debugTextField, "Debug service:")
+        debugField.labelLocation = "West"
 
         verbosityComboBox = ComboBox(Verbosity.values())
         verbosityPanel = panel {
@@ -126,6 +131,7 @@ class TyeDeploymentEditor(private val project: Project) : FragmentedSettingsEdit
             this.fragment("tye.configuration.verbosity", verbosityPanel) { this.setupVerbosity() }
             this.fragment("tye.configuration.logs", logsPanel) { this.setupLogs() }
             this.fragment("tye.configuration.traces", tracesPanel) { this.setupTraces() }
+            this.fragment("tye.configuration.debug", debugField) { this.setupDebugField() }
             this.tag("tye.configuration.no-build", "No build") { this.setupNoBuildTag() }
             this.tag("tye.configuration.docker", "Docker") { this.setupDockerTag() }
             this.tag("tye.configuration.dashboard", "Dashboard") { this.setupDashboardTag() }
@@ -143,6 +149,19 @@ class TyeDeploymentEditor(private val project: Project) : FragmentedSettingsEdit
         }
         this.reset = { settings, component ->
             component.component.text = settings.tagsArgument
+        }
+    }
+
+    private fun Fragment<TyeDeploymentConfiguration, LabeledComponent<JBTextField>>.setupDebugField() {
+        this.name = "Debug service"
+        this.actionHint = "Waits for debugger attach to service. Specify * to wait to attach to all services"
+        this.actionDescription = "--debug "
+        this.visible = { !it.debugArgument.isNullOrEmpty() }
+        this.apply = { settings, component ->
+            settings.debugArgument = component.component.text
+        }
+        this.reset = { settings, component ->
+            component.component.text = settings.debugArgument
         }
     }
 

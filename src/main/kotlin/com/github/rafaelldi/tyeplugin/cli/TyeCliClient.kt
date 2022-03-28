@@ -31,6 +31,7 @@ class TyeCliClient {
         val watch: Boolean,
         val verbosity: String,
         val tags: String?,
+        val debug: String?,
         val logsProvider: String,
         val logsProviderUrl: String?,
         val tracesProvider: String,
@@ -73,6 +74,7 @@ class TyeCliClient {
         if (options.watch) cliBuilder.setWatch()
         if (options.verbosity != DEFAULT_VERBOSITY) cliBuilder.setVerbosity(options.verbosity)
         if (!options.tags.isNullOrBlank()) cliBuilder.setTags(options.tags)
+        if (!options.debug.isNullOrBlank()) cliBuilder.setDebug(options.debug)
         if (options.logsProvider != DEFAULT_LOGS_PROVIDER) cliBuilder.setLogs(
             options.logsProvider,
             options.logsProviderUrl

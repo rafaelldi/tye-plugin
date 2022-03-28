@@ -15,6 +15,7 @@ class TyeDeploymentConfiguration : DeploymentConfigurationBase<TyeDeploymentConf
     var watchArgument = false
     var verbosityArgument = Verbosity.INFO
     var tagsArgument: String? = null
+    var debugArgument: String? = null
     var logsProvider = LogsProvider.NONE
     var logsProviderUrl: String? = null
     var tracesProvider = TracesProvider.NONE
