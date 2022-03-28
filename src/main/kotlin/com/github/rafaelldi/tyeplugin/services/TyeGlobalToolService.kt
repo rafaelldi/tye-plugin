@@ -14,6 +14,8 @@ import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.diagnostic.logger
 import com.intellij.openapi.project.Project
+import com.jetbrains.rd.platform.util.getComponent
+import com.jetbrains.rider.runtime.RiderDotNetActiveRuntimeHost
 
 @Service
 class TyeGlobalToolService(private val project: Project) {
@@ -21,11 +23,14 @@ class TyeGlobalToolService(private val project: Project) {
         private const val TYE_ACTUAL_VERSION = "0.11.0-alpha.22111.1"
     }
 
+    private val riderDotNetActiveRuntimeHost = project.getComponent<RiderDotNetActiveRuntimeHost>()
     private val log = logger<TyeGlobalToolService>()
     private val tyeActualVersion = ToolVersion(TYE_ACTUAL_VERSION)
 
     fun installTyeGlobalTool() {
-        val isDotNet6Installed = isDotNet6Installed()
+        val dotnetPath = getDotnetPath() ?: return
+
+        val isDotNet6Installed = isDotNet6Installed(dotnetPath)
         if (!isDotNet6Installed) {
             Notification("Tye", ".NET 6 is not installed", "", NotificationType.WARNING)
                 .addAction(object : NotificationAction("Go to .NET installation page") {
@@ -46,7 +51,7 @@ class TyeGlobalToolService(private val project: Project) {
 
         val commandLine = GeneralCommandLine()
             .withParentEnvironmentType(GeneralCommandLine.ParentEnvironmentType.CONSOLE)
-            .withExePath("dotnet")
+            .withExePath(dotnetPath)
             .withParameters("tool", "install", "Microsoft.Tye", "--global", "--version", TYE_ACTUAL_VERSION)
         val output = ExecUtil.execAndGetOutput(commandLine)
 
@@ -70,6 +75,8 @@ class TyeGlobalToolService(private val project: Project) {
     }
 
     fun updateTyeGlobalTool() {
+        val dotnetPath = getDotnetPath() ?: return
+
         val isTyeGlobalToolInstalled = isTyeGlobalToolInstalled()
         if (!isTyeGlobalToolInstalled) {
             Notification("Tye", "Tye is not installed", "", NotificationType.WARNING)
@@ -85,7 +92,7 @@ class TyeGlobalToolService(private val project: Project) {
             return
         }
 
-        val isDotNet6Installed = isDotNet6Installed()
+        val isDotNet6Installed = isDotNet6Installed(dotnetPath)
         if (!isDotNet6Installed) {
             Notification("Tye", "To update tye you need to install .NET 6", "", NotificationType.WARNING)
                 .addAction(object : NotificationAction("Go to .NET installation page") {
@@ -99,7 +106,7 @@ class TyeGlobalToolService(private val project: Project) {
 
         val commandLine = GeneralCommandLine()
             .withParentEnvironmentType(GeneralCommandLine.ParentEnvironmentType.CONSOLE)
-            .withExePath("dotnet")
+            .withExePath(dotnetPath)
             .withParameters("tool", "update", "Microsoft.Tye", "--global", "--version", TYE_ACTUAL_VERSION)
         val output = ExecUtil.execAndGetOutput(commandLine)
 
@@ -122,6 +129,8 @@ class TyeGlobalToolService(private val project: Project) {
     }
 
     fun uninstallTyeGlobalTool() {
+        val dotnetPath = getDotnetPath() ?: return
+
         val isTyeGlobalToolInstalled = isTyeGlobalToolInstalled()
         if (!isTyeGlobalToolInstalled) {
             Notification("Tye", "Tye is not installed", "", NotificationType.WARNING)
@@ -132,7 +141,7 @@ class TyeGlobalToolService(private val project: Project) {
 
         val commandLine = GeneralCommandLine()
             .withParentEnvironmentType(GeneralCommandLine.ParentEnvironmentType.CONSOLE)
-            .withExePath("dotnet")
+            .withExePath(dotnetPath)
             .withParameters("tool", "uninstall", "Microsoft.Tye", "--global")
         val output = ExecUtil.execAndGetOutput(commandLine)
 
@@ -150,7 +159,9 @@ class TyeGlobalToolService(private val project: Project) {
     }
 
     fun isTyeGlobalToolInstalled(): Boolean {
-        val output = getListOfGlobalTools()
+        val dotnetPath = getDotnetPath() ?: return false
+
+        val output = getListOfGlobalTools(dotnetPath)
 
         return if (output.checkSuccess(log)) {
             val regex = Regex("^microsoft\\.tye", RegexOption.MULTILINE)
@@ -162,15 +173,19 @@ class TyeGlobalToolService(private val project: Project) {
     }
 
     fun isActualTyeGlobalToolVersionInstalled(): Boolean {
-        val currentVersion = getTyeGlobalToolVersion() ?: return false
+        val dotnetPath = getDotnetPath() ?: return false
+
+        val currentVersion = getTyeGlobalToolVersion(dotnetPath) ?: return false
 
         return currentVersion >= tyeActualVersion
     }
 
-    private fun isDotNet6Installed(): Boolean {
+    private fun getDotnetPath(): String? = riderDotNetActiveRuntimeHost.dotNetCoreRuntime.value?.cliExePath
+
+    private fun isDotNet6Installed(dotnetPath: String): Boolean {
         val commandLine = GeneralCommandLine()
             .withParentEnvironmentType(GeneralCommandLine.ParentEnvironmentType.CONSOLE)
-            .withExePath("dotnet")
+            .withExePath(dotnetPath)
             .withParameters("--list-runtimes")
         val output = ExecUtil.execAndGetOutput(commandLine)
 
@@ -183,8 +198,8 @@ class TyeGlobalToolService(private val project: Project) {
         }
     }
 
-    private fun getTyeGlobalToolVersion(): ToolVersion? {
-        val output = getListOfGlobalTools()
+    private fun getTyeGlobalToolVersion(dotnetPath: String): ToolVersion? {
+        val output = getListOfGlobalTools(dotnetPath)
 
         if (output.checkSuccess(log)) {
             val regex = Regex("^microsoft\\.tye\\s+([\\d.]+)", RegexOption.MULTILINE)
@@ -197,10 +212,10 @@ class TyeGlobalToolService(private val project: Project) {
         }
     }
 
-    private fun getListOfGlobalTools(): ProcessOutput {
+    private fun getListOfGlobalTools(dotnetPath: String): ProcessOutput {
         val commandLine = GeneralCommandLine()
             .withParentEnvironmentType(GeneralCommandLine.ParentEnvironmentType.CONSOLE)
-            .withExePath("dotnet")
+            .withExePath(dotnetPath)
             .withParameters("tool", "list", "--global")
 
         return ExecUtil.execAndGetOutput(commandLine)
