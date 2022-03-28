@@ -23,6 +23,8 @@ import com.intellij.ui.components.JBTextField
 import com.intellij.ui.components.fields.ExpandableTextField
 import com.intellij.ui.layout.GrowPolicy
 import com.intellij.ui.layout.panel
+import com.intellij.ui.layout.selectedValueIs
+import com.intellij.ui.layout.selectedValueMatches
 import javax.swing.JPanel
 
 class TyeDeploymentEditor(private val project: Project) : FragmentedSettingsEditor<TyeDeploymentConfiguration>(null) {
@@ -74,6 +76,11 @@ class TyeDeploymentEditor(private val project: Project) : FragmentedSettingsEdit
             row("Logs provider url:") {
                 logsProviderUrlTextField()
                     .growPolicy(GrowPolicy.MEDIUM_TEXT)
+                    .enableIf(logsProviderComboBox.selectedValueMatches {
+                        it == LogsProvider.APPLICATIONINSIGHTS
+                                || it == LogsProvider.ELASTICSEARCH
+                                || it == LogsProvider.SEQ
+                    })
             }
         }
 
@@ -87,6 +94,7 @@ class TyeDeploymentEditor(private val project: Project) : FragmentedSettingsEdit
             row("Traces provider url:") {
                 tracesProviderUrlTextField()
                     .growPolicy(GrowPolicy.MEDIUM_TEXT)
+                    .enableIf(tracesProviderComboBox.selectedValueIs(TracesProvider.ZIPKIN))
             }
         }
     }
