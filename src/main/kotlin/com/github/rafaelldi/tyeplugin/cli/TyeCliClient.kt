@@ -1,8 +1,6 @@
 package com.github.rafaelldi.tyeplugin.cli
 
-import com.github.rafaelldi.tyeplugin.cli.builders.TyeInitCliBuilder
-import com.github.rafaelldi.tyeplugin.cli.builders.TyeRunCliBuilder
-import com.github.rafaelldi.tyeplugin.cli.builders.TyeVersionCliBuilder
+import com.github.rafaelldi.tyeplugin.cli.builders.*
 import com.intellij.execution.process.ColoredProcessHandler
 import com.intellij.execution.process.KillableColoredProcessHandler
 import com.intellij.execution.process.ProcessOutput
@@ -20,7 +18,8 @@ class TyeCliClient {
     }
 
     data class InitOptions(val path: String, val workDirectory: String?, val overwriteExistingFile: Boolean)
-
+    data class BuildOptions(val path: String, val workDirectory: String?)
+    data class PushOptions(val path: String, val workDirectory: String?)
     data class RunOptions(
         val path: String,
         val workDirectory: String?,
@@ -42,29 +41,53 @@ class TyeCliClient {
     private val log = logger<TyeCliClient>()
 
     fun version(tyePath: String): ProcessOutput {
-        log.info("Call version command")
-
         val cliBuilder = TyeVersionCliBuilder(tyePath)
 
         val commandLine = cliBuilder.build()
+
+        log.debug("Call version command: ${commandLine.commandLineString}")
+
         return ExecUtil.execAndGetOutput(commandLine)
     }
 
     fun init(tyePath: String, options: InitOptions): ProcessOutput {
-        log.info("Call init command")
-
         val cliBuilder = TyeInitCliBuilder(tyePath, options.workDirectory)
 
         cliBuilder.setPath(options.path)
         if (options.overwriteExistingFile) cliBuilder.setForce()
 
         val commandLine = cliBuilder.build()
+
+        log.debug("Call init command: ${commandLine.commandLineString}")
+
+        return ExecUtil.execAndGetOutput(commandLine)
+    }
+
+    fun build(tyePath: String, options: BuildOptions): ProcessOutput {
+        val cliBuilder = TyeBuildCliBuilder(tyePath, options.workDirectory)
+
+        cliBuilder.setPath(options.path)
+
+        val commandLine = cliBuilder.build()
+
+        log.debug("Call build command: ${commandLine.commandLineString}")
+
+        return ExecUtil.execAndGetOutput(commandLine)
+    }
+
+    fun push(tyePath: String, options: PushOptions): ProcessOutput {
+        val cliBuilder = TyePushCliBuilder(tyePath, options.workDirectory)
+
+        cliBuilder.setPath(options.path)
+
+        val commandLine = cliBuilder.build()
+
+        log.debug("Call push command: ${commandLine.commandLineString}")
+
         return ExecUtil.execAndGetOutput(commandLine)
     }
 
     fun run(tyePath: String, options: RunOptions): ColoredProcessHandler {
-        log.info("Call run command")
-
         val cliBuilder = TyeRunCliBuilder(tyePath, options.workDirectory)
 
         cliBuilder.setPath(options.path)
@@ -87,6 +110,9 @@ class TyeCliClient {
         )
 
         val commandLine = cliBuilder.build()
+
+        log.debug("Call run command: ${commandLine.commandLineString}")
+
         return KillableColoredProcessHandler.Silent(commandLine)
     }
 }

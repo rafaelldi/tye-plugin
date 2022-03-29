@@ -70,10 +70,11 @@ class TyeRunCliBuilder(private val tyeCliPath: String, private val workDirectory
     }
 
     fun build(): GeneralCommandLine {
-        if (pathArgument.isNullOrEmpty())
+        val path = pathArgument
+        if (path.isNullOrEmpty())
             throw IllegalArgumentException("Path argument cannot be null or empty")
 
-        arguments.add(pathArgument!!)
+        arguments.add(path)
 
         return GeneralCommandLine()
             .withParentEnvironmentType(GeneralCommandLine.ParentEnvironmentType.CONSOLE)

@@ -2,20 +2,16 @@ package com.github.rafaelldi.tyeplugin.cli.builders
 
 import com.intellij.execution.configurations.GeneralCommandLine
 
-class TyeInitCliBuilder(private val tyeCliPath: String, private val workDirectory: String?) {
+class TyePushCliBuilder(private val tyeCliPath: String, private val workDirectory: String?) {
     private var pathArgument: String? = null
     private val arguments: MutableList<String> = mutableListOf()
 
     init {
-        arguments.add("init")
+        arguments.add("push")
     }
 
     fun setPath(path: String) {
         pathArgument = path
-    }
-
-    fun setForce() {
-        arguments.add("--force")
     }
 
     fun build(): GeneralCommandLine {
