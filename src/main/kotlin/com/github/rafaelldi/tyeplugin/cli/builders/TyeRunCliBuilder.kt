@@ -50,6 +50,11 @@ class TyeRunCliBuilder(private val tyeCliPath: String, private val workDirectory
         arguments.add(debug)
     }
 
+    fun setFramework(framework: String) {
+        arguments.add("--framework")
+        arguments.add(framework)
+    }
+
     fun setLogs(provider: String, url: String?) {
         arguments.add("--logs")
         var providerArg = provider

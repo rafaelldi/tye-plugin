@@ -31,6 +31,7 @@ class TyeDeploymentEditor(private val project: Project) : FragmentedSettingsEdit
     private val pathField: LabeledComponent<TextFieldWithBrowseButton>
     private val tagsField: LabeledComponent<ExpandableTextField>
     private val debugField: LabeledComponent<JBTextField>
+    private val frameworkField: LabeledComponent<JBTextField>
     private val verbosityPanel: JPanel
     private val verbosityComboBox: ComboBox<Verbosity>
     private val logsPanel: JPanel
@@ -62,6 +63,10 @@ class TyeDeploymentEditor(private val project: Project) : FragmentedSettingsEdit
         val debugTextField = JBTextField()
         debugField = LabeledComponent.create(debugTextField, "Debug service:")
         debugField.labelLocation = "West"
+
+        val frameworkTextField = JBTextField()
+        frameworkField = LabeledComponent.create(frameworkTextField, "Framework:")
+        frameworkField.labelLocation = "West"
 
         verbosityComboBox = ComboBox(Verbosity.values())
         verbosityPanel = panel {
@@ -128,10 +133,11 @@ class TyeDeploymentEditor(private val project: Project) : FragmentedSettingsEdit
         this.group = "Options"
         this.children = {
             this.fragment("tye.configuration.tags", tagsField) { this.setupTagsField() }
+            this.fragment("tye.configuration.debug", debugField) { this.setupDebugField() }
+            this.fragment("tye.configuration.framework", frameworkField) { this.setupFrameworkField() }
             this.fragment("tye.configuration.verbosity", verbosityPanel) { this.setupVerbosity() }
             this.fragment("tye.configuration.logs", logsPanel) { this.setupLogs() }
             this.fragment("tye.configuration.traces", tracesPanel) { this.setupTraces() }
-            this.fragment("tye.configuration.debug", debugField) { this.setupDebugField() }
             this.tag("tye.configuration.no-build", "No build") { this.setupNoBuildTag() }
             this.tag("tye.configuration.docker", "Docker") { this.setupDockerTag() }
             this.tag("tye.configuration.dashboard", "Dashboard") { this.setupDashboardTag() }
@@ -155,13 +161,26 @@ class TyeDeploymentEditor(private val project: Project) : FragmentedSettingsEdit
     private fun Fragment<TyeDeploymentConfiguration, LabeledComponent<JBTextField>>.setupDebugField() {
         this.name = "Debug service"
         this.actionHint = "Waits for debugger attach to service. Specify * to wait to attach to all services"
-        this.actionDescription = "--debug "
+        this.actionDescription = "--debug"
         this.visible = { !it.debugArgument.isNullOrEmpty() }
         this.apply = { settings, component ->
             settings.debugArgument = component.component.text
         }
         this.reset = { settings, component ->
             component.component.text = settings.debugArgument
+        }
+    }
+
+    private fun Fragment<TyeDeploymentConfiguration, LabeledComponent<JBTextField>>.setupFrameworkField() {
+        this.name = "Framework"
+        this.actionHint = "The target framework hint to use for all cross-targeting projects with multiple TFMs."
+        this.actionDescription = "--framework"
+        this.visible = { !it.frameworkArgument.isNullOrEmpty() }
+        this.apply = { settings, component ->
+            settings.frameworkArgument = component.component.text
+        }
+        this.reset = { settings, component ->
+            component.component.text = settings.frameworkArgument
         }
     }
 

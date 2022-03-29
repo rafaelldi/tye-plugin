@@ -46,6 +46,7 @@ class TyeApplicationRuntime(applicationName: String, val host: Url) : TyeBaseRun
             task.configuration.verbosityArgument.value,
             task.configuration.tagsArgument,
             task.configuration.debugArgument,
+            task.configuration.frameworkArgument,
             task.configuration.logsProvider.argumentName,
             task.configuration.logsProviderUrl,
             task.configuration.tracesProvider.argumentName,

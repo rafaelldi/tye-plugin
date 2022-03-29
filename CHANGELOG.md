@@ -3,6 +3,12 @@
 # tye-plugin Changelog
 
 ## [Unreleased]
+### Added
+- Options to the `tye run` command: `--watch`, `--debug`, `--framework`
+
+### Changed
+- Reduce the number of supported IDE to Rider
+- `Scaffold Tye File` action now uses solution file as a path argument
 
 ## [0.3.0]
 ### Added
