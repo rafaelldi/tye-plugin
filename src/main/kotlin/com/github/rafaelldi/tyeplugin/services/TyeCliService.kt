@@ -27,7 +27,6 @@ class TyeCliService(private val project: Project) {
         return if (output.checkSuccess(log)) {
             ToolVersion(output.stdout)
         } else {
-            log.error(output.stderr)
             null
         }
     }
@@ -50,9 +49,43 @@ class TyeCliService(private val project: Project) {
             Notification("Tye", "File tye.yaml is scaffolded", "", NotificationType.INFORMATION)
                 .notify(project)
         } else {
-            log.error(output.stderr)
-
             Notification("Tye", "Tye file scaffolding failed", output.stderr, NotificationType.ERROR)
+                .notify(project)
+        }
+    }
+
+    fun runBuildCommand(path: String, workDirectory: String?) {
+        val tyePathProvider = project.service<TyePathProvider>()
+        val tyePath = tyePathProvider.getPath() ?: return
+
+        val options = TyeCliClient.BuildOptions(path, workDirectory)
+
+        val tyeCliClient = service<TyeCliClient>()
+        val output = tyeCliClient.build(tyePath, options)
+
+        if (output.checkSuccess(log)) {
+            Notification("Tye", "Tye build successfully completed", "", NotificationType.INFORMATION)
+                .notify(project)
+        } else {
+            Notification("Tye", "Tye build failed", output.stderr, NotificationType.ERROR)
+                .notify(project)
+        }
+    }
+
+    fun runPushCommand(path: String, workDirectory: String?) {
+        val tyePathProvider = project.service<TyePathProvider>()
+        val tyePath = tyePathProvider.getPath() ?: return
+
+        val options = TyeCliClient.PushOptions(path, workDirectory)
+
+        val tyeCliClient = service<TyeCliClient>()
+        val output = tyeCliClient.push(tyePath, options)
+
+        if (output.checkSuccess(log)) {
+            Notification("Tye", "Tye push successfully completed", "", NotificationType.INFORMATION)
+                .notify(project)
+        } else {
+            Notification("Tye", "Tye push failed", output.stderr, NotificationType.ERROR)
                 .notify(project)
         }
     }

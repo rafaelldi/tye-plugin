@@ -45,7 +45,7 @@ class TyeCliClient {
 
         val commandLine = cliBuilder.build()
 
-        log.debug("Call version command: ${commandLine.commandLineString}")
+        log.info("Call version command: ${commandLine.commandLineString}")
 
         return ExecUtil.execAndGetOutput(commandLine)
     }
@@ -58,7 +58,7 @@ class TyeCliClient {
 
         val commandLine = cliBuilder.build()
 
-        log.debug("Call init command: ${commandLine.commandLineString}")
+        log.info("Call init command: ${commandLine.commandLineString}")
 
         return ExecUtil.execAndGetOutput(commandLine)
     }
@@ -70,7 +70,7 @@ class TyeCliClient {
 
         val commandLine = cliBuilder.build()
 
-        log.debug("Call build command: ${commandLine.commandLineString}")
+        log.info("Call build command: ${commandLine.commandLineString}")
 
         return ExecUtil.execAndGetOutput(commandLine)
     }
@@ -82,7 +82,7 @@ class TyeCliClient {
 
         val commandLine = cliBuilder.build()
 
-        log.debug("Call push command: ${commandLine.commandLineString}")
+        log.info("Call push command: ${commandLine.commandLineString}")
 
         return ExecUtil.execAndGetOutput(commandLine)
     }
@@ -111,7 +111,7 @@ class TyeCliClient {
 
         val commandLine = cliBuilder.build()
 
-        log.debug("Call run command: ${commandLine.commandLineString}")
+        log.info("Call run command: ${commandLine.commandLineString}")
 
         return KillableColoredProcessHandler.Silent(commandLine)
     }

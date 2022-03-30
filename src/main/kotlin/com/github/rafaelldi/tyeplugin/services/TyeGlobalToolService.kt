@@ -62,8 +62,6 @@ class TyeGlobalToolService(private val project: Project) {
             Notification("Tye", "Tye is successfully installed", "", NotificationType.INFORMATION)
                 .notify(project)
         } else {
-            log.error(output.stderr)
-
             Notification("Tye", "Tye installation failed", output.stderr, NotificationType.ERROR)
                 .addAction(object : NotificationAction("Go to troubleshooting page") {
                     override fun actionPerformed(e: AnActionEvent, notification: Notification) {
@@ -116,8 +114,6 @@ class TyeGlobalToolService(private val project: Project) {
             Notification("Tye", "Tye is successfully updated", "", NotificationType.INFORMATION)
                 .notify(project)
         } else {
-            log.error(output.stderr)
-
             Notification("Tye", "Tye update failed", output.stderr, NotificationType.ERROR)
                 .addAction(object : NotificationAction("Go to troubleshooting page") {
                     override fun actionPerformed(e: AnActionEvent, notification: Notification) {
@@ -151,8 +147,6 @@ class TyeGlobalToolService(private val project: Project) {
             Notification("Tye", "Tye is successfully uninstalled", "", NotificationType.INFORMATION)
                 .notify(project)
         } else {
-            log.error(output.stderr)
-
             Notification("Tye", "Tye uninstallation failed", output.stderr, NotificationType.ERROR)
                 .notify(project)
         }
@@ -167,7 +161,6 @@ class TyeGlobalToolService(private val project: Project) {
             val regex = Regex("^microsoft\\.tye", RegexOption.MULTILINE)
             regex.containsMatchIn(output.stdout)
         } else {
-            log.error(output.stderr)
             false
         }
     }
@@ -193,7 +186,6 @@ class TyeGlobalToolService(private val project: Project) {
             val regex = Regex("^Microsoft\\.AspNetCore\\.App 6", RegexOption.MULTILINE)
             regex.containsMatchIn(output.stdout)
         } else {
-            log.error(output.stderr)
             false
         }
     }
@@ -207,7 +199,6 @@ class TyeGlobalToolService(private val project: Project) {
 
             return ToolVersion(versionString)
         } else {
-            log.error(output.stderr)
             return null
         }
     }

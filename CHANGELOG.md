@@ -5,6 +5,7 @@
 ## [Unreleased]
 ### Added
 - Options to the `tye run` command: `--watch`, `--debug`, `--framework`
+- `tye build` and `tye push` actions to the Services tool window
 
 ### Changed
 - Reduce the number of supported IDE to Rider

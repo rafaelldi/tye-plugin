@@ -77,6 +77,17 @@
                     text="Shutdown"
                     description="Tye application shutdown"
                     icon="AllIcons.Nodes.Undeploy"/>
+            <separator/>
+            <action id="Tye.RemoteServers.TyeBuild"
+                    class="com.github.rafaelldi.tyeplugin.actions.TyeBuildAction"
+                    text="Tye Build"
+                    description="Run tye build command"
+                    icon="AllIcons.Actions.Compile"/>
+            <action id="Tye.RemoteServers.TyePush"
+                    class="com.github.rafaelldi.tyeplugin.actions.TyePushAction"
+                    text="Tye Push"
+                    description="Run tye push command"
+                    icon="AllIcons.Vcs.Push"/>
         </group>
         <group id="Tye.RemoteServers.Secondary"/>
         <group id="Tye.RemoteServers.Toolbar"/>
