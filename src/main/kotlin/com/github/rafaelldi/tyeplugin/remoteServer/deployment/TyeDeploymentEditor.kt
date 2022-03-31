@@ -5,6 +5,8 @@ package com.github.rafaelldi.tyeplugin.remoteServer.deployment
 import com.github.rafaelldi.tyeplugin.remoteServer.LogsProvider
 import com.github.rafaelldi.tyeplugin.remoteServer.TracesProvider
 import com.github.rafaelldi.tyeplugin.remoteServer.Verbosity
+import com.github.rafaelldi.tyeplugin.util.isDotNetSolutionFile
+import com.github.rafaelldi.tyeplugin.util.isTyeFile
 import com.intellij.execution.ui.FragmentedSettingsEditor
 import com.intellij.execution.ui.SettingsEditorFragment
 import com.intellij.execution.ui.utils.Fragment
@@ -46,11 +48,7 @@ class TyeDeploymentEditor(private val project: Project) : FragmentedSettingsEdit
         pathTextField.isEditable = false
         val descriptor = FileChooserDescriptor(true, true, false, false, false, false)
         descriptor.withFileFilter { vf: VirtualFile ->
-            vf.name.equals("tye.yaml", ignoreCase = true) ||
-                    vf.extension != null &&
-                    (vf.extension.equals("sln", ignoreCase = true) ||
-                            vf.extension.equals("csproj", ignoreCase = true) ||
-                            vf.extension.equals("fsproj", ignoreCase = true))
+            vf.isTyeFile() || vf.isDotNetSolutionFile()
         }
         pathTextField.addBrowseFolderListener(TextBrowseFolderListener(descriptor))
         pathField = LabeledComponent.create(pathTextField, "Path:")

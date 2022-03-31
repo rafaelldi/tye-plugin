@@ -62,7 +62,19 @@
                     description="Uninstall Microsoft.Tye tool">
             </action>
         </group>
-
+        <group id="Tye.ProjectViewPopupMenu" text="Tye" popup="true" icon="TyeIcons.TYE">
+            <add-to-group group-id="ProjectViewPopupMenu"/>
+            <action id="Tye.ProjectView.TyeBuild"
+                    class="com.github.rafaelldi.tyeplugin.actions.projectView.TyeBuildAction"
+                    text="Tye Build"
+                    description="Run tye build command"
+                    icon="AllIcons.Actions.Compile"/>
+            <action id="Tye.ProjectView.TyePush"
+                    class="com.github.rafaelldi.tyeplugin.actions.projectView.TyePushAction"
+                    text="Tye Push"
+                    description="Run tye push command"
+                    icon="AllIcons.Vcs.Push"/>
+        </group>
         <group id="Tye.RemoteServers.Main">
             <reference ref="RemoteServers.ConnectServer"/>
             <reference ref="RemoteServers.DisconnectServer"/>
