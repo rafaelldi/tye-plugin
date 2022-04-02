@@ -7,17 +7,17 @@ sealed class TyeService(
     val replicas: List<TyeServiceReplica>?
 ) {
     companion object {
-        const val PROPERTY_ID_KEY = "id"
-        const val PROPERTY_TYPE_KEY = "type"
-        const val PROPERTY_SOURCE_KEY = "source"
-        const val PROPERTY_REPLICAS_KEY = "replicas"
-        const val PROPERTY_RESTARTS_KEY = "restarts"
-        const val PROPERTY_PROJECT_KEY = "project"
-        const val PROPERTY_BUILD_KEY = "build"
-        const val PROPERTY_ARGS_KEY = "args"
-        const val PROPERTY_IMAGE_KEY = "image"
-        const val PROPERTY_EXECUTABLE_KEY = "executable"
-        const val PROPERTY_WORKING_DIRECTORY_KEY = "working directory"
+        const val PROPERTY_ID_KEY = "Id"
+        const val PROPERTY_TYPE_KEY = "Type"
+        const val PROPERTY_SOURCE_KEY = "Source"
+        const val PROPERTY_REPLICAS_KEY = "Replicas"
+        const val PROPERTY_RESTARTS_KEY = "Restarts"
+        const val PROPERTY_PROJECT_KEY = "Project"
+        const val PROPERTY_BUILD_KEY = "Build"
+        const val PROPERTY_ARGS_KEY = "Args"
+        const val PROPERTY_IMAGE_KEY = "Image"
+        const val PROPERTY_EXECUTABLE_KEY = "Executable"
+        const val PROPERTY_WORKING_DIRECTORY_KEY = "Working Directory"
     }
 
     abstract fun getName(): String
@@ -28,15 +28,15 @@ sealed class TyeServiceReplica(
     val environmentVariables: MutableMap<String, String?>?
 ) {
     companion object {
-        const val REPLICA_PROPERTY_NAME_KEY = "name"
-        const val REPLICA_PROPERTY_STATE_KEY = "state"
-        const val REPLICA_PROPERTY_PORTS_KEY = "ports"
-        const val REPLICA_PROPERTY_PID_KEY = "pid"
-        const val REPLICA_PROPERTY_EXIT_CODE_KEY = "exit code"
-        const val REPLICA_PROPERTY_DOCKER_COMMAND_KEY = "docker command"
-        const val REPLICA_PROPERTY_CONTAINER_ID_KEY = "container id"
-        const val REPLICA_PROPERTY_DOCKER_NETWORK_KEY = "docker network"
-        const val REPLICA_PROPERTY_DOCKER_NETWORK_ALIAS_KEY = "docker network alias"
+        const val REPLICA_PROPERTY_NAME_KEY = "Name"
+        const val REPLICA_PROPERTY_STATE_KEY = "State"
+        const val REPLICA_PROPERTY_PORTS_KEY = "Ports"
+        const val REPLICA_PROPERTY_PID_KEY = "Pid"
+        const val REPLICA_PROPERTY_EXIT_CODE_KEY = "Exit Code"
+        const val REPLICA_PROPERTY_DOCKER_COMMAND_KEY = "Docker Command"
+        const val REPLICA_PROPERTY_CONTAINER_ID_KEY = "Container Id"
+        const val REPLICA_PROPERTY_DOCKER_NETWORK_KEY = "Docker Network"
+        const val REPLICA_PROPERTY_DOCKER_NETWORK_ALIAS_KEY = "Docker Network Alias"
     }
 
     fun getName(): String = properties[REPLICA_PROPERTY_NAME_KEY] ?: "replica"

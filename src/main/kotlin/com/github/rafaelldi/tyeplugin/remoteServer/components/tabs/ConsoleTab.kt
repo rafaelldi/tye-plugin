@@ -1,4 +1,4 @@
-package com.github.rafaelldi.tyeplugin.remoteServer.components
+package com.github.rafaelldi.tyeplugin.remoteServer.components.tabs
 
 import com.intellij.execution.filters.TextConsoleBuilderFactory
 import com.intellij.execution.process.ColoredProcessHandler

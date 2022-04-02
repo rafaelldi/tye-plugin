@@ -1,5 +1,6 @@
 package com.github.rafaelldi.tyeplugin.remoteServer.components
 
+import com.github.rafaelldi.tyeplugin.remoteServer.components.tabs.ConsoleTab
 import com.github.rafaelldi.tyeplugin.runtimes.TyeApplicationRuntime
 import com.github.rafaelldi.tyeplugin.services.ProjectDisposable
 import com.intellij.openapi.Disposable
