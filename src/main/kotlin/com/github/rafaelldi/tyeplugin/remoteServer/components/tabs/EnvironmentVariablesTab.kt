@@ -16,4 +16,8 @@ class EnvironmentVariablesTab(environmentVariables: MutableMap<String, String?>)
         table = ValuesTable(environmentVariables)
         component = JBScrollPane(table)
     }
+
+    fun update(environmentVariables: MutableMap<String, String?>) {
+        table.update(environmentVariables)
+    }
 }

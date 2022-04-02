@@ -16,4 +16,8 @@ class PropertiesTab(properties: MutableMap<String, String?>) {
         table = ValuesTable(properties)
         component = JBScrollPane(table)
     }
+
+    fun update(properties: MutableMap<String, String?>) {
+        table.update(properties)
+    }
 }

@@ -44,6 +44,7 @@ class TyeServiceViewContributor : RemoteServersServiceViewContributor(), Service
         }
 
         nodeComponentProvider.updateComponent(deployment!!)
+
         return TyeDeploymentNode(
             project,
             connection!!,

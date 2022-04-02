@@ -9,20 +9,32 @@ import javax.swing.JComponent
 import javax.swing.JPanel
 
 class ReplicaDeploymentNodeComponent(private val runtime: TyeReplicaRuntime<*>) : TyeDeploymentNodeComponent {
+    private val propertiesTab: PropertiesTab
+    private val environmentVariablesTab: EnvironmentVariablesTab?
+
     private val panel: JPanel = JPanel().apply {
         layout = BorderLayout()
         val tabbedPane = JBTabbedPane()
 
-        val propertiesTab = PropertiesTab(runtime.replica.properties)
+        propertiesTab = PropertiesTab(runtime.replica.properties)
         tabbedPane.addTab(PropertiesTab.TITLE, propertiesTab.component)
 
         if (runtime.replica.environmentVariables != null) {
-            val environmentVariablesTab = EnvironmentVariablesTab(runtime.replica.environmentVariables)
+            environmentVariablesTab = EnvironmentVariablesTab(runtime.replica.environmentVariables)
             tabbedPane.addTab(EnvironmentVariablesTab.TITLE, environmentVariablesTab.component)
+        } else {
+            environmentVariablesTab = null
         }
 
         add(tabbedPane)
     }
 
     override fun getComponent(): JComponent = panel
+
+    override fun update() {
+        propertiesTab.update(runtime.replica.properties)
+        if (runtime.replica.environmentVariables != null) {
+            environmentVariablesTab?.update(runtime.replica.environmentVariables)
+        }
+    }
 }
