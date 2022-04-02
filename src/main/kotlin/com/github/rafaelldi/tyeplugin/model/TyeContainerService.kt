@@ -1,31 +1,15 @@
- package com.github.rafaelldi.tyeplugin.model
+package com.github.rafaelldi.tyeplugin.model
 
 class TyeContainerService(
-    properties: TyeContainerServiceProperties,
+    properties: MutableMap<String, String?>,
     bindings: List<TyeServiceBinding>,
-    environmentVariables: List<TyeEnvironmentVariable>,
+    environmentVariables: MutableMap<String, String?>,
     replicas: List<TyeContainerServiceReplica>
 ) : TyeService(properties, bindings, environmentVariables, replicas) {
-    override fun getServiceName(): String = properties.id ?: "container"
+    override fun getName(): String = properties[PROPERTY_ID_KEY] ?: "container"
 }
 
-class TyeContainerServiceProperties(
-    id: String?,
-    type: String,
-    source: String,
-    replicas: Int?,
-    restarts: Int,
-    val image: String?,
-    val args: String?
-) : TyeServiceProperties(id, type, source, replicas, restarts)
-
 class TyeContainerServiceReplica(
-    name: String,
-    state: TyeReplicaState?,
-    ports: List<Int>?,
-    environmentVariables: List<TyeEnvironmentVariable>?,
-    val dockerCommand: String?,
-    val containerId: String?,
-    val dockerNetwork: String?,
-    val dockerNetworkAlias: String?
-) : TyeServiceReplica(name, state, ports, environmentVariables)
+    properties: MutableMap<String, String?>,
+    environmentVariables: MutableMap<String, String?>?
+) : TyeServiceReplica(properties, environmentVariables)

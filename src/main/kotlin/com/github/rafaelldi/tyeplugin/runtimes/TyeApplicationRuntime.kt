@@ -114,26 +114,31 @@ class TyeApplicationRuntime(applicationName: String, val host: Url) : TyeBaseRun
         }
     }
 
-    private fun refreshServiceRuntimes(newServices: List<TyeService>) {
-        val currentRuntimeNames = serviceRuntimes.keys.toHashSet()
-        val newServiceNames = newServices.map { it.getServiceName() }.toHashSet()
+    private fun refreshServiceRuntimes(updatedServices: List<TyeService>) {
+        val currentServiceNames = serviceRuntimes.keys.toSet()
+        val updatedServiceNames = updatedServices.map { it.getName() }.toSet()
 
-        for (newService in newServices) {
-            val newServiceName = newService.getServiceName()
-            if (currentRuntimeNames.contains(newServiceName)) {
-                serviceRuntimes[newServiceName]?.updateReplicas(newService)
+        for (updatedService in updatedServices) {
+            val serviceName = updatedService.getName()
+            val serviceRuntime = serviceRuntimes[serviceName]
+            if (serviceRuntime != null) {
+                serviceRuntime.update(updatedService)
             } else {
-                val newRuntime = createServiceRuntime(newService, this)
-                serviceRuntimes[newServiceName] = newRuntime
+                val newRuntime = createServiceRuntime(updatedService, this)
+                serviceRuntimes[serviceName] = newRuntime
             }
         }
 
-        for (deletedRuntimeName in currentRuntimeNames.subtract(newServiceNames)) {
-            serviceRuntimes.remove(deletedRuntimeName)
+        for (deletedServiceName in currentServiceNames.subtract(updatedServiceNames)) {
+            serviceRuntimes.remove(deletedServiceName)
         }
     }
 
-    private fun createServiceRuntime(model: TyeService, parent: TyeApplicationRuntime): TyeServiceRuntime<TyeService> =
+    @Suppress("UNCHECKED_CAST")
+    private fun createServiceRuntime(
+        model: TyeService,
+        parent: TyeApplicationRuntime
+    ): TyeServiceRuntime<TyeService> =
         when (model) {
             is TyeContainerService -> TyeServiceDockerRuntime(model, parent) as TyeServiceRuntime<TyeService>
             is TyeProjectService -> TyeServiceProjectRuntime(model, parent) as TyeServiceRuntime<TyeService>

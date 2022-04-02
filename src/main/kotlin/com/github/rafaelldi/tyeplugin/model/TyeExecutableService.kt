@@ -1,20 +1,9 @@
 package com.github.rafaelldi.tyeplugin.model
 
 class TyeExecutableService(
-    properties: TyeExecutableServiceProperties,
+    properties: MutableMap<String, String?>,
     bindings: List<TyeServiceBinding>,
-    environmentVariables: List<TyeEnvironmentVariable>
+    environmentVariables: MutableMap<String, String?>
 ) : TyeService(properties, bindings, environmentVariables, null) {
-    override fun getServiceName(): String = properties.id ?: "executable"
+    override fun getName(): String = properties[PROPERTY_ID_KEY] ?: "executable"
 }
-
-class TyeExecutableServiceProperties(
-    id: String?,
-    type: String,
-    source: String,
-    replicas: Int?,
-    restarts: Int,
-    val executable: String?,
-    val workingDirectory: String?,
-    val args: String?
-) : TyeServiceProperties(id, type, source, replicas, restarts)

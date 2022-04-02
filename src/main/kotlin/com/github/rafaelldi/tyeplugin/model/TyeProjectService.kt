@@ -1,30 +1,15 @@
 package com.github.rafaelldi.tyeplugin.model
 
 class TyeProjectService(
-    properties: TyeProjectServiceProperties,
+    properties: MutableMap<String, String?>,
     bindings: List<TyeServiceBinding>,
-    environmentVariables: List<TyeEnvironmentVariable>,
+    environmentVariables: MutableMap<String, String?>,
     replicas: List<TyeProjectServiceReplica>
 ) : TyeService(properties, bindings, environmentVariables, replicas) {
-    override fun getServiceName(): String = properties.id ?: "project"
+    override fun getName(): String = properties[PROPERTY_ID_KEY] ?: "project"
 }
 
-class TyeProjectServiceProperties(
-    id: String?,
-    type: String,
-    source: String,
-    replicas: Int?,
-    restarts: Int,
-    val project: String?,
-    val build: Boolean?,
-    val args: String?
-) : TyeServiceProperties(id, type, source, replicas, restarts)
-
 class TyeProjectServiceReplica(
-    name: String,
-    state: TyeReplicaState?,
-    ports: List<Int>?,
-    environmentVariables: List<TyeEnvironmentVariable>?,
-    val pid: Int?,
-    val exitCode: Int?
-) : TyeServiceReplica(name, state, ports, environmentVariables)
+    properties: MutableMap<String, String?>,
+    environmentVariables: MutableMap<String, String?>?
+) : TyeServiceReplica(properties, environmentVariables)
