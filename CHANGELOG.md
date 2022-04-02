@@ -11,6 +11,7 @@
 ### Changed
 - Reduce the number of supported IDE to Rider
 - `Scaffold Tye File` action now uses solution file as a path argument
+- Updating values in the dashboard
 
 ## [0.3.0]
 ### Added
