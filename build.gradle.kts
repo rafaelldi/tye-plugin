@@ -34,7 +34,7 @@ dependencies {
     implementation("io.ktor:ktor-client-cio:1.6.8")
     implementation("io.ktor:ktor-client-gson:1.6.8")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.5.2")
-    implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.10")
+    implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.20")
 }
 
 // Configure Gradle IntelliJ Plugin - read more: https://github.com/JetBrains/gradle-intellij-plugin
