@@ -17,7 +17,7 @@ Tye simplifies microservices development with local orchestrating of multiple .N
 * Tye dashboard - See a summary of the running services and containers.
 <!-- Plugin description end -->
 
-## Tye Installation
+## Tye Installation 
 
 1. Install [.NET Core 6](https://dotnet.microsoft.com/download/dotnet/6.0).
 2. Run action from the menu <kbd>Tools</kbd> -> <kbd>Tye</kbd> -> <kbd>Install Tye Global Tool</kbd> OR install tye via the [following command](https://github.com/dotnet/tye/blob/main/docs/getting_started.md):
