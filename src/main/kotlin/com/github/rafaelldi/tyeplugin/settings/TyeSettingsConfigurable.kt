@@ -3,6 +3,7 @@
 package com.github.rafaelldi.tyeplugin.settings
 
 import com.github.rafaelldi.tyeplugin.services.TyeCliService
+import com.github.rafaelldi.tyeplugin.services.TyePathProvider
 import com.github.rafaelldi.tyeplugin.util.isTyeFile
 import com.intellij.openapi.application.invokeLater
 import com.intellij.openapi.components.service
@@ -18,37 +19,34 @@ import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.ui.components.textFieldWithBrowseButton
 import com.intellij.ui.dsl.builder.*
 import com.intellij.ui.dsl.gridLayout.HorizontalAlign
-import java.io.File
 import javax.swing.JTextField
 
 class TyeSettingsConfigurable(private val project: Project) : BoundConfigurable("Tye") {
     private val settings: TyeSettings get() = TyeSettings.getInstance(project)
+    private lateinit var pathTextField: JBTextFieldWithSecondaryValue
 
     override fun createPanel(): DialogPanel {
-        val pathTextField = JBTextFieldWithSecondaryValue()
+        pathTextField = JBTextFieldWithSecondaryValue()
         val panel = panel {
-            row("Tye tool path") {
+            row("Tye tool path:") {
                 textFieldWithBrowseButton(
                     "Select Path",
                     pathTextField,
                     project,
                     FileChooserDescriptorFactory.createSingleFileNoJarsDescriptor().withFileFilter { it.isTyeFile() })
                 { chosenFile ->
-                    runBackgroundableTask("Get tye version", project) {
-                        val tyeCliService = project.service<TyeCliService>()
-                        val version = tyeCliService.getVersion(chosenFile.path)
-                        if (version != null) {
-                            invokeLater {
-                                pathTextField.setSecondaryValue(version.toString())
-                            }
+                    if (TyePathProvider.isValidTyeToolPath(chosenFile.path)) {
+                        runBackgroundableTask("Get tye version", project) {
+                            setTyeVersion(chosenFile.path)
                         }
                     }
                     chosenFile.path
                 }
                     .validationOnInput {
-                        val file = File(it.text)
-                        if (file.exists() && file.isDirectory.not() && file.canExecute()) return@validationOnInput null
-                        return@validationOnInput error("Invalid path for tye executable")
+                        if (TyePathProvider.isValidTyeToolPath(it.text))
+                            return@validationOnInput null
+                        else
+                            return@validationOnInput error("Invalid path for tye executable")
                     }
                     .horizontalAlign(HorizontalAlign.FILL)
                     .bindText(settings::tyeToolPath)
@@ -66,18 +64,22 @@ class TyeSettingsConfigurable(private val project: Project) : BoundConfigurable(
         }
 
         val currentPath = settings.tyeToolPath
-        if (!currentPath.isNullOrEmpty()) {
+        if (TyePathProvider.isValidTyeToolPath(currentPath)) {
             runBackgroundableTask("Get tye version", project) {
-                val tyeCliService = project.service<TyeCliService>()
-                val version = tyeCliService.getVersion(currentPath)
-                if (version != null) {
-                    invokeLater {
-                        pathTextField.setSecondaryValue(version.toString())
-                    }
-                }
+                setTyeVersion(currentPath)
             }
         }
         return panel
+    }
+
+    private fun setTyeVersion(tyePath: String) {
+        val tyeCliService = project.service<TyeCliService>()
+        val version = tyeCliService.getVersion(tyePath)
+        if (version != null) {
+            invokeLater {
+                pathTextField.setSecondaryValue(version.toString())
+            }
+        }
     }
 }
 
