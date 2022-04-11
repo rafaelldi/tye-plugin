@@ -64,7 +64,7 @@ class TyeApplicationRuntime(applicationName: String, val host: Url) : TyeBaseRun
     }
 
     fun waitForReadiness() = runBlocking {
-        for (i in 1..10) {
+        for (i in 1..20) {
             if (isLive()) {
                 break
             } else {
@@ -98,7 +98,6 @@ class TyeApplicationRuntime(applicationName: String, val host: Url) : TyeBaseRun
             val applicationDto = client.getApplication(host)
             return@runBlocking applicationDto.toModel()
         } catch (e: ConnectException) {
-            thisLogger().warn("Cannot connect to the host", e)
             return@runBlocking null
         }
     }
@@ -109,7 +108,6 @@ class TyeApplicationRuntime(applicationName: String, val host: Url) : TyeBaseRun
             val servicesDto = client.getServices(host)
             return@runBlocking servicesDto.mapNotNull { it.toModel() }
         } catch (e: ConnectException) {
-            thisLogger().warn("Cannot connect to the host", e)
             return@runBlocking emptyList<TyeService>()
         }
     }
