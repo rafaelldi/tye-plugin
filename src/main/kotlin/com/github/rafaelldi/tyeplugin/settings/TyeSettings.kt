@@ -17,7 +17,7 @@ class TyeSettings : SimplePersistentStateComponent<TyeSettingsState>(TyeSettings
     }
 
     var tyeToolPath
-        get() = state.tyeToolPath
+        get() = state.tyeToolPath ?: ""
         set(value) {
             state.tyeToolPath = value
         }

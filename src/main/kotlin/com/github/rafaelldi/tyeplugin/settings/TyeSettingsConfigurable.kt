@@ -3,7 +3,8 @@
 package com.github.rafaelldi.tyeplugin.settings
 
 import com.github.rafaelldi.tyeplugin.services.TyeCliService
-import com.github.rafaelldi.tyeplugin.services.TyePathProvider.Companion.TYE_TOOL
+import com.github.rafaelldi.tyeplugin.services.TyePathProvider
+import com.github.rafaelldi.tyeplugin.util.isTyeFile
 import com.intellij.openapi.application.invokeLater
 import com.intellij.openapi.components.service
 import com.intellij.openapi.fileChooser.FileChooserDescriptor
@@ -16,80 +17,82 @@ import com.intellij.openapi.ui.TextFieldWithBrowseButton
 import com.intellij.openapi.util.NlsContexts.DialogTitle
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.ui.components.textFieldWithBrowseButton
-import com.intellij.ui.layout.*
-import java.io.File
+import com.intellij.ui.dsl.builder.*
+import com.intellij.ui.dsl.gridLayout.HorizontalAlign
 import javax.swing.JTextField
 
 class TyeSettingsConfigurable(private val project: Project) : BoundConfigurable("Tye") {
     private val settings: TyeSettings get() = TyeSettings.getInstance(project)
+    private lateinit var pathTextField: JBTextFieldWithSecondaryValue
 
     override fun createPanel(): DialogPanel {
-        val pathTextField = JBTextFieldWithSecondaryValue()
+        pathTextField = JBTextFieldWithSecondaryValue()
         val panel = panel {
-            row("Tye tool path") {
-                textFieldWithBrowseButton(settings::tyeToolPath.toNullableBinding(""),
+            row("Tye tool path:") {
+                textFieldWithBrowseButton(
                     "Select Path",
-                    pathTextField as JTextField,
+                    pathTextField,
                     project,
-                    FileChooserDescriptorFactory.createSingleFileNoJarsDescriptor().withFileFilter {
-                        it.nameWithoutExtension.lowercase() == TYE_TOOL
-                    })
+                    FileChooserDescriptorFactory.createSingleFileNoJarsDescriptor().withFileFilter { it.isTyeFile() })
                 { chosenFile ->
-                    runBackgroundableTask("Get tye version", project) {
-                        val tyeCliService = project.service<TyeCliService>()
-                        val version = tyeCliService.getVersion(chosenFile.path)
-                        if (version != null) {
-                            invokeLater {
-                                pathTextField.setSecondaryValue(version.toString())
-                            }
+                    if (TyePathProvider.isValidTyeToolPath(chosenFile.path)) {
+                        runBackgroundableTask("Get tye version", project) {
+                            setTyeVersion(chosenFile.path)
                         }
                     }
                     chosenFile.path
                 }
-                    .withValidationOnInput {
-                        val file = File(it.text)
-                        if (file.exists() && file.isDirectory.not() && file.canExecute()) return@withValidationOnInput null
-                        return@withValidationOnInput error("Invalid path for tye executable")
+                    .validationOnInput {
+                        if (TyePathProvider.isValidTyeToolPath(it.text))
+                            return@validationOnInput null
+                        else
+                            return@validationOnInput error("Invalid path for tye executable")
                     }
+                    .horizontalAlign(HorizontalAlign.FILL)
+                    .bindText(settings::tyeToolPath)
             }
-            titledRow("Options") {
+            group("Options") {
                 row {
-                    checkBox("Overwrite existing tye.yaml during scaffolding", settings::overwriteTyeFile)
+                    checkBox("Overwrite existing tye.yaml during scaffolding")
+                        .bindSelected(settings::overwriteTyeFile)
                 }
                 row {
-                    checkBox("Check new versions of the tye global tool during startup", settings::checkTyeNewVersions)
+                    checkBox("Check new versions of the tye global tool during startup")
+                        .bindSelected(settings::checkTyeNewVersions)
                 }
             }
         }
 
         val currentPath = settings.tyeToolPath
-        if (!currentPath.isNullOrEmpty()) {
+        if (TyePathProvider.isValidTyeToolPath(currentPath)) {
             runBackgroundableTask("Get tye version", project) {
-                val tyeCliService = project.service<TyeCliService>()
-                val version = tyeCliService.getVersion(currentPath)
-                if (version != null) {
-                    invokeLater {
-                        pathTextField.setSecondaryValue(version.toString())
-                    }
-                }
+                setTyeVersion(currentPath)
             }
         }
         return panel
     }
+
+    private fun setTyeVersion(tyePath: String) {
+        val tyeCliService = project.service<TyeCliService>()
+        val version = tyeCliService.getVersion(tyePath)
+        if (version != null) {
+            invokeLater {
+                pathTextField.setSecondaryValue(version.toString())
+            }
+        }
+    }
 }
 
-
-fun Cell.textFieldWithBrowseButton(
-    modelBinding: PropertyBinding<String>,
+fun Row.textFieldWithBrowseButton(
     @DialogTitle browseDialogTitle: String,
     textField: JTextField,
-    project: Project? = null,
-    fileChooserDescriptor: FileChooserDescriptor = FileChooserDescriptorFactory.createSingleFileNoJarsDescriptor(),
-    fileChosen: ((chosenFile: VirtualFile) -> String)? = null
-): CellBuilder<TextFieldWithBrowseButton> {
+    project: Project?,
+    fileChooserDescriptor: FileChooserDescriptor,
+    fileChosen: ((chosenFile: VirtualFile) -> String)?
+): Cell<TextFieldWithBrowseButton> {
     val textFieldWithBrowseButton =
         textFieldWithBrowseButton(project, browseDialogTitle, textField, fileChooserDescriptor, fileChosen)
-    textFieldWithBrowseButton.text = modelBinding.get()
-    return component(textFieldWithBrowseButton).constraints(growX)
-        .withBinding(TextFieldWithBrowseButton::getText, TextFieldWithBrowseButton::setText, modelBinding)
+    val result = cell(textFieldWithBrowseButton)
+    result.columns(18)
+    return result
 }

@@ -23,8 +23,11 @@ import com.intellij.openapi.vfs.LocalFileSystem
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.ui.components.JBTextField
 import com.intellij.ui.components.fields.ExpandableTextField
-import com.intellij.ui.layout.GrowPolicy
-import com.intellij.ui.layout.panel
+import com.intellij.ui.dsl.builder.COLUMNS_MEDIUM
+import com.intellij.ui.dsl.builder.Cell
+import com.intellij.ui.dsl.builder.columns
+import com.intellij.ui.dsl.builder.panel
+import com.intellij.ui.dsl.gridLayout.HorizontalAlign
 import com.intellij.ui.layout.selectedValueIs
 import com.intellij.ui.layout.selectedValueMatches
 import javax.swing.JPanel
@@ -35,13 +38,13 @@ class TyeDeploymentEditor(private val project: Project) : FragmentedSettingsEdit
     private val debugField: LabeledComponent<JBTextField>
     private val frameworkField: LabeledComponent<JBTextField>
     private val verbosityPanel: JPanel
-    private val verbosityComboBox: ComboBox<Verbosity>
+    private lateinit var verbosityComboBox: Cell<ComboBox<Verbosity>>
     private val logsPanel: JPanel
-    private val logsProviderComboBox: ComboBox<LogsProvider>
-    private val logsProviderUrlTextField: JBTextField
+    private lateinit var logsProviderComboBox: Cell<ComboBox<LogsProvider>>
+    private lateinit var logsProviderUrlTextField: Cell<JBTextField>
     private val tracesPanel: JPanel
-    private val tracesProviderComboBox: ComboBox<TracesProvider>
-    private val tracesProviderUrlTextField: JBTextField
+    private lateinit var tracesProviderComboBox: Cell<ComboBox<TracesProvider>>
+    private lateinit var tracesProviderUrlTextField: Cell<JBTextField>
 
     init {
         val pathTextField = TextFieldWithBrowseButton()
@@ -66,43 +69,38 @@ class TyeDeploymentEditor(private val project: Project) : FragmentedSettingsEdit
         frameworkField = LabeledComponent.create(frameworkTextField, "Framework:")
         frameworkField.labelLocation = "West"
 
-        verbosityComboBox = ComboBox(Verbosity.values())
         verbosityPanel = panel {
             row("Verbosity:") {
-                verbosityComboBox()
-                    .growPolicy(GrowPolicy.MEDIUM_TEXT)
+                verbosityComboBox = comboBox(Verbosity.values().toList())
+                    .columns(COLUMNS_MEDIUM)
             }
         }
 
-        logsProviderComboBox = ComboBox(LogsProvider.values())
-        logsProviderUrlTextField = JBTextField()
         logsPanel = panel {
             row("Logs provider:") {
-                logsProviderComboBox()
-                    .growPolicy(GrowPolicy.MEDIUM_TEXT)
+                logsProviderComboBox = comboBox(LogsProvider.values().toList())
+                    .horizontalAlign(HorizontalAlign.FILL)
             }
             row("Logs provider url:") {
-                logsProviderUrlTextField()
-                    .growPolicy(GrowPolicy.MEDIUM_TEXT)
-                    .enableIf(logsProviderComboBox.selectedValueMatches {
+                logsProviderUrlTextField = textField()
+                    .enabledIf(logsProviderComboBox.component.selectedValueMatches {
                         it == LogsProvider.APPLICATIONINSIGHTS
                                 || it == LogsProvider.ELASTICSEARCH
                                 || it == LogsProvider.SEQ
                     })
+                    .horizontalAlign(HorizontalAlign.FILL)
             }
         }
 
-        tracesProviderComboBox = ComboBox(TracesProvider.values())
-        tracesProviderUrlTextField = JBTextField()
         tracesPanel = panel {
             row("Traces provider:") {
-                tracesProviderComboBox()
-                    .growPolicy(GrowPolicy.MEDIUM_TEXT)
+                tracesProviderComboBox = comboBox(TracesProvider.values().toList())
+                    .horizontalAlign(HorizontalAlign.FILL)
             }
             row("Traces provider url:") {
-                tracesProviderUrlTextField()
-                    .growPolicy(GrowPolicy.MEDIUM_TEXT)
-                    .enableIf(tracesProviderComboBox.selectedValueIs(TracesProvider.ZIPKIN))
+                tracesProviderUrlTextField = textField()
+                    .enabledIf(tracesProviderComboBox.component.selectedValueIs(TracesProvider.ZIPKIN))
+                    .horizontalAlign(HorizontalAlign.FILL)
             }
         }
     }
@@ -216,12 +214,12 @@ class TyeDeploymentEditor(private val project: Project) : FragmentedSettingsEdit
         this.actionDescription = "--verbosity"
         this.visible = { it.verbosityArgument != Verbosity.INFO }
         this.apply = { settings, _ ->
-            val verbosity = verbosityComboBox.item
+            val verbosity = verbosityComboBox.component.item
             settings.verbosityArgument = verbosity
         }
         this.reset = { settings, _ ->
             val verbosity = settings.verbosityArgument
-            verbosityComboBox.item = verbosity
+            verbosityComboBox.component.item = verbosity
         }
     }
 
@@ -231,20 +229,20 @@ class TyeDeploymentEditor(private val project: Project) : FragmentedSettingsEdit
         this.actionDescription = "--logs"
         this.visible = { it.logsProvider != LogsProvider.NONE }
         this.apply = { settings, _ ->
-            val logsProvider = logsProviderComboBox.item
+            val logsProvider = logsProviderComboBox.component.item
             settings.logsProvider = logsProvider
             if (logsProvider.isProviderUrlEnabled())
-                settings.logsProviderUrl = logsProviderUrlTextField.text
+                settings.logsProviderUrl = logsProviderUrlTextField.component.text
             else
                 settings.logsProviderUrl = null
         }
         this.reset = { settings, _ ->
             val logsProvider = settings.logsProvider
-            logsProviderComboBox.item = logsProvider
+            logsProviderComboBox.component.item = logsProvider
             if (logsProvider.isProviderUrlEnabled())
-                logsProviderUrlTextField.text = settings.logsProviderUrl
+                logsProviderUrlTextField.component.text = settings.logsProviderUrl
             else
-                logsProviderUrlTextField.text = null
+                logsProviderUrlTextField.component.text = null
         }
     }
 
@@ -254,20 +252,20 @@ class TyeDeploymentEditor(private val project: Project) : FragmentedSettingsEdit
         this.actionDescription = "--dtrace"
         this.visible = { it.tracesProvider != TracesProvider.NONE }
         this.apply = { settings, _ ->
-            val tracesProvider = tracesProviderComboBox.item
+            val tracesProvider = tracesProviderComboBox.component.item
             settings.tracesProvider = tracesProvider
             if (tracesProvider.isProviderUrlEnabled())
-                settings.tracesProviderUrl = tracesProviderUrlTextField.text
+                settings.tracesProviderUrl = tracesProviderUrlTextField.component.text
             else
                 settings.tracesProviderUrl = null
         }
         this.reset = { settings, _ ->
             val tracesProvider = settings.tracesProvider
-            tracesProviderComboBox.item = tracesProvider
+            tracesProviderComboBox.component.item = tracesProvider
             if (tracesProvider.isProviderUrlEnabled())
-                tracesProviderUrlTextField.text = settings.tracesProviderUrl
+                tracesProviderUrlTextField.component.text = settings.tracesProviderUrl
             else
-                tracesProviderUrlTextField.text = null
+                tracesProviderUrlTextField.component.text = null
         }
     }
 }
