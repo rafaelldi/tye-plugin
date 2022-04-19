@@ -3,6 +3,8 @@
 # tye-plugin Changelog
 
 ## [Unreleased]
+
+## [0.4.1]
 ### Changed
 - Compatibility with 2022.1 version of the platform
 
