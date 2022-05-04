@@ -3,15 +3,10 @@ import org.jetbrains.changelog.markdownToHTML
 fun properties(key: String) = project.findProperty(key).toString()
 
 plugins {
-    // Java support
     id("java")
-    // Kotlin support
     kotlin("jvm") version "1.6.21"
-    // Gradle IntelliJ Plugin
     id("org.jetbrains.intellij") version "1.5.3"
-    // Gradle Changelog Plugin
     id("org.jetbrains.changelog") version "1.3.1"
-    // Gradle Qodana Plugin
     id("org.jetbrains.qodana") version "0.1.13"
 }
 
@@ -32,7 +27,8 @@ kotlin {
 dependencies {
     implementation("io.ktor:ktor-client-core:2.0.1")
     implementation("io.ktor:ktor-client-cio:2.0.1")
-    implementation("io.ktor:ktor-client-gson:2.0.1")
+    implementation("io.ktor:ktor-client-content-negotiation:2.0.1")
+    implementation("io.ktor:ktor-serialization-gson:2.0.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.6.1")
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.21")
 }
