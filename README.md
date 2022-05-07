@@ -1,7 +1,7 @@
 # tye-plugin
 
 ![Build](https://github.com/rafaelldi/tye-plugin/workflows/Build/badge.svg)
-[![Version](https://img.shields.io/jetbrains/plugin/v/16426-tye.svg)](https://plugins.jetbrains.com/plugin/16426-tye)
+[![Version](https://img.shields.io/jetbrains/plugin/v/16426-tye.svg?label=plugin&logo=rider)](https://plugins.jetbrains.com/plugin/16426-tye)
 [![Downloads](https://img.shields.io/jetbrains/plugin/d/16426-tye.svg)](https://plugins.jetbrains.com/plugin/16426-tye)
 
 <!-- Plugin description -->
