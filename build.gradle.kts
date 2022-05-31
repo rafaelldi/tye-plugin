@@ -29,7 +29,7 @@ dependencies {
     implementation("io.ktor:ktor-client-cio:2.0.1")
     implementation("io.ktor:ktor-client-content-negotiation:2.0.1")
     implementation("io.ktor:ktor-serialization-gson:2.0.1")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.6.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.6.2")
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.21")
 }
 
