@@ -30,7 +30,7 @@ dependencies {
     implementation("io.ktor:ktor-client-content-negotiation:2.0.2")
     implementation("io.ktor:ktor-serialization-gson:2.0.2")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.6.2")
-    implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.21")
+    implementation("org.jetbrains.kotlin:kotlin-reflect:1.7.0")
 }
 
 // Configure Gradle IntelliJ Plugin - read more: https://github.com/JetBrains/gradle-intellij-plugin
