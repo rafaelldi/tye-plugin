@@ -4,8 +4,8 @@ fun properties(key: String) = project.findProperty(key).toString()
 
 plugins {
     id("java")
-    kotlin("jvm") version "1.7.0"
-    id("org.jetbrains.intellij") version "1.6.0"
+    kotlin("jvm") version "1.7.10"
+    id("org.jetbrains.intellij") version "1.7.0"
     id("org.jetbrains.changelog") version "1.3.1"
     id("org.jetbrains.qodana") version "0.1.13"
 }
@@ -29,8 +29,8 @@ dependencies {
     implementation("io.ktor:ktor-client-cio:2.0.3")
     implementation("io.ktor:ktor-client-content-negotiation:2.0.3")
     implementation("io.ktor:ktor-serialization-gson:2.0.3")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.6.3")
-    implementation("org.jetbrains.kotlin:kotlin-reflect:1.7.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.6.4")
+    implementation("org.jetbrains.kotlin:kotlin-reflect:1.7.10")
 }
 
 // Configure Gradle IntelliJ Plugin - read more: https://github.com/JetBrains/gradle-intellij-plugin
