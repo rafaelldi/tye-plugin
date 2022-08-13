@@ -11,10 +11,10 @@ sealed class TyeServiceRuntime<T>(val service: T, parentRuntime: TyeApplicationR
         parent = parentRuntime
     }
 
-    fun update(updatedService: T) {
-        updateProperties(updatedService.properties)
-        updateEnvironmentVariables(updatedService.environmentVariables)
-        updateReplicas(updatedService.replicas ?: emptyList())
+    fun update(service: T) {
+        updateProperties(service.properties)
+        updateEnvironmentVariables(service.environmentVariables)
+        updateReplicas(service.replicas ?: emptyList())
     }
 
     private fun updateProperties(updatedProperties: MutableMap<String, String?>) {
@@ -55,17 +55,17 @@ sealed class TyeServiceRuntime<T>(val service: T, parentRuntime: TyeApplicationR
         }
     }
 
-    private fun updateReplicas(updatedReplicas: List<TyeServiceReplica>) {
+    private fun updateReplicas(replicas: List<TyeServiceReplica>) {
         val currentRuntimeNames = replicaRuntimes.keys.toSet()
-        val newReplicaNames = updatedReplicas.map { it.getName() }.toSet()
+        val newReplicaNames = replicas.map { it.getName() }.toSet()
 
-        for (updatedReplica in updatedReplicas) {
-            val replicaName = updatedReplica.getName()
+        for (replica in replicas) {
+            val replicaName = replica.getName()
             val replicaRuntime = replicaRuntimes[replicaName]
             if (replicaRuntime != null) {
-                replicaRuntime.update(updatedReplica)
+                replicaRuntime.update(replica)
             } else {
-                val newRuntime = createReplicaRuntime(updatedReplica, this)
+                val newRuntime = createReplicaRuntime(replica, this)
                 replicaRuntimes[replicaName] = newRuntime
             }
         }
@@ -85,7 +85,12 @@ sealed class TyeServiceRuntime<T>(val service: T, parentRuntime: TyeApplicationR
             is TyeIngressServiceReplica -> TyeReplicaRuntime(model, parent)
         }
 
-    fun getReplicas(): List<TyeReplicaRuntime<TyeServiceReplica>> = replicaRuntimes.values.toList()
+    fun getRuntimes(): List<TyeReplicaRuntime<TyeServiceReplica>> = replicaRuntimes.values.toList()
+
+    fun clearRuntimes() {
+        replicaRuntimes.forEach { it.value.removeDeployment() }
+        replicaRuntimes.clear()
+    }
 
     override fun getSourceFile(): VirtualFile? {
         return null

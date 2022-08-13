@@ -15,20 +15,26 @@ import javax.swing.JPanel
 class ApplicationDeploymentNodeComponent(private val project: Project, private val runtime: TyeApplicationRuntime) :
     TyeDeploymentNodeComponent, Disposable {
     private val panel: JPanel
-    private val consoleTab: ConsoleTab
+    private val consoleTab: ConsoleTab?
 
     init {
         panel = JPanel().apply {
             layout = BorderLayout()
 
-            consoleTab = ConsoleTab(project)
-            val tabbedPane = JBTabbedPane().apply {
-                addTab(ConsoleTab.TITLE, consoleTab.component)
+            if (!runtime.isExternal) {
+                consoleTab = ConsoleTab(project)
+                val tabbedPane = JBTabbedPane().apply {
+                    addTab(ConsoleTab.TITLE, consoleTab.component)
+                }
+                add(tabbedPane)
+            } else {
+                consoleTab = null
             }
-            add(tabbedPane)
         }
 
-        Disposer.register(this, consoleTab)
+        if (consoleTab != null) {
+            Disposer.register(this, consoleTab)
+        }
         Disposer.register(project.service<ProjectDisposable>(), this)
     }
 
@@ -36,7 +42,7 @@ class ApplicationDeploymentNodeComponent(private val project: Project, private v
 
     override fun update() {
         runtime.getProcessHandler()?.let {
-            consoleTab.attachToHandler(it)
+            consoleTab?.attachToHandler(it)
         }
     }
 

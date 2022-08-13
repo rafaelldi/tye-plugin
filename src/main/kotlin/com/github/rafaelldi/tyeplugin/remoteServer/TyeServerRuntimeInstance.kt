@@ -11,6 +11,7 @@ import com.intellij.remoteServer.runtime.deployment.DeploymentLogManager
 import com.intellij.remoteServer.runtime.deployment.DeploymentRuntime
 import com.intellij.remoteServer.runtime.deployment.DeploymentTask
 import com.intellij.remoteServer.runtime.deployment.ServerRuntimeInstance
+import kotlinx.coroutines.runBlocking
 
 class TyeServerRuntimeInstance(
     private val configuration: TyeHostConfiguration,
@@ -30,22 +31,17 @@ class TyeServerRuntimeInstance(
         callback: DeploymentOperationCallback
     ) {
         taskExecutor.submit({
-            tyeApplicationManager.runApplication(configuration.hostUrl, task).let {
-                callback.started(it)
-
-                it.waitForReadiness()
-                callback.succeeded(it)
+            runBlocking {
+                tyeApplicationManager.runApplication(configuration.hostUrl, task, callback)
             }
         }, callback)
     }
 
     override fun computeDeployments(callback: ComputeDeploymentsCallback) {
         taskExecutor.submit({
-            tyeApplicationManager.refreshApplication(configuration.hostUrl).forEach {
-                val deployment = callback.addDeployment(it.applicationName, it, it.status, it.statusText)
-                it.setDeploymentModel(deployment)
+            runBlocking {
+                tyeApplicationManager.refreshApplication(configuration.hostUrl, callback)
             }
-            callback.succeeded()
         }, callback)
     }
 

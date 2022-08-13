@@ -1,6 +1,5 @@
 package com.github.rafaelldi.tyeplugin.runtimes
 
-import com.github.rafaelldi.tyeplugin.api.TyeApiClient
 import com.github.rafaelldi.tyeplugin.cli.TyeCliClient
 import com.github.rafaelldi.tyeplugin.model.*
 import com.github.rafaelldi.tyeplugin.remoteServer.deployment.TyeDeploymentConfiguration
@@ -9,16 +8,13 @@ import com.intellij.execution.ExecutionException
 import com.intellij.execution.process.ColoredProcessHandler
 import com.intellij.execution.process.ProcessTerminatedListener
 import com.intellij.openapi.components.service
-import com.intellij.openapi.diagnostic.thisLogger
 import com.intellij.openapi.vfs.LocalFileSystem
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.remoteServer.runtime.deployment.DeploymentTask
 import io.ktor.http.*
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.runBlocking
-import java.net.ConnectException
 
-class TyeApplicationRuntime(applicationName: String, val host: Url) : TyeBaseRuntime(applicationName) {
+class TyeApplicationRuntime(applicationName: String, val host: Url, val isExternal: Boolean) :
+    TyeBaseRuntime(applicationName) {
     private val serviceRuntimes: MutableMap<String, TyeServiceRuntime<TyeService>> = mutableMapOf()
     private var processHandler: ColoredProcessHandler? = null
     private var model: TyeApplication? = null
@@ -53,83 +49,47 @@ class TyeApplicationRuntime(applicationName: String, val host: Url) : TyeBaseRun
             task.configuration.tracesProviderUrl
         )
 
-    fun isLive(): Boolean = runBlocking {
-        val client = service<TyeApiClient>()
-        try {
-            client.getApplication(host)
-            return@runBlocking true
-        } catch (e: ConnectException) {
-            return@runBlocking false
-        }
+    fun updateModel(application: TyeApplication) {
+        model = application
     }
 
-    fun waitForReadiness() = runBlocking {
-        for (i in 1..20) {
-            if (isLive()) {
-                break
+    fun updateServices(services: List<TyeService>) {
+        val currentServiceNames = serviceRuntimes.keys.toSet()
+        val serviceNames = services.map { it.getName() }.toSet()
+
+        for (service in services) {
+            val serviceName = service.getName()
+            val serviceRuntime = serviceRuntimes[serviceName]
+            if (serviceRuntime != null) {
+                serviceRuntime.update(service)
             } else {
-                delay(500)
+                val newRuntime = createServiceRuntime(service, this)
+                serviceRuntimes[serviceName] = newRuntime
             }
         }
+
+        for (deletedServiceName in currentServiceNames.subtract(serviceNames)) {
+            serviceRuntimes.remove(deletedServiceName)
+        }
     }
 
-    fun refresh(): List<TyeBaseRuntime> {
-        if (model == null) {
-            val newModel = getModel()
-            model = newModel
-        }
-
-        val updatedServices = getServices()
-        refreshServiceRuntimes(updatedServices)
-
+    fun getRuntimes(): List<TyeBaseRuntime> {
         val runtimes = mutableListOf<TyeBaseRuntime>()
         runtimes.add(this)
         for (serviceRuntime in serviceRuntimes.values.toList()) {
             runtimes.add(serviceRuntime)
-            runtimes.addAll(serviceRuntime.getReplicas())
+            runtimes.addAll(serviceRuntime.getRuntimes())
         }
 
         return runtimes.toList()
     }
 
-    private fun getModel(): TyeApplication? = runBlocking {
-        val client = service<TyeApiClient>()
-        try {
-            val applicationDto = client.getApplication(host)
-            return@runBlocking applicationDto.toModel()
-        } catch (e: ConnectException) {
-            return@runBlocking null
+    fun clearRuntimes() {
+        serviceRuntimes.forEach {
+            it.value.clearRuntimes()
+            it.value.removeDeployment()
         }
-    }
-
-    private fun getServices(): List<TyeService> = runBlocking {
-        val client = service<TyeApiClient>()
-        try {
-            val servicesDto = client.getServices(host)
-            return@runBlocking servicesDto.mapNotNull { it.toModel() }
-        } catch (e: ConnectException) {
-            return@runBlocking emptyList<TyeService>()
-        }
-    }
-
-    private fun refreshServiceRuntimes(updatedServices: List<TyeService>) {
-        val currentServiceNames = serviceRuntimes.keys.toSet()
-        val updatedServiceNames = updatedServices.map { it.getName() }.toSet()
-
-        for (updatedService in updatedServices) {
-            val serviceName = updatedService.getName()
-            val serviceRuntime = serviceRuntimes[serviceName]
-            if (serviceRuntime != null) {
-                serviceRuntime.update(updatedService)
-            } else {
-                val newRuntime = createServiceRuntime(updatedService, this)
-                serviceRuntimes[serviceName] = newRuntime
-            }
-        }
-
-        for (deletedServiceName in currentServiceNames.subtract(updatedServiceNames)) {
-            serviceRuntimes.remove(deletedServiceName)
-        }
+        serviceRuntimes.clear()
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -150,15 +110,4 @@ class TyeApplicationRuntime(applicationName: String, val host: Url) : TyeBaseRun
     }
 
     fun getProcessHandler(): ColoredProcessHandler? = processHandler
-
-    fun shutdown() {
-        runBlocking {
-            val apiClient = service<TyeApiClient>()
-            try {
-                apiClient.controlPlaneShutdown(host)
-            } catch (e: ConnectException) {
-                thisLogger().warn("Cannot connect to the host", e)
-            }
-        }
-    }
 }

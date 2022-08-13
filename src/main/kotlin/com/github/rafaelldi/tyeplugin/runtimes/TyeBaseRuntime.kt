@@ -19,6 +19,10 @@ sealed class TyeBaseRuntime(applicationName: String?) : CloudApplicationRuntime(
         throw UnsupportedOperationException()
     }
 
+    fun removeDeployment() {
+        deploymentModel.connection.undeploy(deploymentModel, null)
+    }
+
     override fun getTaskExecutor(): ServerTaskExecutor {
         throw UnsupportedOperationException()
     }
