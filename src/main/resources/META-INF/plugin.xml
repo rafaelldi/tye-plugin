@@ -101,6 +101,16 @@
                     text="Tye Push"
                     description="Run tye push command"
                     icon="AllIcons.Vcs.Push"/>
+            <action id="Tye.RemoteServers.BrowseTyeService"
+                    class="com.github.rafaelldi.tyeplugin.actions.BrowseTyeServiceAction"
+                    text="Browse Service"
+                    description="Browse tye service"
+                    icon="AllIcons.General.Web"/>
+            <action id="Tye.RemoteServers.BrowseTyeReplica"
+                    class="com.github.rafaelldi.tyeplugin.actions.BrowseTyeReplicaAction"
+                    text="Browse Replica"
+                    description="Browse tye replica"
+                    icon="AllIcons.General.Web"/>
         </group>
         <group id="Tye.RemoteServers.Secondary"/>
         <group id="Tye.RemoteServers.Toolbar"/>
