@@ -97,4 +97,6 @@ sealed class TyeServiceRuntime<T>(val service: T, parentRuntime: TyeApplicationR
     }
 
     fun getServiceUrl(): String? = replicaRuntimes.values.firstOrNull()?.getReplicaUrl()
+
+    fun getServicePid(): String? = replicaRuntimes.values.firstOrNull()?.getReplicaPid()
 }

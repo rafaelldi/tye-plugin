@@ -106,11 +106,21 @@
                     text="Browse Service"
                     description="Browse tye service"
                     icon="AllIcons.General.Web"/>
+            <action id="Tye.RemoteServers.AttachToTyeService"
+                    class="com.github.rafaelldi.tyeplugin.actions.AttachToTyeServiceAction"
+                    text="Attach To Service"
+                    description="Attach to tye service"
+                    icon="AllIcons.Debugger.AttachToProcess"/>
             <action id="Tye.RemoteServers.BrowseTyeReplica"
                     class="com.github.rafaelldi.tyeplugin.actions.BrowseTyeReplicaAction"
                     text="Browse Replica"
                     description="Browse tye replica"
                     icon="AllIcons.General.Web"/>
+            <action id="Tye.RemoteServers.AttachToTyeReplica"
+                    class="com.github.rafaelldi.tyeplugin.actions.AttachToTyeReplicaAction"
+                    text="Attach To Replica"
+                    description="Attach to tye replica"
+                    icon="AllIcons.Debugger.AttachToProcess"/>
         </group>
         <group id="Tye.RemoteServers.Secondary"/>
         <group id="Tye.RemoteServers.Toolbar"/>

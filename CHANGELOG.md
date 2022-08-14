@@ -3,6 +3,9 @@
 # tye-plugin Changelog
 
 ## [Unreleased]
+### Added
+- Action to browse service and replica host
+- Action to attach debugger to services and replicas
 
 ## [0.4.2]
 ### Changed

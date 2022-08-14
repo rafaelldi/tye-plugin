@@ -1,6 +1,7 @@
 package com.github.rafaelldi.tyeplugin.runtimes
 
 import com.github.rafaelldi.tyeplugin.model.TyeServiceReplica
+import com.github.rafaelldi.tyeplugin.model.TyeServiceReplica.Companion.REPLICA_PROPERTY_PID_KEY
 import com.intellij.openapi.vfs.VirtualFile
 
 class TyeReplicaRuntime<T>(val replica: T, parentRuntime: TyeServiceRuntime<*>) :
@@ -73,4 +74,6 @@ class TyeReplicaRuntime<T>(val replica: T, parentRuntime: TyeServiceRuntime<*>) 
     }
 
     fun getReplicaUrl(): String? = url
+
+    fun getReplicaPid(): String? = replica.properties[REPLICA_PROPERTY_PID_KEY]
 }
