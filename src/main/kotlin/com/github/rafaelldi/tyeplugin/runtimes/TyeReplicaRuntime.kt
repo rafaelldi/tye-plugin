@@ -1,6 +1,7 @@
 package com.github.rafaelldi.tyeplugin.runtimes
 
 import com.github.rafaelldi.tyeplugin.model.TyeServiceReplica
+import com.github.rafaelldi.tyeplugin.model.TyeServiceReplica.Companion.REPLICA_PROPERTY_PID_KEY
 import com.intellij.openapi.vfs.VirtualFile
 
 class TyeReplicaRuntime<T>(val replica: T, parentRuntime: TyeServiceRuntime<*>) :
@@ -9,9 +10,12 @@ class TyeReplicaRuntime<T>(val replica: T, parentRuntime: TyeServiceRuntime<*>) 
         parent = parentRuntime
     }
 
+    private var url: String? = null
+
     fun update(updatedReplica: T) {
         updateProperties(updatedReplica.properties)
         updateEnvironmentVariables(updatedReplica.environmentVariables)
+        updateUrl()
     }
 
     private fun updateProperties(updatedProperties: MutableMap<String, String?>) {
@@ -52,7 +56,24 @@ class TyeReplicaRuntime<T>(val replica: T, parentRuntime: TyeServiceRuntime<*>) 
         }
     }
 
+    private fun updateUrl() {
+        val parentName = parent?.applicationName?.uppercase() ?: return
+        if (replica.environmentVariables == null) {
+            return
+        }
+
+        val protocolVariable = replica.environmentVariables["SERVICE__${parentName}__PROTOCOL"] ?: return
+        val hostVariable = replica.environmentVariables["SERVICE__${parentName}__HOST"] ?: return
+        val portVariable = replica.environmentVariables["SERVICE__${parentName}__PORT"] ?: return
+
+        url = "${protocolVariable}://${hostVariable}:${portVariable}"
+    }
+
     override fun getSourceFile(): VirtualFile? {
         return parent?.getSourceFile()
     }
+
+    fun getReplicaUrl(): String? = url
+
+    fun getReplicaPid(): String? = replica.properties[REPLICA_PROPERTY_PID_KEY]
 }

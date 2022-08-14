@@ -95,4 +95,8 @@ sealed class TyeServiceRuntime<T>(val service: T, parentRuntime: TyeApplicationR
     override fun getSourceFile(): VirtualFile? {
         return null
     }
+
+    fun getServiceUrl(): String? = replicaRuntimes.values.firstOrNull()?.getReplicaUrl()
+
+    fun getServicePid(): String? = replicaRuntimes.values.firstOrNull()?.getReplicaPid()
 }
