@@ -85,6 +85,13 @@ sealed class TyeServiceRuntime<T>(val service: T, parentRuntime: TyeApplicationR
             is TyeIngressServiceReplica -> TyeReplicaRuntime(model, parent)
         }
 
+    fun updateMetrics(metrics: List<TyeServiceMetric>) {
+        for (replicaMetrics in metrics.groupBy { it.instance }.filter { it.key != null }) {
+            val replicaRuntime = replicaRuntimes[replicaMetrics.key] ?: continue
+            replicaRuntime.updateMetrics(replicaMetrics.value)
+        }
+    }
+
     fun getRuntimes(): List<TyeReplicaRuntime<TyeServiceReplica>> = replicaRuntimes.values.toList()
 
     fun clearRuntimes() {

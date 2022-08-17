@@ -1,5 +1,6 @@
 package com.github.rafaelldi.tyeplugin.runtimes
 
+import com.github.rafaelldi.tyeplugin.model.TyeServiceMetric
 import com.github.rafaelldi.tyeplugin.model.TyeServiceReplica
 import com.github.rafaelldi.tyeplugin.model.TyeServiceReplica.Companion.REPLICA_PROPERTY_PID_KEY
 import com.intellij.openapi.vfs.VirtualFile
@@ -11,6 +12,7 @@ class TyeReplicaRuntime<T>(val replica: T, parentRuntime: TyeServiceRuntime<*>) 
     }
 
     private var url: String? = null
+    private val replicaMetrics: MutableMap<String, String?> = mutableMapOf()
 
     fun update(updatedReplica: T) {
         updateProperties(updatedReplica.properties)
@@ -69,6 +71,12 @@ class TyeReplicaRuntime<T>(val replica: T, parentRuntime: TyeServiceRuntime<*>) 
         url = "${protocolVariable}://${hostVariable}:${portVariable}"
     }
 
+    fun updateMetrics(metrics: List<TyeServiceMetric>) {
+        for (metric in metrics) {
+            replicaMetrics[metric.name] = metric.value
+        }
+    }
+
     override fun getSourceFile(): VirtualFile? {
         return parent?.getSourceFile()
     }
@@ -76,4 +84,6 @@ class TyeReplicaRuntime<T>(val replica: T, parentRuntime: TyeServiceRuntime<*>) 
     fun getReplicaUrl(): String? = url
 
     fun getReplicaPid(): String? = replica.properties[REPLICA_PROPERTY_PID_KEY]
+
+    fun getReplicaMetrics(): Map<String, String?> = replicaMetrics.toMap()
 }

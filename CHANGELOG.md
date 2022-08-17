@@ -6,6 +6,7 @@
 ### Added
 - Action to browse service and replica host
 - Action to attach debugger to services and replicas
+- Replica metrics tab
 
 ## [0.4.2]
 ### Changed

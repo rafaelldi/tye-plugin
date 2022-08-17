@@ -32,7 +32,12 @@ class TyeServerRuntimeInstance(
     ) {
         taskExecutor.submit({
             runBlocking {
-                tyeApplicationManager.runApplication(configuration.hostUrl, task, callback)
+                tyeApplicationManager.runApplication(
+                    configuration.hostUrl,
+                    configuration.monitorMetrics,
+                    task,
+                    callback
+                )
             }
         }, callback)
     }
@@ -40,7 +45,11 @@ class TyeServerRuntimeInstance(
     override fun computeDeployments(callback: ComputeDeploymentsCallback) {
         taskExecutor.submit({
             runBlocking {
-                tyeApplicationManager.refreshApplication(configuration.hostUrl, callback)
+                tyeApplicationManager.refreshApplication(
+                    configuration.hostUrl,
+                    configuration.monitorMetrics,
+                    callback
+                )
             }
         }, callback)
     }

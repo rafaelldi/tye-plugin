@@ -3,6 +3,7 @@ package com.github.rafaelldi.tyeplugin.services
 import com.github.rafaelldi.tyeplugin.api.TyeApiClient
 import com.github.rafaelldi.tyeplugin.model.TyeApplication
 import com.github.rafaelldi.tyeplugin.model.TyeService
+import com.github.rafaelldi.tyeplugin.model.TyeServiceMetrics
 import com.github.rafaelldi.tyeplugin.model.toModel
 import com.github.rafaelldi.tyeplugin.remoteServer.deployment.TyeDeploymentConfiguration
 import com.github.rafaelldi.tyeplugin.runtimes.TyeApplicationRuntime
@@ -26,6 +27,7 @@ class TyeApplicationManager {
 
     suspend fun runApplication(
         host: Url,
+        monitorMetrics: Boolean,
         deploymentTask: DeploymentTask<TyeDeploymentConfiguration>,
         callback: ServerRuntimeInstance.DeploymentOperationCallback
     ) {
@@ -33,7 +35,7 @@ class TyeApplicationManager {
             return
         }
 
-        val applicationRuntime = TyeApplicationRuntime(TYE_APPLICATION_NAME, host, false)
+        val applicationRuntime = TyeApplicationRuntime(TYE_APPLICATION_NAME, host, monitorMetrics, false)
         callback.started(applicationRuntime)
 
         applicationRuntime.run(deploymentTask)
@@ -52,7 +54,11 @@ class TyeApplicationManager {
         callback.succeeded(applicationRuntime)
     }
 
-    suspend fun refreshApplication(host: Url, callback: ServerRuntimeInstance.ComputeDeploymentsCallback) {
+    suspend fun refreshApplication(
+        host: Url,
+        monitorMetrics: Boolean,
+        callback: ServerRuntimeInstance.ComputeDeploymentsCallback
+    ) {
         val client = service<TyeApiClient>()
 
         val applicationRuntime = applications[host.toString()]
@@ -74,7 +80,7 @@ class TyeApplicationManager {
                 return
             }
 
-            val newApplicationRuntime = TyeApplicationRuntime(TYE_APPLICATION_NAME, host, true)
+            val newApplicationRuntime = TyeApplicationRuntime(TYE_APPLICATION_NAME, host, monitorMetrics, true)
             newApplicationRuntime.updateModel(newApplicationModel)
             applications[newApplicationRuntime.host.toString()] = newApplicationRuntime
 
@@ -90,6 +96,12 @@ class TyeApplicationManager {
     ) {
         val serviceModels = getServiceModels(client, applicationRuntime.host)
         applicationRuntime.updateServices(serviceModels)
+
+        if (applicationRuntime.withMetrics) {
+            val metrics = getServiceMetrics(client, applicationRuntime.host)
+            applicationRuntime.updateMetrics(metrics)
+        }
+
         applicationRuntime.getRuntimes().forEach {
             val deployment = callback.addDeployment(it.applicationName, it, it.status, it.statusText)
             it.setDeploymentModel(deployment)
@@ -120,6 +132,16 @@ class TyeApplicationManager {
         return try {
             val servicesDto = client.getServices(host)
             servicesDto.mapNotNull { it.toModel() }
+        } catch (e: ConnectException) {
+            thisLogger().info("Cannot connect to the host")
+            emptyList()
+        }
+    }
+
+    private suspend fun getServiceMetrics(client: TyeApiClient, host: Url): List<TyeServiceMetrics> {
+        return try {
+            val metricsDto = client.getMetrics(host)
+            metricsDto.mapNotNull { it.toModel() }
         } catch (e: ConnectException) {
             thisLogger().info("Cannot connect to the host")
             emptyList()

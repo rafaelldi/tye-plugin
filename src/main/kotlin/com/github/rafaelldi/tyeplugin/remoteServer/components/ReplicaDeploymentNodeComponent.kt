@@ -1,7 +1,9 @@
 package com.github.rafaelldi.tyeplugin.remoteServer.components
 
 import com.github.rafaelldi.tyeplugin.remoteServer.components.tabs.EnvironmentVariablesTab
+import com.github.rafaelldi.tyeplugin.remoteServer.components.tabs.MetricsTab
 import com.github.rafaelldi.tyeplugin.remoteServer.components.tabs.PropertiesTab
+import com.github.rafaelldi.tyeplugin.runtimes.TyeApplicationRuntime
 import com.github.rafaelldi.tyeplugin.runtimes.TyeReplicaRuntime
 import com.intellij.ui.components.JBTabbedPane
 import java.awt.BorderLayout
@@ -11,6 +13,7 @@ import javax.swing.JPanel
 class ReplicaDeploymentNodeComponent(private val runtime: TyeReplicaRuntime<*>) : TyeDeploymentNodeComponent {
     private val propertiesTab: PropertiesTab
     private val environmentVariablesTab: EnvironmentVariablesTab?
+    private val metricsTab: MetricsTab?
 
     private val panel: JPanel = JPanel().apply {
         layout = BorderLayout()
@@ -26,6 +29,13 @@ class ReplicaDeploymentNodeComponent(private val runtime: TyeReplicaRuntime<*>) 
             environmentVariablesTab = null
         }
 
+        if ((runtime.parent?.parent as? TyeApplicationRuntime)?.withMetrics == true) {
+            metricsTab = MetricsTab()
+            tabbedPane.addTab(MetricsTab.TITLE, metricsTab.component)
+        } else {
+            metricsTab = null
+        }
+
         add(tabbedPane)
     }
 
@@ -35,6 +45,11 @@ class ReplicaDeploymentNodeComponent(private val runtime: TyeReplicaRuntime<*>) 
         propertiesTab.update(runtime.replica.properties)
         if (runtime.replica.environmentVariables != null) {
             environmentVariablesTab?.update(runtime.replica.environmentVariables)
+        }
+        if (metricsTab != null) {
+            val metrics = runtime.getReplicaMetrics()
+            metricsTab.update(metrics)
+
         }
     }
 }
