@@ -2,6 +2,7 @@ package com.github.rafaelldi.tyeplugin.api
 
 import com.github.rafaelldi.tyeplugin.api.dto.ApplicationDto
 import com.github.rafaelldi.tyeplugin.api.dto.ServiceDto
+import com.github.rafaelldi.tyeplugin.api.dto.ServiceMetricsDto
 import com.intellij.openapi.Disposable
 import com.intellij.openapi.components.Service
 import io.ktor.client.*
@@ -23,6 +24,8 @@ class TyeApiClient : Disposable {
     suspend fun getApplication(host: Url): ApplicationDto = client.get("$host/api/v1/application").body()
 
     suspend fun getServices(host: Url): List<ServiceDto> = client.get("$host/api/v1/services").body()
+
+    suspend fun getMetrics(host: Url): List<ServiceMetricsDto> = client.get("$host/api/v1/metrics").body()
 
     suspend fun controlPlaneShutdown(host: Url) = client.delete("$host/api/v1/control")
 

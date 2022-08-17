@@ -19,12 +19,15 @@ class TyeHostConfigurable(configuration: TyeHostConfiguration) :
 
     override fun reset() {
         component.setHostAddress(myConfiguration.hostAddress)
+        component.setMonitorMetricsFlag(myConfiguration.monitorMetrics)
     }
 
-    override fun isModified(): Boolean = component.getHostAddress() != myConfiguration.hostAddress
+    override fun isModified(): Boolean = component.getHostAddress() != myConfiguration.hostAddress ||
+            component.getMonitorMetricsFlag() != myConfiguration.monitorMetrics
 
     override fun applyCoreTo(configuration: TyeHostConfiguration?, forComparison: Boolean) {
         myConfiguration.hostAddress = component.getHostAddress()
+        myConfiguration.monitorMetrics = component.getMonitorMetricsFlag()
     }
 
     override fun canCheckConnection(): Boolean = false

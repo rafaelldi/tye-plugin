@@ -13,7 +13,7 @@ import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.remoteServer.runtime.deployment.DeploymentTask
 import io.ktor.http.*
 
-class TyeApplicationRuntime(applicationName: String, val host: Url, val isExternal: Boolean) :
+class TyeApplicationRuntime(applicationName: String, val host: Url, val withMetrics: Boolean, val isExternal: Boolean) :
     TyeBaseRuntime(applicationName) {
     private val serviceRuntimes: MutableMap<String, TyeServiceRuntime<TyeService>> = mutableMapOf()
     private var processHandler: ColoredProcessHandler? = null
@@ -70,6 +70,13 @@ class TyeApplicationRuntime(applicationName: String, val host: Url, val isExtern
 
         for (deletedServiceName in currentServiceNames.subtract(serviceNames)) {
             serviceRuntimes.remove(deletedServiceName)
+        }
+    }
+
+    fun updateMetrics(metrics: List<TyeServiceMetrics>) {
+        for (serviceMetrics in metrics) {
+            val serviceRuntime = serviceRuntimes[serviceMetrics.service] ?: continue
+            serviceRuntime.updateMetrics(serviceMetrics.metrics)
         }
     }
 

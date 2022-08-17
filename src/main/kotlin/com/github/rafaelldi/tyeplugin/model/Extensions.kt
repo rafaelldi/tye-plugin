@@ -1,7 +1,7 @@
 package com.github.rafaelldi.tyeplugin.model
 
 import com.github.rafaelldi.tyeplugin.api.dto.*
- import com.github.rafaelldi.tyeplugin.model.TyeService.Companion.PROPERTY_ARGS_KEY
+import com.github.rafaelldi.tyeplugin.model.TyeService.Companion.PROPERTY_ARGS_KEY
 import com.github.rafaelldi.tyeplugin.model.TyeService.Companion.PROPERTY_BUILD_KEY
 import com.github.rafaelldi.tyeplugin.model.TyeService.Companion.PROPERTY_EXECUTABLE_KEY
 import com.github.rafaelldi.tyeplugin.model.TyeService.Companion.PROPERTY_ID_KEY
@@ -39,22 +39,26 @@ fun ServiceDto.toModel(): TyeService? {
             envVars,
             this.replicas?.toProjectReplicas() ?: emptyList()
         )
+
         ServiceType.Executable -> TyeExecutableService(
             this.toExecutableProperties(),
             bindings,
             envVars
         )
+
         ServiceType.Container -> TyeContainerService(
             this.toContainerProperties(),
             bindings,
             envVars,
             this.replicas?.toContainerReplicas() ?: emptyList()
         )
+
         ServiceType.Ingress -> TyeIngressService(
             this.toIngressProperties(),
             bindings,
             this.replicas?.toIngressReplicas() ?: emptyList()
         )
+
         else -> null
     }
 }
@@ -159,3 +163,17 @@ private fun ReplicaStatusDto.toIngressReplicaProperties(name: String): MutableMa
         REPLICA_PROPERTY_STATE_KEY to state.toString(),
         REPLICA_PROPERTY_PORTS_KEY to ports?.joinToString(),
     )
+
+fun ServiceMetricsDto.toModel(): TyeServiceMetrics? {
+    if (service.isNullOrEmpty()) {
+        return null
+    }
+
+    val listOfMetrics = metrics
+        ?.filter { it.name != null }
+        ?.map { TyeServiceMetric(it.name!!, it.metadata?.instance, it.value) }
+        ?.toList()
+        ?: emptyList()
+
+    return TyeServiceMetrics(service, listOfMetrics)
+}
