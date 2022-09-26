@@ -3,6 +3,8 @@
 # tye-plugin Changelog
 
 ## [Unreleased]
+
+## [2022.3.0]
 ### Added
 - Action to browse service and replica host
 - Action to attach debugger to services and replicas
