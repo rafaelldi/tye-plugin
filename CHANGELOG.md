@@ -7,6 +7,7 @@
 - Action to browse service and replica host
 - Action to attach debugger to services and replicas
 - Replica metrics tab
+- Compatibility with Rider 2022.3
 
 ## [0.4.2]
 ### Changed
