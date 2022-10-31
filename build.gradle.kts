@@ -6,7 +6,7 @@ plugins {
     id("java")
     id("org.jetbrains.kotlin.jvm") version "1.7.20"
     id("org.jetbrains.intellij") version "1.9.0"
-    id("org.jetbrains.changelog") version "1.3.1"
+    id("org.jetbrains.changelog") version "2.0.0"
     id("org.jetbrains.qodana") version "0.1.13"
 }
 
@@ -23,10 +23,10 @@ kotlin {
 }
 
 dependencies {
-    implementation("io.ktor:ktor-client-core:2.1.2")
-    implementation("io.ktor:ktor-client-cio:2.1.2")
-    implementation("io.ktor:ktor-client-content-negotiation:2.1.2")
-    implementation("io.ktor:ktor-serialization-gson:2.1.2")
+    implementation("io.ktor:ktor-client-core:2.1.3")
+    implementation("io.ktor:ktor-client-cio:2.1.3")
+    implementation("io.ktor:ktor-client-content-negotiation:2.1.3")
+    implementation("io.ktor:ktor-serialization-gson:2.1.3")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.6.4")
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.7.20")
 }
