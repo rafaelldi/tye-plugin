@@ -3,6 +3,8 @@
 # tye-plugin Changelog
 
 ## [Unreleased]
+### Changed
+- Update dependencies
 
 ## [2022.3.0]
 ### Added
