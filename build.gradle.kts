@@ -24,7 +24,7 @@ kotlin {
 }
 
 dependencies {
-    implementation("io.ktor:ktor-client-core:2.2.1")
+    implementation("io.ktor:ktor-client-core:2.2.2")
     implementation("io.ktor:ktor-client-cio:2.2.1")
     implementation("io.ktor:ktor-client-content-negotiation:2.2.1")
     implementation("io.ktor:ktor-serialization-gson:2.2.1")
