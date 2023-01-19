@@ -3,8 +3,8 @@
 # tye-plugin Changelog
 
 ## [Unreleased]
-### Changed
-- Update dependencies
+### Added
+- Compatibility with Rider 2023.1
 
 ## [2022.3.0]
 ### Added
