@@ -3,10 +3,14 @@
 # tye-plugin Changelog
 
 ## [Unreleased]
+
+## [2023.1.0] - 2023-01-19
+
 ### Added
 - Compatibility with Rider 2023.1
 
 ## [2022.3.0]
+
 ### Added
 - Action to browse service and replica host
 - Action to attach debugger to services and replicas
@@ -14,14 +18,17 @@
 - Compatibility with Rider 2022.3
 
 ## [0.4.2]
+
 ### Changed
 - Compatibility with 2022.2 version of the platform
 
 ## [0.4.1]
+
 ### Changed
 - Compatibility with 2022.1 version of the platform
 
 ## [0.4.0]
+
 ### Added
 - Options to the `tye run` command: `--watch`, `--debug`, `--framework`
 - `tye build` and `tye push` actions to the Services tool window
@@ -33,6 +40,7 @@
 - Updating values in the dashboard
 
 ## [0.3.0]
+
 ### Added
 - New action to uninstall tye global tool
 - Ingress nodes
@@ -43,6 +51,7 @@
 - Update to .NET 6
 
 ## [0.2.1]
+
 ### Added
 - List of replicas to the Services tool window
 - Action to go to the source file from the Services tool window
@@ -52,6 +61,7 @@
 - Do not show notification about a new version if tye isn't installed
 
 ## [0.2.0]
+
 ### Added
 - Tye group to the Services tool window
 
@@ -65,6 +75,7 @@
 - New version check during the startup
 
 ## [0.1.3]
+
 ### Added
 - Action for updating tye global tool
 - Option to disable tye global tool new version check
@@ -77,11 +88,13 @@
 - Fixed stopping process ([#57](https://github.com/rafaelldi/tye-plugin/issues/57))
 
 ## [0.1.2]
+
 ### Changed
 - Compatibility with 2021.2 version of the platform
 - Tye global tool version is updated to 0.8.0-alpha.21352.1
 
 ## [0.1.1]
+
 ### Added
 - Check tye version at startup
 - Action to update tye global tool
@@ -93,26 +106,47 @@
 - Update tye version to 0.7.0-alpha.21279.2
 
 ## [0.1.0]
+
 ### Added
 - Tool window with tye dashboard
-- Dialog to overwrite an existing file during scaffolding 
+- Dialog to overwrite an existing file during scaffolding
 
 ### Changed
 - Tye icons
 
 ## [0.0.3]
+
 ### Added
 - New options in the run configuration to send logs, traces or specify tags.
 
 ## [0.0.2]
+
 ### Added
 - Tye file association
 - Tye schema
 - Run `tye run` command from the `tye.yaml` file
 
 ## [0.0.1]
+
 ### Added
 - Initial scaffold created from [IntelliJ Platform Plugin Template](https://github.com/JetBrains/intellij-platform-plugin-template)
 - Action for install tye global tool
 - Action for scaffold `tye.yaml` file into solution folder
 - Run configuration for `tye run` command
+
+[Unreleased]: https://github.com/rafaelldi/tye-plugin/compare/v2023.1.0...HEAD
+[2023.1.0]: https://github.com/rafaelldi/tye-plugin/compare/v2022.3.0...v2023.1.0
+[2022.3.0]: https://github.com/rafaelldi/tye-plugin/compare/v0.4.2...v2022.3.0
+[0.4.2]: https://github.com/rafaelldi/tye-plugin/compare/v0.4.1...v0.4.2
+[0.4.1]: https://github.com/rafaelldi/tye-plugin/compare/v0.4.0...v0.4.1
+[0.4.0]: https://github.com/rafaelldi/tye-plugin/compare/v0.3.0...v0.4.0
+[0.3.0]: https://github.com/rafaelldi/tye-plugin/compare/v0.2.1...v0.3.0
+[0.2.1]: https://github.com/rafaelldi/tye-plugin/compare/v0.2.0...v0.2.1
+[0.2.0]: https://github.com/rafaelldi/tye-plugin/compare/v0.1.3...v0.2.0
+[0.1.3]: https://github.com/rafaelldi/tye-plugin/compare/v0.1.2...v0.1.3
+[0.1.2]: https://github.com/rafaelldi/tye-plugin/compare/v0.1.1...v0.1.2
+[0.1.1]: https://github.com/rafaelldi/tye-plugin/compare/v0.1.0...v0.1.1
+[0.1.0]: https://github.com/rafaelldi/tye-plugin/compare/v0.0.3...v0.1.0
+[0.0.3]: https://github.com/rafaelldi/tye-plugin/compare/v0.0.2...v0.0.3
+[0.0.2]: https://github.com/rafaelldi/tye-plugin/compare/v0.0.1...v0.0.2
+[0.0.1]: https://github.com/rafaelldi/tye-plugin/commits/v0.0.1
